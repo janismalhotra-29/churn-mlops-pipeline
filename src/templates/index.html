@@ -678,10 +678,10 @@
                         <div class="p-6 border-2 border-dashed border-slate-700 hover:border-sky-500 rounded-2xl text-center space-y-3 transition-colors bg-slate-900/50">
                             <i data-lucide="file-up" class="w-10 h-10 mx-auto text-sky-400 animate-bounce"></i>
                             <div>
-                                <span class="text-xs font-bold text-white block">Upload Customer CSV Dataset</span>
-                                <span class="text-[11px] text-slate-400 block mt-1">Accepts CSV files containing tenure, MonthlyCharges, Contract, etc.</span>
+                                <span class="text-xs font-bold text-white block">Upload Customer Dataset (CSV or Excel)</span>
+                                <span class="text-[11px] text-slate-400 block mt-1">Accepts .csv or .xlsx Excel files containing tenure, MonthlyCharges, Contract, etc.</span>
                             </div>
-                            <input type="file" id="bulk-csv-input" accept=".csv" class="block w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sky-500/20 file:text-sky-300 hover:file:bg-sky-500/30">
+                            <input type="file" id="bulk-csv-input" accept=".csv,.xlsx,.xls" class="block w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sky-500/20 file:text-sky-300 hover:file:bg-sky-500/30">
                         </div>
                         <button type="submit" class="w-full py-3.5 px-4 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center space-x-2 hover:scale-[1.02]">
                             <i data-lucide="play" class="w-4 h-4"></i>
@@ -1190,7 +1190,7 @@
         async function submitBulkCSV() {
             const input = document.getElementById('bulk-csv-input');
             if (!input.files || input.files.length === 0) {
-                alert("Please select a CSV file first!");
+                alert("Please select a CSV or Excel (.xlsx) file first!");
                 return;
             }
             const formData = new FormData();
@@ -1198,16 +1198,19 @@
 
             const box = document.getElementById('bulk-status-box');
             box.classList.remove('hidden');
-            box.innerText = "Processing CSV batch inference...";
+            box.innerText = "Processing batch dataset inference...";
 
             try {
                 const res = await fetch('/predict/bulk', { method: 'POST', body: formData });
                 const data = await res.json();
-                if (data.status === 'success') {
+                if (res.ok && data.status === 'success') {
                     box.innerHTML = `<span class="text-emerald-400 font-bold">✓ Successfully processed ${data.total_records_processed} records.</span> Found <strong>${data.high_risk_count} High Risk accounts</strong> totaling <strong>$${data.total_annual_revenue_at_risk.toLocaleString()} annual revenue at risk</strong>.`;
+                } else {
+                    const detailMsg = data.detail || 'Failed to parse file format.';
+                    box.innerHTML = `<span class="text-rose-400 font-bold">⚠️ Error: ${detailMsg}</span>`;
                 }
             } catch (err) {
-                box.innerText = "Failed to parse CSV.";
+                box.innerHTML = `<span class="text-rose-400 font-bold">⚠️ Server connection error while processing file.</span>`;
             }
         }
 

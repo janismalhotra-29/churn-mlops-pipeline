@@ -159,7 +159,7 @@ def predict_churn(customer: CustomerData):
 
 @app.post("/predict/bulk")
 async def predict_bulk_csv(file: UploadFile = File(...)):
-    """Bulk CSV Upload Endpoint: Ingests a CSV file of customer accounts, runs batch ML inference, and returns parsed predictions."""
+    """Bulk Upload Endpoint: Ingests a CSV or Excel file of customer accounts, runs batch ML inference, and returns parsed predictions."""
     try:
         clf = get_model()
     except Exception as exc:
@@ -167,11 +167,15 @@ async def predict_bulk_csv(file: UploadFile = File(...)):
 
     try:
         contents = await file.read()
-        df = pd.read_csv(io.BytesIO(contents))
+        filename = (file.filename or "").lower()
+        if filename.endswith(".xlsx") or filename.endswith(".xls"):
+            df = pd.read_excel(io.BytesIO(contents))
+        else:
+            df = pd.read_csv(io.BytesIO(contents))
 
         for col in ["tenure", "MonthlyCharges"]:
             if col not in df.columns:
-                raise HTTPException(status_code=422, detail=f"CSV missing required column: '{col}'")
+                raise HTTPException(status_code=422, detail=f"File missing required column: '{col}'")
 
         if "TotalCharges" not in df.columns:
             df["TotalCharges"] = df["tenure"] * df["MonthlyCharges"]

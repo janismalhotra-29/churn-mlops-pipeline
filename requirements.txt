@@ -9,3 +9,5 @@ pytest>=7.4.0
 httpx>=0.24.0
 pydantic>=2.0.0
 python-multipart>=0.0.6
+openpyxl>=3.1.0
+
