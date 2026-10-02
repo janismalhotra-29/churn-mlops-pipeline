@@ -158,7 +158,7 @@ def predict_churn(customer: CustomerData):
         raise HTTPException(status_code=500, detail=f"Inference error: {str(exc)}")
 
 @app.post("/predict/bulk")
-async def predict_bulk_csv(file: UploadFile = File(...)):
+def predict_bulk_csv(file: UploadFile = File(...)):
     """Bulk Upload Endpoint: Ingests a CSV or Excel file of customer accounts, runs batch ML inference, and returns parsed predictions."""
     try:
         clf = get_model()
@@ -166,27 +166,57 @@ async def predict_bulk_csv(file: UploadFile = File(...)):
         raise HTTPException(status_code=503, detail=f"Model unavailable: {str(exc)}")
 
     try:
-        contents = await file.read()
+        contents = file.file.read()
         filename = (file.filename or "").lower()
         if filename.endswith(".xlsx") or filename.endswith(".xls"):
             df = pd.read_excel(io.BytesIO(contents))
         else:
             df = pd.read_csv(io.BytesIO(contents))
 
-        for col in ["tenure", "MonthlyCharges"]:
-            if col not in df.columns:
-                raise HTTPException(status_code=422, detail=f"File missing required column: '{col}'")
+        # Flexible Column Normalization (handles Tenure, Monthly Charges, Monthly_Charges, etc.)
+        norm_map = {str(c).strip().lower().replace("_", "").replace(" ", ""): c for c in df.columns}
 
-        if "TotalCharges" not in df.columns:
-            df["TotalCharges"] = df["tenure"] * df["MonthlyCharges"]
+        tenure_orig = norm_map.get("tenure")
+        monthly_orig = norm_map.get("monthlycharges") or norm_map.get("monthlycharge") or norm_map.get("monthly")
+        total_orig = norm_map.get("totalcharges") or norm_map.get("totalcharge") or norm_map.get("total")
+        contract_orig = norm_map.get("contract")
+        internet_orig = norm_map.get("internetservice") or norm_map.get("internet")
+        customerid_orig = norm_map.get("customerid") or norm_map.get("customer_id") or norm_map.get("id")
+
+        if not tenure_orig or not monthly_orig:
+            raise HTTPException(
+                status_code=422,
+                detail=f"CSV/Excel missing required columns. Found columns: {list(df.columns)}. Expected 'tenure' and 'MonthlyCharges'."
+            )
+
+        df["tenure"] = pd.to_numeric(df[tenure_orig], errors="coerce").fillna(1).astype(int)
+        df["MonthlyCharges"] = pd.to_numeric(df[monthly_orig], errors="coerce").fillna(50.0).astype(float)
+
+        if total_orig and total_orig in df.columns:
+            df["TotalCharges"] = pd.to_numeric(df[total_orig], errors="coerce").fillna(df["tenure"] * df["MonthlyCharges"])
         else:
-            df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce").fillna(df["tenure"] * df["MonthlyCharges"])
+            df["TotalCharges"] = df["tenure"] * df["MonthlyCharges"]
 
-        contract_map = {"Month-to-month": 0, "One year": 1, "Two year": 2}
-        df["Contract_Code"] = df["Contract"].map(contract_map).fillna(0).astype(int) if "Contract" in df.columns else 0
+        contract_map = {"Month-to-month": 0, "One year": 1, "Two year": 2, "month-to-month": 0, "one year": 1, "two year": 2}
+        if contract_orig and contract_orig in df.columns:
+            df["Contract_Code"] = df[contract_orig].astype(str).map(contract_map).fillna(0).astype(int)
+            df["Contract"] = df[contract_orig].astype(str)
+        else:
+            df["Contract_Code"] = 0
+            df["Contract"] = "Month-to-month"
 
-        internet_map = {"No": 0, "DSL": 1, "Fiber optic": 2}
-        df["InternetService_Code"] = df["InternetService"].map(internet_map).fillna(2).astype(int) if "InternetService" in df.columns else 2
+        internet_map = {"No": 0, "DSL": 1, "Fiber optic": 2, "no": 0, "dsl": 1, "fiber optic": 2}
+        if internet_orig and internet_orig in df.columns:
+            df["InternetService_Code"] = df[internet_orig].astype(str).map(internet_map).fillna(2).astype(int)
+            df["InternetService"] = df[internet_orig].astype(str)
+        else:
+            df["InternetService_Code"] = 2
+            df["InternetService"] = "Fiber optic"
+
+        if customerid_orig and customerid_orig in df.columns:
+            df["customerID"] = df[customerid_orig].astype(str)
+        else:
+            df["customerID"] = ["TELCO-" + str(i+1001).zfill(5) for i in range(len(df))]
 
         feature_cols = ["tenure", "MonthlyCharges", "TotalCharges", "Contract_Code", "InternetService_Code"]
         expected_n_features = getattr(clf, "n_features_in_", 3)
@@ -203,16 +233,32 @@ async def predict_bulk_csv(file: UploadFile = File(...)):
         df["Risk_Level"] = ["HIGH" if prob >= 0.50 else ("MEDIUM" if prob >= 0.30 else "LOW") for prob in df["Churn_Probability"]]
         df["Annual_Revenue_Risk"] = (df["MonthlyCharges"] * 12.0).round(2)
 
+        def get_strategy(risk):
+            if risk == "HIGH":
+                return "Offer 25% discount on 1-Year contract commitment immediately."
+            elif risk == "MEDIUM":
+                return "Send retention email offering complimentary streaming bundle."
+            else:
+                return "Standard retention engagement. Candidate for cross-selling."
+
+        df["Retention_Strategy"] = df["Risk_Level"].apply(get_strategy)
+
         high_risk_count = int((df["Risk_Level"] == "HIGH").sum())
+        medium_risk_count = int((df["Risk_Level"] == "MEDIUM").sum())
+        low_risk_count = int((df["Risk_Level"] == "LOW").sum())
         total_revenue_risk = float(df[df["Risk_Level"] == "HIGH"]["Annual_Revenue_Risk"].sum())
 
-        results = df.head(100).to_dict(orient="records")
+        output_cols = ["customerID", "tenure", "MonthlyCharges", "TotalCharges", "Contract", "InternetService", "Churn_Prediction", "Churn_Probability", "Risk_Level", "Annual_Revenue_Risk", "Retention_Strategy"]
+        final_cols = [c for c in output_cols if c in df.columns]
+        results = df[final_cols].head(1000).to_dict(orient="records")
 
         return {
             "status": "success",
             "filename": file.filename,
             "total_records_processed": len(df),
             "high_risk_count": high_risk_count,
+            "medium_risk_count": medium_risk_count,
+            "low_risk_count": low_risk_count,
             "total_annual_revenue_at_risk": round(total_revenue_risk, 2),
             "sample_results": results
         }
