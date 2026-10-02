@@ -1,0 +1,21 @@
+# Python & Virtual Environments
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# MLflow Tracking Data
+mlruns/
+mlruns.db
+
+# Model Binary Artifacts
+*.pkl
+
+# Pytest Caches
+.pytest_cache/
+
+# Operating System Files
+.DS_Store
+Thumbs.db

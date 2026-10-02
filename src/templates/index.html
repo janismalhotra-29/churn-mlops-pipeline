@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TelcoPulse - AI Customer Retention & Churn Intelligence Engine</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Plus Jakarta Sans Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        slate: {
+                            950: '#060913',
+                            900: '#0b1120',
+                            850: '#10182c',
+                            800: '#17223b',
+                            750: '#1e2d4d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 1. Continuous Ambient Background Gradient Movement */
+        @keyframes ambient-bg-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        body {
+            background: linear-gradient(135deg, #060913 0%, #0b1120 40%, #0d152a 70%, #070a12 100%);
+            background-size: 200% 200%;
+            animation: ambient-bg-shift 20s ease infinite;
+            color: #f1f5f9;
+        }
+
+        /* 2. Floating & Bobbing Motion */
+        @keyframes float-gentle {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-7px); }
+        }
+        .animate-float {
+            animation: float-gentle 5s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+            animation: float-gentle 6s ease-in-out 2.5s infinite;
+        }
+
+        /* 3. Soft Pulsing & Glow Rings */
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+        }
+        .animate-pulse-ring {
+            animation: pulse-ring 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* 4. Marquee Flowing Animation */
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marquee-scroll 30s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        /* 5. Sequential Scroll Reveal Animations */
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-item.is-revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger Delays */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+
+        /* Glass Cards with Micro-Interactions */
+        .glass-card {
+            background: rgba(16, 24, 44, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-card-interactive:hover {
+            transform: translateY(-5px) scale(1.01);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 20px 40px -15px rgba(14, 165, 233, 0.25);
+        }
+
+        /* Nav Link Underline Animation */
+        .nav-link-animated {
+            position: relative;
+        }
+        .nav-link-animated::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(to right, #38bdf8, #a855f7);
+            transition: width 0.3s ease;
+            border-radius: 9999px;
+        }
+        .nav-link-animated:hover::after {
+            width: 100%;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: #38bdf8;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-sky-500 selection:text-white overflow-x-hidden">
+
+    <!-- CONTINUOUS FLOWING MARQUEE TICKER BAR -->
+    <div class="bg-slate-950 border-b border-slate-800/80 overflow-hidden py-1.5 text-[11px] font-semibold text-slate-400">
+        <div class="animate-marquee whitespace-nowrap space-x-12">
+            <span class="inline-flex items-center"><span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span> SYSTEM LIVE: 7,000+ Active Customer Streams Monitored</span>
+            <span class="inline-flex items-center"><span class="text-sky-400 mr-1.5">⚡</span> AI RISK ENGINE: Real-Time Churn Scoring Active</span>
+            <span class="inline-flex items-center"><span class="text-purple-400 mr-1.5">🛡</span> REVENUE PROTECTED: $1.45M Annual Loss Prevention</span>
+            <span class="inline-flex items-center"><span class="text-amber-400 mr-1.5">📊</span> COHORT ANALYTICS: Real-Time Gini Feature Driver Ranking</span>
+            <!-- Duplicated for Infinite Loop -->
+            <span class="inline-flex items-center"><span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span> SYSTEM LIVE: 7,000+ Active Customer Streams Monitored</span>
+            <span class="inline-flex items-center"><span class="text-sky-400 mr-1.5">⚡</span> AI RISK ENGINE: Real-Time Churn Scoring Active</span>
+            <span class="inline-flex items-center"><span class="text-purple-400 mr-1.5">🛡</span> REVENUE PROTECTED: $1.45M Annual Loss Prevention</span>
+            <span class="inline-flex items-center"><span class="text-amber-400 mr-1.5">📊</span> COHORT ANALYTICS: Real-Time Gini Feature Driver Ranking</span>
+        </div>
+    </div>
+
+    <!-- Sticky Navigation Header -->
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-6 py-3.5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo with Bobbing Motion -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 via-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-sky-500/25 group-hover:rotate-6 group-hover:scale-105 transition-all">
+                    <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-extrabold tracking-tight text-white block">TelcoPulse AI</span>
+                    <span class="text-[11px] text-slate-400 font-medium block">Enterprise Retention Platform</span>
+                </div>
+            </a>
+
+            <!-- Desktop Links with Underline Animations -->
+            <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold text-slate-300">
+                <a href="#overview" class="nav-link-animated hover:text-sky-400 transition-colors">How It Works</a>
+                <a href="#opportunities" class="nav-link-animated hover:text-sky-400 transition-colors">Sector Opportunities</a>
+                <a href="#assessor" class="nav-link-animated hover:text-sky-400 transition-colors">Risk Assessor</a>
+                <a href="#analytics" class="nav-link-animated hover:text-sky-400 transition-colors">Cohort Intelligence</a>
+                <a href="#explorer" class="nav-link-animated hover:text-sky-400 transition-colors">Customer Directory</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center space-x-3 text-xs font-semibold">
+                <div class="hidden sm:flex items-center px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300 animate-pulse-ring">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
+                    <span>7,000+ Monitored Accounts</span>
+                </div>
+                <a href="/docs" target="_blank" class="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white transition-all shadow-md shadow-sky-600/30 flex items-center hover:scale-105">
+                    <i data-lucide="code" class="w-3.5 h-3.5 mr-1.5"></i> REST API Docs
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: HERO LANDING SECTION -->
+    <section class="relative pt-16 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="text-center max-w-3xl mx-auto space-y-6">
+            <!-- Badge with Floating Motion -->
+            <div class="reveal-item animate-float inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20 text-xs font-semibold shadow-lg shadow-sky-500/10">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 animate-spin-slow"></i>
+                <span>Predictive Customer Retention Engine &bull; 80.2% Accuracy</span>
+            </div>
+
+            <!-- Headline -->
+            <h1 class="reveal-item delay-1 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                Protect Customer Revenue Before They Churn.
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="reveal-item delay-2 text-base sm:text-lg text-slate-400 font-normal leading-relaxed">
+                An intelligent customer retention platform powering real-time churn risk intelligence across recurring subscription accounts. Analyze account telemetry instantly, estimate annual financial loss, and deploy automated retention campaigns.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="reveal-item delay-3 flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                <a href="#assessor" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 via-indigo-600 to-purple-600 hover:from-sky-400 hover:to-purple-500 text-white font-bold text-sm shadow-xl shadow-sky-500/25 transition-all flex items-center justify-center space-x-2 hover:scale-105">
+                    <i data-lucide="zap" class="w-4 h-4"></i>
+                    <span>Launch Risk Assessor</span>
+                </a>
+                <a href="#analytics" class="w-full sm:w-auto px-7 py-3.5 rounded-xl glass-card hover:bg-slate-800 text-slate-200 font-semibold text-sm transition-all flex items-center justify-center space-x-2 border border-slate-700 hover:scale-105">
+                    <i data-lucide="pie-chart" class="w-4 h-4 text-sky-400"></i>
+                    <span>Explore Cohort Intelligence</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Floating Quick Stats Strip -->
+        <div class="reveal-item delay-4 grid grid-cols-2 md:grid-cols-4 gap-4 mt-16">
+            <div class="glass-card glass-card-interactive p-4 rounded-2xl text-center animate-float">
+                <span class="text-xs text-slate-400 font-medium uppercase tracking-wider block">Monitored Accounts</span>
+                <span class="text-2xl font-black text-white mt-1 block">7,000+ Accounts</span>
+            </div>
+            <div class="glass-card glass-card-interactive p-4 rounded-2xl text-center animate-float-delayed">
+                <span class="text-xs text-slate-400 font-medium uppercase tracking-wider block">Baseline Churn Rate</span>
+                <span class="text-2xl font-black text-rose-400 mt-1 block">26.54%</span>
+            </div>
+            <div class="glass-card glass-card-interactive p-4 rounded-2xl text-center animate-float">
+                <span class="text-xs text-slate-400 font-medium uppercase tracking-wider block">Mean Customer Tenure</span>
+                <span class="text-2xl font-black text-sky-400 mt-1 block">32.4 Months</span>
+            </div>
+            <div class="glass-card glass-card-interactive p-4 rounded-2xl text-center animate-float-delayed">
+                <span class="text-xs text-slate-400 font-medium uppercase tracking-wider block">Model Precision</span>
+                <span class="text-2xl font-black text-emerald-400 mt-1 block">80.20%</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: HOW IT WORKS (3-STEP OVERVIEW) -->
+    <section id="overview" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="text-center max-w-2xl mx-auto mb-14 space-y-3">
+            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">System Workflow</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Three Steps to Revenue Protection</h2>
+            <p class="text-sm text-slate-400">How TelcoPulse transforms customer account telemetry into actionable retention campaigns.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Step 1 -->
+            <div class="reveal-item delay-1 glass-card glass-card-interactive p-6 rounded-2xl space-y-4 group">
+                <div class="w-12 h-12 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20 flex items-center justify-center font-bold text-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                    01
+                </div>
+                <h3 class="text-lg font-bold text-white group-hover:text-sky-400 transition-colors">Input Account Telemetry</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    Select contract term, broadband tech, tenure duration (or start date), and monthly subscription rates for single accounts or bulk CSV files.
+                </p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="reveal-item delay-2 glass-card glass-card-interactive p-6 rounded-2xl space-y-4 group">
+                <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center font-bold text-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                    02
+                </div>
+                <h3 class="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">RandomForest AI Inference</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    Our cross-validated ML engine evaluates feature interactions against 7,043 historical customer outcomes to compute precise churn probabilities.
+                </p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="reveal-item delay-3 glass-card glass-card-interactive p-6 rounded-2xl space-y-4 group">
+                <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center font-bold text-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                    03
+                </div>
+                <h3 class="text-lg font-bold text-white group-hover:text-purple-400 transition-colors">Prescriptive Action Plan</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    Instantly receive clear risk categories (LOW, MODERATE, HIGH), annual revenue at risk ($/yr), and tailored retention campaigns.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2.5: INTERACTIVE SECTOR BENCHMARKS & ENTERPRISE OPPORTUNITIES -->
+    <section id="opportunities" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="text-center max-w-2xl mx-auto mb-14 space-y-3">
+            <div class="reveal-item animate-float inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs font-semibold">
+                <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                <span>Enterprise Sector Intelligence</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Sector Churn Benchmarks & Opportunities</h2>
+            <p class="text-sm text-slate-400">Explore generic industry domains where TelcoPulse predictive intelligence prevents customer churn and protects MRR revenue.</p>
+        </div>
+
+        <!-- 8 Interactive Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <!-- Card 1: Technology -->
+            <div onclick="openOpportunityModal(0)" class="reveal-item delay-1 glass-card glass-card-interactive rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer border border-slate-800/80 hover:border-sky-500/50 transition-all duration-500">
+                <div class="relative h-44 w-full overflow-hidden bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Technology Company Workspace" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out opacity-85 group-hover:opacity-100" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-950/80 backdrop-blur-md text-sky-400 border border-sky-500/30 flex items-center space-x-1 shadow-md">
+                        <i data-lucide="cpu" class="w-3 h-3"></i> Technology
+                    </span>
+                    <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-900/80 backdrop-blur-md flex items-center justify-center text-sky-400 border border-slate-700 animate-float">
+                        <i data-lucide="server" class="w-4 h-4"></i>
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="text-[11px] font-bold text-sky-400 uppercase tracking-wider mb-1">Cloud & SaaS Platforms</div>
+                        <h3 class="text-base font-extrabold text-white group-hover:text-sky-400 transition-colors">Enterprise Tech Workspace</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mt-1.5">Modern developer teams and cloud platforms tracking user telemetry and recurring subscription cycles.</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">XGBoost</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">SaaS Telemetry</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">Churn Scoring</span>
+                        </div>
+                        <button class="w-full py-2.5 px-4 rounded-xl bg-slate-900 group-hover:bg-gradient-to-r group-hover:from-sky-500 group-hover:to-indigo-600 border border-slate-700/80 group-hover:border-transparent text-slate-300 group-hover:text-white font-bold text-xs transition-all flex items-center justify-center space-x-2 shadow-sm">
+                            <span>Explore Details</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: AI / ML -->
+            <div onclick="openOpportunityModal(1)" class="reveal-item delay-2 glass-card glass-card-interactive rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer border border-slate-800/80 hover:border-indigo-500/50 transition-all duration-500">
+                <div class="relative h-44 w-full overflow-hidden bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1555255707-c07966088b7b?auto=format&fit=crop&w=800&q=80" alt="AI Neural Network Dashboard" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out opacity-85 group-hover:opacity-100" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-950/80 backdrop-blur-md text-indigo-400 border border-indigo-500/30 flex items-center space-x-1 shadow-md">
+                        <i data-lucide="bot" class="w-3 h-3"></i> AI & ML
+                    </span>
+                    <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-900/80 backdrop-blur-md flex items-center justify-center text-indigo-400 border border-slate-700 animate-float-delayed">
+                        <i data-lucide="brain-circuit" class="w-4 h-4"></i>
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="text-[11px] font-bold text-indigo-400 uppercase tracking-wider mb-1">ML Inference & Analytics</div>
+                        <h3 class="text-base font-extrabold text-white group-hover:text-indigo-400 transition-colors">Neural AI Dashboard</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mt-1.5">Real-time model inference engines, feature importance rankings, and automated drift detection.</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">RandomForest</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">MLflow Runs</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">FastAPI</span>
+                        </div>
+                        <button class="w-full py-2.5 px-4 rounded-xl bg-slate-900 group-hover:bg-gradient-to-r group-hover:from-indigo-500 group-hover:to-purple-600 border border-slate-700/80 group-hover:border-transparent text-slate-300 group-hover:text-white font-bold text-xs transition-all flex items-center justify-center space-x-2 shadow-sm">
+                            <span>Explore Details</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Data Science -->
+            <div onclick="openOpportunityModal(2)" class="reveal-item delay-3 glass-card glass-card-interactive rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer border border-slate-800/80 hover:border-purple-500/50 transition-all duration-500">
+                <div class="relative h-44 w-full overflow-hidden bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Data Science Analytics Charts" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out opacity-85 group-hover:opacity-100" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-950/80 backdrop-blur-md text-purple-400 border border-purple-500/30 flex items-center space-x-1 shadow-md">
+                        <i data-lucide="line-chart" class="w-3 h-3"></i> Data Science
+                    </span>
+                    <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-900/80 backdrop-blur-md flex items-center justify-center text-purple-400 border border-slate-700 animate-float">
+                        <i data-lucide="pie-chart" class="w-4 h-4"></i>
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="text-[11px] font-bold text-purple-400 uppercase tracking-wider mb-1">Cohort & Driver Analysis</div>
+                        <h3 class="text-base font-extrabold text-white group-hover:text-purple-400 transition-colors">Analytics & Cohorts</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mt-1.5">Deep statistical breakdown analyzing tenure duration, contract types, and broadband drivers across 7,043 records.</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">Gini Ranking</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">CLV Models</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">Chart.js</span>
+                        </div>
+                        <button class="w-full py-2.5 px-4 rounded-xl bg-slate-900 group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-pink-600 border border-slate-700/80 group-hover:border-transparent text-slate-300 group-hover:text-white font-bold text-xs transition-all flex items-center justify-center space-x-2 shadow-sm">
+                            <span>Explore Details</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Web Development -->
+            <div onclick="openOpportunityModal(3)" class="reveal-item delay-4 glass-card glass-card-interactive rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer border border-slate-800/80 hover:border-emerald-500/50 transition-all duration-500">
+                <div class="relative h-44 w-full overflow-hidden bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80" alt="Web Development Coding" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out opacity-85 group-hover:opacity-100" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-950/80 backdrop-blur-md text-emerald-400 border border-emerald-500/30 flex items-center space-x-1 shadow-md">
+                        <i data-lucide="code-2" class="w-3 h-3"></i> Web Development
+                    </span>
+                    <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-900/80 backdrop-blur-md flex items-center justify-center text-emerald-400 border border-slate-700 animate-float-delayed">
+                        <i data-lucide="layout" class="w-4 h-4"></i>
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Full-Stack UX Engineering</div>
+                        <h3 class="text-base font-extrabold text-white group-hover:text-emerald-400 transition-colors">Developer Workspace</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mt-1.5">Interactive single-page Web UI with instant start-date tenure pickers and batch CSV diagnostic uploads.</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">FastAPI</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">Tailwind CSS</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">Micro-Interactions</span>
+                        </div>
+                        <button class="w-full py-2.5 px-4 rounded-xl bg-slate-900 group-hover:bg-gradient-to-r group-hover:from-emerald-500 group-hover:to-teal-600 border border-slate-700/80 group-hover:border-transparent text-slate-300 group-hover:text-white font-bold text-xs transition-all flex items-center justify-center space-x-2 shadow-sm">
+                            <span>Explore Details</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5: Finance -->
+            <div onclick="openOpportunityModal(4)" class="reveal-item delay-1 glass-card glass-card-interactive rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer border border-slate-800/80 hover:border-amber-500/50 transition-all duration-500">
+                <div class="relative h-44 w-full overflow-hidden bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="Finance Business Analytics" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out opacity-85 group-hover:opacity-100" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-950/80 backdrop-blur-md text-amber-400 border border-amber-500/30 flex items-center space-x-1 shadow-md">
+                        <i data-lucide="dollar-sign" class="w-3 h-3"></i> Finance
+                    </span>
+                    <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-900/80 backdrop-blur-md flex items-center justify-center text-amber-400 border border-slate-700 animate-float">
+                        <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="text-[11px] font-bold text-amber-400 uppercase tracking-wider mb-1">Revenue Protection & MRR</div>
+                        <h3 class="text-base font-extrabold text-white group-hover:text-amber-400 transition-colors">Financial Risk Model</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mt-1.5">Quantifying exact annualized revenue loss exposure ($/yr) to target retention investments with maximum ROI.</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">MRR Loss</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">Annual Risk</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">ROI Optimization</span>
+                        </div>
+                        <button class="w-full py-2.5 px-4 rounded-xl bg-slate-900 group-hover:bg-gradient-to-r group-hover:from-amber-500 group-hover:to-orange-600 border border-slate-700/80 group-hover:border-transparent text-slate-300 group-hover:text-white font-bold text-xs transition-all flex items-center justify-center space-x-2 shadow-sm">
+                            <span>Explore Details</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6: Healthcare -->
+            <div onclick="openOpportunityModal(5)" class="reveal-item delay-2 glass-card glass-card-interactive rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer border border-slate-800/80 hover:border-cyan-500/50 transition-all duration-500">
+                <div class="relative h-44 w-full overflow-hidden bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80" alt="Healthcare Technology Solutions" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out opacity-85 group-hover:opacity-100" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=800&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-950/80 backdrop-blur-md text-cyan-400 border border-cyan-500/30 flex items-center space-x-1 shadow-md">
+                        <i data-lucide="heart-pulse" class="w-3 h-3"></i> Healthcare
+                    </span>
+                    <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-900/80 backdrop-blur-md flex items-center justify-center text-cyan-400 border border-slate-700 animate-float-delayed">
+                        <i data-lucide="activity" class="w-4 h-4"></i>
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="text-[11px] font-bold text-cyan-400 uppercase tracking-wider mb-1">Digital Health & Telehealth</div>
+                        <h3 class="text-base font-extrabold text-white group-hover:text-cyan-400 transition-colors">Healthcare Tech Platform</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mt-1.5">Monitoring patient subscription retention, digital engagement frequency, and telehealth plan renewals.</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">Telehealth</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">Patient Journey</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">Engagement</span>
+                        </div>
+                        <button class="w-full py-2.5 px-4 rounded-xl bg-slate-900 group-hover:bg-gradient-to-r group-hover:from-cyan-500 group-hover:to-blue-600 border border-slate-700/80 group-hover:border-transparent text-slate-300 group-hover:text-white font-bold text-xs transition-all flex items-center justify-center space-x-2 shadow-sm">
+                            <span>Explore Details</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 7: Education -->
+            <div onclick="openOpportunityModal(6)" class="reveal-item delay-3 glass-card glass-card-interactive rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer border border-slate-800/80 hover:border-pink-500/50 transition-all duration-500">
+                <div class="relative h-44 w-full overflow-hidden bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" alt="Students Digital Education Learning" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out opacity-85 group-hover:opacity-100" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-950/80 backdrop-blur-md text-pink-400 border border-pink-500/30 flex items-center space-x-1 shadow-md">
+                        <i data-lucide="graduation-cap" class="w-3 h-3"></i> Education
+                    </span>
+                    <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-900/80 backdrop-blur-md flex items-center justify-center text-pink-400 border border-slate-700 animate-float">
+                        <i data-lucide="book-open" class="w-4 h-4"></i>
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="text-[11px] font-bold text-pink-400 uppercase tracking-wider mb-1">EdTech & Digital Learning</div>
+                        <h3 class="text-base font-extrabold text-white group-hover:text-pink-400 transition-colors">Digital Education Hub</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mt-1.5">Predicting student subscription dropoff and course completion velocity in online platforms.</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">EdTech</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">Cohort Retention</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">Course Metrics</span>
+                        </div>
+                        <button class="w-full py-2.5 px-4 rounded-xl bg-slate-900 group-hover:bg-gradient-to-r group-hover:from-pink-500 group-hover:to-rose-600 border border-slate-700/80 group-hover:border-transparent text-slate-300 group-hover:text-white font-bold text-xs transition-all flex items-center justify-center space-x-2 shadow-sm">
+                            <span>Explore Details</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 8: Startup -->
+            <div onclick="openOpportunityModal(7)" class="reveal-item delay-4 glass-card glass-card-interactive rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer border border-slate-800/80 hover:border-sky-400/50 transition-all duration-500">
+                <div class="relative h-44 w-full overflow-hidden bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Collaborative Startup Brainstorming Team" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out opacity-85 group-hover:opacity-100" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-950/80 backdrop-blur-md text-sky-400 border border-sky-500/30 flex items-center space-x-1 shadow-md">
+                        <i data-lucide="rocket" class="w-3 h-3"></i> Startup
+                    </span>
+                    <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-900/80 backdrop-blur-md flex items-center justify-center text-sky-400 border border-slate-700 animate-float-delayed">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="text-[11px] font-bold text-sky-400 uppercase tracking-wider mb-1">Scale-Up & Venture Growth</div>
+                        <h3 class="text-base font-extrabold text-white group-hover:text-sky-400 transition-colors">Startup Growth Team</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mt-1.5">Collaborative scale-up workflows leveraging automated REST APIs to prevent customer churn early.</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">Growth Hacking</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">REST API</span>
+                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-slate-900 text-slate-300 border border-slate-800">Win-Back Nudges</span>
+                        </div>
+                        <button class="w-full py-2.5 px-4 rounded-xl bg-slate-900 group-hover:bg-gradient-to-r group-hover:from-sky-500 group-hover:to-blue-600 border border-slate-700/80 group-hover:border-transparent text-slate-300 group-hover:text-white font-bold text-xs transition-all flex items-center justify-center space-x-2 shadow-sm">
+                            <span>Explore Details</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 3: INTERACTIVE RISK ASSESSOR ENGINE -->
+    <section id="assessor" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
+            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Interactive Diagnostic Engine</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Account Risk Assessment Portal</h2>
+            <p class="text-sm text-slate-400">Evaluate individual customer accounts or upload a CSV dataset for batch inference.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- LEFT: Assessment Form (6 Cols) -->
+            <div class="lg:col-span-6 space-y-6">
+                <div class="glass-card p-6 sm:p-8 rounded-2xl">
+
+                    <!-- Mode Selector: Single vs Bulk -->
+                    <div class="flex p-1 bg-slate-900 rounded-xl border border-slate-800 mb-6">
+                        <button onclick="switchMode('single')" id="mode-single-btn" class="flex-1 py-2 text-xs font-bold rounded-lg bg-sky-600 text-white transition-all flex items-center justify-center">
+                            <i data-lucide="user" class="w-3.5 h-3.5 mr-1.5"></i> Single Account Assessor
+                        </button>
+                        <button onclick="switchMode('bulk')" id="mode-bulk-btn" class="flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all flex items-center justify-center">
+                            <i data-lucide="upload-cloud" class="w-3.5 h-3.5 mr-1.5"></i> Bulk CSV Batch Upload
+                        </button>
+                    </div>
+
+                    <!-- SINGLE MODE FORM -->
+                    <form id="single-form" onsubmit="event.preventDefault(); submitAssessment();" class="space-y-5">
+                        
+                        <!-- Quick Presets -->
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Quick Test Scenarios</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button type="button" onclick="loadScenario('high')" class="px-3 py-2 text-xs font-semibold rounded-xl glass-card hover:bg-rose-500/20 hover:text-rose-300 hover:scale-105 transition-all text-slate-300 border border-slate-700">
+                                    🔴 Critical Risk
+                                </button>
+                                <button type="button" onclick="loadScenario('medium')" class="px-3 py-2 text-xs font-semibold rounded-xl glass-card hover:bg-amber-500/20 hover:text-amber-300 hover:scale-105 transition-all text-slate-300 border border-slate-700">
+                                    🟡 Moderate
+                                </button>
+                                <button type="button" onclick="loadScenario('loyal')" class="px-3 py-2 text-xs font-semibold rounded-xl glass-card hover:bg-emerald-500/20 hover:text-emerald-300 hover:scale-105 transition-all text-slate-300 border border-slate-700">
+                                    🟢 Low Risk
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Date / Month Contract Start Picker -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center">
+                                <i data-lucide="calendar" class="w-4 h-4 mr-1.5 text-sky-400"></i>
+                                Contract Start Month (Auto-Calculates Tenure)
+                            </label>
+                            <input type="month" id="contract-start" onchange="onDatePickerChange()" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-white text-xs focus:outline-none focus:border-sky-400 transition-colors">
+                        </div>
+
+                        <!-- Contract Term & Internet Tech -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Contract Duration</label>
+                                <select id="contract" onchange="submitAssessment()" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-white text-xs focus:outline-none focus:border-sky-400 transition-colors">
+                                    <option value="Month-to-month">Month-to-Month Flexible</option>
+                                    <option value="One year">1-Year Term Agreement</option>
+                                    <option value="Two year">2-Year Term Agreement</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Broadband Technology</label>
+                                <select id="internet" onchange="submitAssessment()" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-white text-xs focus:outline-none focus:border-sky-400 transition-colors">
+                                    <option value="Fiber optic">Fiber Optic ⚡</option>
+                                    <option value="DSL">DSL Broadband 🌐</option>
+                                    <option value="No">No Internet Service 🚫</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Tenure Slider -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span class="text-slate-300">Customer Tenure Duration</span>
+                                <span id="tenure-val" class="text-sky-400 font-bold">12 Months</span>
+                            </div>
+                            <input type="range" id="tenure" min="1" max="72" value="12" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-sky-400" oninput="updateCalculations()">
+                        </div>
+
+                        <!-- Monthly Bill Slider -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span class="text-slate-300">Monthly Subscription Fee</span>
+                                <span id="monthly-val" class="text-sky-400 font-bold">$75.00 / mo</span>
+                            </div>
+                            <input type="range" id="monthly" min="18" max="120" value="75" step="0.5" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-sky-400" oninput="updateCalculations()">
+                        </div>
+
+                        <!-- Total Spend -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span class="text-slate-300">Calculated Total Lifetime Spend</span>
+                                <span id="total-val" class="text-purple-400 font-bold">$900.00</span>
+                            </div>
+                            <input type="number" id="total" value="900" step="1" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-white text-xs focus:outline-none focus:border-sky-400 transition-colors">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="w-full py-3.5 px-4 bg-gradient-to-r from-sky-500 via-indigo-600 to-purple-600 hover:from-sky-400 hover:to-purple-500 text-white font-bold rounded-xl shadow-lg shadow-sky-500/20 transition-all flex items-center justify-center space-x-2 text-xs uppercase tracking-wider hover:scale-[1.02]">
+                            <i data-lucide="shield-check" class="w-4 h-4"></i>
+                            <span>Evaluate Churn Risk</span>
+                        </button>
+                    </form>
+
+                    <!-- BULK MODE FORM -->
+                    <form id="bulk-form" onsubmit="event.preventDefault(); submitBulkCSV();" class="space-y-5 hidden">
+                        <div class="p-6 border-2 border-dashed border-slate-700 hover:border-sky-500 rounded-2xl text-center space-y-3 transition-colors bg-slate-900/50">
+                            <i data-lucide="file-up" class="w-10 h-10 mx-auto text-sky-400 animate-bounce"></i>
+                            <div>
+                                <span class="text-xs font-bold text-white block">Upload Customer CSV Dataset</span>
+                                <span class="text-[11px] text-slate-400 block mt-1">Accepts CSV files containing tenure, MonthlyCharges, Contract, etc.</span>
+                            </div>
+                            <input type="file" id="bulk-csv-input" accept=".csv" class="block w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sky-500/20 file:text-sky-300 hover:file:bg-sky-500/30">
+                        </div>
+                        <button type="submit" class="w-full py-3.5 px-4 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center space-x-2 hover:scale-[1.02]">
+                            <i data-lucide="play" class="w-4 h-4"></i>
+                            <span>Process Bulk CSV Batch</span>
+                        </button>
+                        <div id="bulk-status-box" class="text-xs text-slate-300 p-3 rounded-xl bg-slate-900 border border-slate-800 hidden"></div>
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- RIGHT: ANIMATED RISK RESULT CARD (6 Cols) -->
+            <div class="lg:col-span-6 space-y-6">
+                
+                <div id="empty-state" class="glass-card p-8 rounded-2xl text-center py-20 space-y-4 animate-float">
+                    <div class="w-16 h-16 rounded-full bg-slate-900 text-slate-500 border border-slate-800 flex items-center justify-center mx-auto animate-pulse-ring">
+                        <i data-lucide="activity" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-white">Awaiting Input Diagnostics</h3>
+                    <p class="text-xs text-slate-400 max-w-sm mx-auto">Fill out the assessment parameters on the left or select a test scenario to generate a real-time risk diagnostic.</p>
+                </div>
+
+                <!-- ANIMATED RESULT CARD -->
+                <div id="result-card" class="glass-card p-6 sm:p-8 rounded-2xl space-y-6 hidden transition-all duration-700 transform translate-y-4">
+                    
+                    <!-- Header with Badge -->
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                        <div>
+                            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Risk Assessment Result</span>
+                            <h3 id="res-status-title" class="text-lg font-bold text-white mt-0.5">High Churn Risk Detected</h3>
+                        </div>
+                        <span id="res-badge" class="px-3.5 py-1.5 text-xs font-extrabold rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 animate-pulse">
+                            🔴 HIGH RISK
+                        </span>
+                    </div>
+
+                    <!-- Risk Meter & Annual Loss -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center bg-slate-900/80 p-5 rounded-xl border border-slate-800">
+                        <!-- Meter -->
+                        <div class="flex items-center space-x-4">
+                            <div class="relative w-24 h-24 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                    <path class="text-slate-800" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path id="res-circle" class="text-rose-500 transition-all duration-1000" stroke-dasharray="78, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                </svg>
+                                <div class="absolute text-center">
+                                    <span id="res-proba-pct" class="text-xl font-black text-white">78%</span>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-medium text-slate-400 block uppercase">Churn Probability</span>
+                                <span id="res-proba-label" class="text-xs font-bold text-rose-400 mt-0.5 block">High Probability</span>
+                            </div>
+                        </div>
+
+                        <!-- Financial Impact -->
+                        <div class="border-t sm:border-t-0 sm:border-l border-slate-800 pt-4 sm:pt-0 sm:pl-6 space-y-1">
+                            <span class="text-[11px] font-medium text-slate-400 block uppercase">Annual Revenue at Risk</span>
+                            <span id="res-annual-risk" class="text-2xl font-extrabold text-rose-400 block">$900.00 / yr</span>
+                            <span class="text-[10px] text-slate-500 block">Calculated from $75.00/mo fee</span>
+                        </div>
+                    </div>
+
+                    <!-- Input Parameters Summary -->
+                    <div class="space-y-2">
+                        <span class="text-xs font-bold text-slate-300 block">Evaluated Account Parameters:</span>
+                        <div id="res-params-summary" class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-slate-400 bg-slate-900/50 p-3 rounded-xl border border-slate-800/80">
+                            <div>Contract: <strong class="text-white">Month-to-month</strong></div>
+                            <div>Tenure: <strong class="text-white">12 Months</strong></div>
+                            <div>Broadband: <strong class="text-white">Fiber Optic</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- Actionable Recommendation -->
+                    <div class="p-4 rounded-xl bg-sky-500/10 border border-sky-500/20 text-xs space-y-1.5">
+                        <span class="font-bold text-sky-400 flex items-center">
+                            <i data-lucide="shield-alert" class="w-4 h-4 mr-1.5"></i> Prescriptive Retention Strategy:
+                        </span>
+                        <p id="res-strategy-text" class="text-slate-300 leading-relaxed">Offer a 25% discount on a 1-Year contract commitment immediately.</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 5: COHORT INTELLIGENCE & ANALYTICS -->
+    <section id="analytics" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
+            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Cohort Analytics</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Enterprise Retention & Cohort Intelligence</h2>
+            <p class="text-sm text-slate-400">Visualizing customer retention distributions and model feature importance drivers across monitored cohorts.</p>
+        </div>
+
+        <div class="glass-card p-6 sm:p-8 rounded-2xl space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Chart 1: Donut -->
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 glass-card-interactive">
+                    <h4 class="text-xs font-bold text-slate-300 mb-3 text-center">Overall Customer Retention Ratio</h4>
+                    <div class="h-48">
+                        <canvas id="churnDonutChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Tenure Cohort Bar -->
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 glass-card-interactive">
+                    <h4 class="text-xs font-bold text-slate-300 mb-3 text-center">Tenure Cohort Churn Rates (%)</h4>
+                    <div class="h-48">
+                        <canvas id="tenureBarChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 3: Feature Drivers -->
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 md:col-span-2 lg:col-span-1 glass-card-interactive">
+                    <h4 class="text-xs font-bold text-slate-300 mb-3 text-center">Gini Feature Importance Drivers</h4>
+                    <div class="h-48">
+                        <canvas id="importanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: LIVE CUSTOMER DIRECTORY -->
+    <section id="explorer" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
+            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Account Directory</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Active Customer Accounts & Risk Explorer</h2>
+            <p class="text-sm text-slate-400">Inspect customer accounts and simulate live risk diagnostics instantly.</p>
+        </div>
+
+        <div class="glass-card p-6 rounded-2xl">
+            <div class="overflow-x-auto rounded-xl border border-slate-800">
+                <table class="w-full text-xs text-left text-slate-300">
+                    <thead class="bg-slate-900 text-slate-400 uppercase text-[10px]">
+                        <tr>
+                            <th class="px-4 py-3">Customer Account</th>
+                            <th class="px-4 py-3">Contract</th>
+                            <th class="px-4 py-3">Tenure</th>
+                            <th class="px-4 py-3">Monthly Bill</th>
+                            <th class="px-4 py-3">Status</th>
+                            <th class="px-4 py-3 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="directory-table-body" class="divide-y divide-slate-800/80">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPANDED SECTOR DETAIL INTERACTIVE MODAL -->
+    <div id="opp-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-all duration-300 opacity-0 pointer-events-none">
+        <div id="opp-modal-box" class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 shadow-2xl shadow-sky-500/10 transform scale-95 transition-all duration-300">
+            
+            <!-- Modal Header -->
+            <div class="flex items-start justify-between pb-4 border-b border-slate-800">
+                <div class="flex items-center space-x-4">
+                    <div id="modal-icon-box" class="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center font-bold">
+                        <i data-lucide="layers" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <span id="modal-domain-badge" class="text-[11px] font-bold text-sky-400 uppercase tracking-wider block">Domain Overview</span>
+                        <h3 id="modal-title" class="text-xl font-extrabold text-white mt-0.5">Opportunity Sector Details</h3>
+                    </div>
+                </div>
+                <button onclick="closeOpportunityModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Image Banner -->
+            <div class="relative h-48 rounded-2xl overflow-hidden bg-slate-950 border border-slate-800">
+                <img id="modal-image" src="" alt="Sector Visual" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+            </div>
+
+            <!-- Metrics Strip -->
+            <div class="grid grid-cols-3 gap-3 bg-slate-950/60 p-4 rounded-xl border border-slate-800 text-center">
+                <div>
+                    <span class="text-[10px] text-slate-400 font-semibold uppercase block">Industry Benchmark</span>
+                    <span id="modal-metric-1" class="text-sm font-extrabold text-sky-400 block mt-0.5">14.2% Churn</span>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-400 font-semibold uppercase block">MRR Exposure</span>
+                    <span id="modal-metric-2" class="text-sm font-extrabold text-rose-400 block mt-0.5">$1.8M / Year</span>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-400 font-semibold uppercase block">Target Strategy</span>
+                    <span id="modal-metric-3" class="text-sm font-extrabold text-emerald-400 block mt-0.5">Proactive Nudges</span>
+                </div>
+            </div>
+
+            <!-- Detailed Body Description -->
+            <div class="space-y-2">
+                <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Sector Insights & Use Case</h4>
+                <p id="modal-desc" class="text-xs text-slate-400 leading-relaxed">Detailed analysis of how customer churn impacts revenue and how TelcoPulse AI solves it.</p>
+            </div>
+
+            <!-- Tailored Retention Strategy -->
+            <div class="p-4 rounded-xl bg-sky-500/10 border border-sky-500/20 text-xs space-y-1.5">
+                <span class="font-bold text-sky-400 flex items-center">
+                    <i data-lucide="zap" class="w-4 h-4 mr-1.5"></i> Prescriptive Strategy Blueprint:
+                </span>
+                <p id="modal-strategy" class="text-slate-300 leading-relaxed">Automate targeted retention discounts for accounts matching high-risk profiles.</p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center justify-end space-x-3 pt-2 border-t border-slate-800">
+                <button onclick="closeOpportunityModal()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition-colors">
+                    Close Window
+                </button>
+                <button id="modal-simulate-btn" onclick="applyModalPreset()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-xs transition-all shadow-md shadow-sky-500/20 flex items-center space-x-2 hover:scale-105">
+                    <i data-lucide="play" class="w-3.5 h-3.5"></i>
+                    <span>Simulate in Risk Assessor</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="glass-card border-t border-slate-800/80 px-6 py-6 text-center text-xs text-slate-500">
+        <p>TelcoPulse AI Enterprise Retention Platform &bull; Powered by Scikit-Learn, MLflow, FastAPI & Chart.js</p>
+    </footer>
+
+    <!-- App Scripts -->
+    <script>
+        lucide.createIcons();
+
+        // 1. IntersectionObserver for Sequential Scroll Reveals
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-revealed');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal-item').forEach(el => observer.observe(el));
+
+        // Set default month picker to current year-month
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        document.getElementById('contract-start').value = `${yyyy}-${mm}`;
+
+        function onDatePickerChange() {
+            const pickerVal = document.getElementById('contract-start').value;
+            if (!pickerVal) return;
+
+            const [startYear, startMonth] = pickerVal.split('-').map(Number);
+            const currYear = now.getFullYear();
+            const currMonth = now.getMonth() + 1;
+
+            let diffMonths = (currYear - startYear) * 12 + (currMonth - startMonth);
+            if (diffMonths < 1) diffMonths = 1;
+            if (diffMonths > 72) diffMonths = 72;
+
+            document.getElementById('tenure').value = diffMonths;
+            updateCalculations();
+            submitAssessment();
+        }
+
+        function updateCalculations() {
+            const tenure = document.getElementById('tenure').value;
+            const monthly = document.getElementById('monthly').value;
+
+            document.getElementById('tenure-val').innerText = `${tenure} Months`;
+            document.getElementById('monthly-val').innerText = `$${parseFloat(monthly).toFixed(2)} / mo`;
+
+            const autoTotal = (parseFloat(tenure) * parseFloat(monthly)).toFixed(2);
+            document.getElementById('total-val').innerText = `$${autoTotal}`;
+            document.getElementById('total').value = autoTotal;
+        }
+
+        function switchMode(mode) {
+            const singleForm = document.getElementById('single-form');
+            const bulkForm = document.getElementById('bulk-form');
+            const singleBtn = document.getElementById('mode-single-btn');
+            const bulkBtn = document.getElementById('mode-bulk-btn');
+
+            if (mode === 'single') {
+                singleForm.classList.remove('hidden');
+                bulkForm.classList.add('hidden');
+                singleBtn.className = 'flex-1 py-2 text-xs font-bold rounded-lg bg-sky-600 text-white transition-all flex items-center justify-center';
+                bulkBtn.className = 'flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all flex items-center justify-center';
+            } else {
+                singleForm.classList.add('hidden');
+                bulkForm.classList.remove('hidden');
+                bulkBtn.className = 'flex-1 py-2 text-xs font-bold rounded-lg bg-sky-600 text-white transition-all flex items-center justify-center';
+                singleBtn.className = 'flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all flex items-center justify-center';
+            }
+        }
+
+        function loadScenario(type) {
+            if (type === 'high') {
+                document.getElementById('contract').value = 'Month-to-month';
+                document.getElementById('internet').value = 'Fiber optic';
+                document.getElementById('tenure').value = 2;
+                document.getElementById('monthly').value = 98.5;
+            } else if (type === 'medium') {
+                document.getElementById('contract').value = 'One year';
+                document.getElementById('internet').value = 'DSL';
+                document.getElementById('tenure').value = 18;
+                document.getElementById('monthly').value = 65.0;
+            } else if (type === 'loyal') {
+                document.getElementById('contract').value = 'Two year';
+                document.getElementById('internet').value = 'Fiber optic';
+                document.getElementById('tenure').value = 60;
+                document.getElementById('monthly').value = 55.0;
+            }
+            updateCalculations();
+            submitAssessment();
+        }
+
+        async function submitAssessment() {
+            const contract = document.getElementById('contract').value;
+            const internet = document.getElementById('internet').value;
+            const tenure = parseInt(document.getElementById('tenure').value);
+            const monthly = parseFloat(document.getElementById('monthly').value);
+            const total = parseFloat(document.getElementById('total').value);
+
+            const emptyState = document.getElementById('empty-state');
+            const resultCard = document.getElementById('result-card');
+
+            try {
+                const res = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tenure, MonthlyCharges: monthly, TotalCharges: total, Contract: contract, InternetService: internet })
+                });
+
+                const data = await res.json();
+                const proba = Math.round(data.probability * 100);
+
+                emptyState.classList.add('hidden');
+                resultCard.classList.remove('hidden');
+
+                document.getElementById('res-proba-pct').innerText = `${proba}%`;
+                document.getElementById('res-annual-risk').innerText = `$${data.financial_impact_annual.toLocaleString()} / yr`;
+
+                const circle = document.getElementById('res-circle');
+                circle.setAttribute('stroke-dasharray', `${proba}, 100`);
+
+                const badge = document.getElementById('res-badge');
+                const title = document.getElementById('res-status-title');
+                const label = document.getElementById('res-proba-label');
+                const strategy = document.getElementById('res-strategy-text');
+
+                if (data.risk_level === 'HIGH' || proba >= 50) {
+                    badge.className = 'px-3.5 py-1.5 text-xs font-extrabold rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 animate-pulse';
+                    badge.innerText = '🔴 HIGH RISK';
+                    circle.setAttribute('class', 'text-rose-500 transition-all duration-1000');
+                    title.innerText = 'High Churn Risk Detected';
+                    label.innerText = 'Immediate Intervention Needed';
+                    label.className = 'text-xs font-bold text-rose-400 mt-0.5 block';
+                } else if (proba >= 30) {
+                    badge.className = 'px-3.5 py-1.5 text-xs font-extrabold rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40';
+                    badge.innerText = '🟡 MODERATE RISK';
+                    circle.setAttribute('class', 'text-amber-400 transition-all duration-1000');
+                    title.innerText = 'Moderate Churn Risk';
+                    label.innerText = 'Monitor Account Activity';
+                    label.className = 'text-xs font-bold text-amber-400 mt-0.5 block';
+                } else {
+                    badge.className = 'px-3.5 py-1.5 text-xs font-extrabold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                    badge.innerText = '🟢 LOW RISK';
+                    circle.setAttribute('class', 'text-emerald-400 transition-all duration-1000');
+                    title.innerText = 'Healthy Account Profile';
+                    label.innerText = 'Low Retention Risk';
+                    label.className = 'text-xs font-bold text-emerald-400 mt-0.5 block';
+                }
+
+                document.getElementById('res-params-summary').innerHTML = `
+                    <div>Contract: <strong class="text-white">${contract}</strong></div>
+                    <div>Tenure: <strong class="text-white">${tenure} Mos</strong></div>
+                    <div>Broadband: <strong class="text-white">${internet}</strong></div>
+                `;
+
+                strategy.innerText = data.retention_strategy || 'Maintain standard customer engagement.';
+
+            } catch (err) {
+                console.error("Assessment failed:", err);
+            }
+        }
+
+        async function submitBulkCSV() {
+            const input = document.getElementById('bulk-csv-input');
+            if (!input.files || input.files.length === 0) {
+                alert("Please select a CSV file first!");
+                return;
+            }
+            const formData = new FormData();
+            formData.append('file', input.files[0]);
+
+            const box = document.getElementById('bulk-status-box');
+            box.classList.remove('hidden');
+            box.innerText = "Processing CSV batch inference...";
+
+            try {
+                const res = await fetch('/predict/bulk', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    box.innerHTML = `<span class="text-emerald-400 font-bold">✓ Successfully processed ${data.total_records_processed} records.</span> Found <strong>${data.high_risk_count} High Risk accounts</strong> totaling <strong>$${data.total_annual_revenue_at_risk.toLocaleString()} annual revenue at risk</strong>.`;
+                }
+            } catch (err) {
+                box.innerText = "Failed to parse CSV.";
+            }
+        }
+
+        async function fetchStatsAndInitCharts() {
+            try {
+                const res = await fetch('/api/stats');
+                const data = await res.json();
+                if (data) {
+                    initCharts(data);
+                }
+            } catch (e) {
+                initCharts({
+                    retained_count: 5174,
+                    churn_count: 1869,
+                    feature_importances: { "Tenure": 0.42, "Total Spend": 0.35, "Contract": 0.23 }
+                });
+            }
+            renderDirectory();
+        }
+
+        function initCharts(stats) {
+            new Chart(document.getElementById('churnDonutChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Retained', 'Churned'],
+                    datasets: [{ data: [stats.retained_count || 5174, stats.churn_count || 1869], backgroundColor: ['#0284c7', '#f43f5e'], borderWidth: 0 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } } } }
+            });
+
+            new Chart(document.getElementById('tenureBarChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['0-12 Mos', '13-24 Mos', '25-48 Mos', '49+ Mos'],
+                    datasets: [{ data: [47.5, 29.4, 20.1, 8.9], backgroundColor: ['#f43f5e', '#fbbf24', '#38bdf8', '#34d399'], borderRadius: 6 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#17223b' } } } }
+            });
+
+            const imp = stats.feature_importances || { "Tenure": 0.42, "Total Spend": 0.35, "Contract": 0.23 };
+            new Chart(document.getElementById('importanceChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(imp),
+                    datasets: [{ data: Object.values(imp), backgroundColor: '#a855f7', borderRadius: 6 }]
+                },
+                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#17223b' } }, y: { ticks: { color: '#94a3b8' }, grid: { display: false } } } }
+            });
+        }
+
+        function renderDirectory() {
+            const sampleList = [
+                { name: 'Sarah Jenkins', id: '7590-WBKGD', contract: 'Month-to-month', tenure: 1, monthly: 29.85, status: 'No Churn' },
+                { name: 'Marcus Chen', id: '5575-GNVDE', contract: 'One year', tenure: 34, monthly: 56.95, status: 'No Churn' },
+                { name: 'Elena Rostova', id: '3668-QPYBK', contract: 'Month-to-month', tenure: 2, monthly: 53.85, status: 'Churned' },
+                { name: 'David Miller', id: '7795-CFOCW', contract: 'Two year', tenure: 45, monthly: 42.30, status: 'No Churn' },
+                { name: 'Priya Sharma', id: '9237-HQJKG', contract: 'Month-to-month', tenure: 2, monthly: 70.70, status: 'Churned' }
+            ];
+            const tbody = document.getElementById('directory-table-body');
+            tbody.innerHTML = sampleList.map(c => `
+                <tr class="hover:bg-slate-900/60 transition-all">
+                    <td class="px-4 py-3">
+                        <div class="font-bold text-white text-xs">${c.name}</div>
+                        <div class="font-mono text-[10px] text-slate-400">${c.id}</div>
+                    </td>
+                    <td class="px-4 py-3 text-slate-300">${c.contract}</td>
+                    <td class="px-4 py-3 font-semibold text-slate-200">${c.tenure} mos</td>
+                    <td class="px-4 py-3 font-mono text-sky-400">$${c.monthly.toFixed(2)}</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2.5 py-1 text-[10px] font-bold rounded-full ${c.status === 'Churned' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'}">
+                            ${c.status}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-right">
+                        <a href="#assessor" onclick="fillAssessor('${c.contract}', ${c.tenure}, ${c.monthly})" class="px-2.5 py-1 text-[10px] font-bold rounded-lg bg-sky-600/30 hover:bg-sky-500 text-sky-300 transition-all inline-block hover:scale-105">
+                            Simulate Risk
+                        </a>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // 7. Interactive Sector Opportunity Modal Logic
+        const opportunityData = [
+            {
+                title: "Enterprise Tech Workspace",
+                domain: "Technology & Cloud Platforms",
+                image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
+                m1: "14.2% Monthly Churn",
+                m2: "$1.8M MRR Exposure",
+                m3: "Automated Renewal",
+                desc: "High-growth SaaS and enterprise cloud infrastructure platforms rely on continuous telemetry to detect early signs of account cancellation. Key churn drivers include feature under-utilization, fiber optic connection friction, and unrenewed monthly contracts.",
+                strategy: "Deploy automated usage-based retention nudges, offering a 20% discount when transitioning high-tier cloud customers from flexible monthly terms to 1-Year agreements.",
+                preset: { contract: 'Month-to-month', internet: 'Fiber optic', tenure: 3, monthly: 99.0 }
+            },
+            {
+                title: "Neural AI Dashboard",
+                domain: "Artificial Intelligence & MLOps",
+                image: "https://images.unsplash.com/photo-1555255707-c07966088b7b?auto=format&fit=crop&w=800&q=80",
+                m1: "80.20% Precision",
+                m2: "Real-Time Scoring",
+                m3: "Drift Monitoring",
+                desc: "Enterprise AI pipelines continuously ingest high-dimensional customer account telemetry. RandomForest classifiers extract top Gini feature drivers to flag accounts exceeding 50% churn probability in real time.",
+                strategy: "Integrate FastAPI REST inference endpoints into operational customer success dashboards to trigger high-priority alerts for account managers.",
+                preset: { contract: 'Month-to-month', internet: 'Fiber optic', tenure: 2, monthly: 95.0 }
+            },
+            {
+                title: "Analytics & Cohorts",
+                domain: "Data Science & Business Intelligence",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
+                m1: "7,043 Records",
+                m2: "26.54% Baseline Churn",
+                m3: "Gini Feature Ranking",
+                desc: "Cohort breakdown across 7,043 customer records reveals that tenure duration under 12 months paired with month-to-month contracts accounts for over 47.5% of total customer churn.",
+                strategy: "Target short-tenure customer cohorts with personalized loyalty onboarding milestones within their first 90 days.",
+                preset: { contract: 'Month-to-month', internet: 'DSL', tenure: 6, monthly: 68.0 }
+            },
+            {
+                title: "Developer Workspace",
+                domain: "Full-Stack UX Engineering",
+                image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
+                m1: "< 100ms Latency",
+                m2: "Async Single Page",
+                m3: "Batch CSV Upload",
+                desc: "Modern web applications require zero-friction diagnostic tools. TelcoPulse provides interactive contract date pickers, real-time risk gauges, and bulk CSV batch processing for multi-account inference.",
+                strategy: "Empower account management teams with single-click risk simulations and instant annual financial loss estimates.",
+                preset: { contract: 'One year', internet: 'Fiber optic', tenure: 14, monthly: 85.0 }
+            },
+            {
+                title: "Financial Risk Model",
+                domain: "FinTech & Revenue Protection",
+                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+                m1: "$1.45M Loss at Risk",
+                m2: "$900/yr Avg Exposure",
+                m3: "High-Margin Protection",
+                desc: "Financial analytics translate abstract churn probabilities into hard annual revenue at risk ($/yr). Preventing churn on top-tier accounts directly preserves cash flow and recurring ARR margins.",
+                strategy: "Prioritize intervention campaigns based on annualized revenue exposure rather than raw churn probability alone.",
+                preset: { contract: 'Month-to-month', internet: 'Fiber optic', tenure: 4, monthly: 105.0 }
+            },
+            {
+                title: "Healthcare Tech Platform",
+                domain: "MedTech & Patient Retention",
+                image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80",
+                m1: "18.6% Patient Dropoff",
+                m2: "Telehealth Subscriptions",
+                m3: "HIPAA Compliant",
+                desc: "Digital health platforms track patient engagement frequency and recurring telehealth subscription retention to prevent care continuity gaps.",
+                strategy: "Deploy automated proactive check-ins and personalized wellness reminders when patient portal activity drops below baseline thresholds.",
+                preset: { contract: 'One year', internet: 'DSL', tenure: 22, monthly: 55.0 }
+            },
+            {
+                title: "Digital Education Hub",
+                domain: "EdTech & Student Success",
+                image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
+                m1: "31.2% Course Dropoff",
+                m2: "Learning Velocity",
+                m3: "Cohort Retention",
+                desc: "Online educational platforms analyze student module completion rates and learning velocity to flag accounts likely to cancel subscription plans.",
+                strategy: "Offer 1-on-1 mentor support or course extension passes when student learning engagement slows during midterm modules.",
+                preset: { contract: 'Month-to-month', internet: 'DSL', tenure: 5, monthly: 45.0 }
+            },
+            {
+                title: "Startup Growth Team",
+                domain: "Startup & Scale-Up Acceleration",
+                image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
+                m1: "2x Retention Rate",
+                m2: "API Native",
+                m3: "Zero-Friction Scale",
+                desc: "High-growth ventures need lightweight, scalable churn prediction microservices that integrate seamlessly into existing product workflows.",
+                strategy: "Embed TelcoPulse REST endpoints into automated CRM workflows to trigger win-back email sequences upon high risk detection.",
+                preset: { contract: 'Two year', internet: 'Fiber optic', tenure: 48, monthly: 70.0 }
+            }
+        ];
+
+        let activeModalPreset = null;
+
+        function openOpportunityModal(idx) {
+            const data = opportunityData[idx];
+            if (!data) return;
+
+            activeModalPreset = data.preset;
+
+            document.getElementById('modal-title').innerText = data.title;
+            document.getElementById('modal-domain-badge').innerText = data.domain;
+            document.getElementById('modal-image').src = data.image;
+            document.getElementById('modal-metric-1').innerText = data.m1;
+            document.getElementById('modal-metric-2').innerText = data.m2;
+            document.getElementById('modal-metric-3').innerText = data.m3;
+            document.getElementById('modal-desc').innerText = data.desc;
+            document.getElementById('modal-strategy').innerText = data.strategy;
+
+            const modal = document.getElementById('opp-modal');
+            const box = document.getElementById('opp-modal-box');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-95');
+            box.classList.add('scale-100');
+
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons();
+        }
+
+        function closeOpportunityModal() {
+            const modal = document.getElementById('opp-modal');
+            const box = document.getElementById('opp-modal-box');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+
+            document.body.style.overflow = '';
+        }
+
+        function applyModalPreset() {
+            if (activeModalPreset) {
+                document.getElementById('contract').value = activeModalPreset.contract;
+                document.getElementById('internet').value = activeModalPreset.internet;
+                document.getElementById('tenure').value = activeModalPreset.tenure;
+                document.getElementById('monthly').value = activeModalPreset.monthly;
+                updateCalculations();
+                submitAssessment();
+            }
+            closeOpportunityModal();
+            const assessor = document.getElementById('assessor');
+            if (assessor) {
+                assessor.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        document.getElementById('opp-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'opp-modal') {
+                closeOpportunityModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeOpportunityModal();
+            }
+        });
+
+        window.onload = () => {
+            updateCalculations();
+            fetchStatsAndInitCharts();
+        };
+    </script>
+</body>
+</html>
