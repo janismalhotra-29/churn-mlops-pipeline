@@ -164,6 +164,31 @@ curl -X POST "http://localhost:8000/predict" \
 
 ---
 
+### 3. Customer Risk Segments (`GET /api/risk-segments`)
+
+```bash
+curl -X GET "http://localhost:8000/api/risk-segments"
+```
+
+**Response:**
+```json
+{
+  "period": "Current prediction batch",
+  "segments": {
+    "High Risk": 382,
+    "Medium Risk": 1245,
+    "Low Risk": 5416
+  },
+  "distribution_percentages": {
+    "High Risk": 5.4,
+    "Medium Risk": 17.7,
+    "Low Risk": 76.9
+  }
+}
+```
+
+---
+
 ## 🐳 Docker Deployment
 
 ### 1. Build Container Image

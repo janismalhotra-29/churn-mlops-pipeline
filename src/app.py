@@ -25,6 +25,15 @@ def get_model():
         model = joblib.load(MODEL_PATH)
     return model
 
+def get_customer_risk(probability: float) -> str:
+    """Classify customer risk based on churn probability."""
+    if probability >= 0.70:
+        return "High"
+    elif probability >= 0.40:
+        return "Medium"
+    else:
+        return "Low"
+
 class CustomerData(BaseModel):
     tenure: int = Field(..., ge=0, description="Customer tenure in months", json_schema_extra={"example": 12})
     MonthlyCharges: float = Field(..., ge=0.0, description="Monthly charges amount", json_schema_extra={"example": 65.5})
@@ -90,6 +99,71 @@ def get_dataset_stats():
         }
     }
 
+@app.get("/api/risk-segments")
+def get_risk_segments():
+    """Return customer risk segmentation based on model churn probability."""
+    try:
+        clf = get_model()
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"Model unavailable: {str(exc)}")
+        
+    data_path = os.path.join(BASE_DIR, "data", "raw_churn_data.csv")
+    if not os.path.exists(data_path):
+        raise HTTPException(status_code=404, detail="Dataset not found")
+        
+    try:
+        df = pd.read_csv(data_path)
+        
+        for col in ["tenure", "MonthlyCharges"]:
+            if col not in df.columns:
+                raise HTTPException(status_code=422, detail=f"CSV missing required column: '{col}'")
+
+        if "TotalCharges" not in df.columns:
+            df["TotalCharges"] = df["tenure"] * df["MonthlyCharges"]
+        else:
+            df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce").fillna(df["tenure"] * df["MonthlyCharges"])
+
+        contract_map = {"Month-to-month": 0, "One year": 1, "Two year": 2}
+        df["Contract_Code"] = df.get("Contract", pd.Series([0]*len(df))).map(contract_map).fillna(0).astype(int)
+
+        internet_map = {"No": 0, "DSL": 1, "Fiber optic": 2}
+        df["InternetService_Code"] = df.get("InternetService", pd.Series([2]*len(df))).map(internet_map).fillna(2).astype(int)
+
+        feature_cols = ["tenure", "MonthlyCharges", "TotalCharges", "Contract_Code", "InternetService_Code"]
+        expected_n_features = getattr(clf, "n_features_in_", 3)
+        if expected_n_features == 3:
+            feature_cols = ["tenure", "MonthlyCharges", "TotalCharges"]
+            
+        X_batch = df[feature_cols]
+        predictions = clf.predict(X_batch)
+        probabilities = clf.predict_proba(X_batch)
+        
+        churn_probs = [float(p[1]) if len(p) > 1 else float(pred) for p, pred in zip(probabilities, predictions)]
+        
+        df["Risk_Level"] = [get_customer_risk(prob) for prob in churn_probs]
+        
+        high_risk = int((df["Risk_Level"] == "High").sum())
+        medium_risk = int((df["Risk_Level"] == "Medium").sum())
+        low_risk = int((df["Risk_Level"] == "Low").sum())
+        total = len(df)
+        
+        return {
+            "period": "Current prediction batch",
+            "segments": {
+                "High Risk": high_risk,
+                "Medium Risk": medium_risk,
+                "Low Risk": low_risk
+            },
+            "distribution_percentages": {
+                "High Risk": round((high_risk / total) * 100, 1) if total > 0 else 0,
+                "Medium Risk": round((medium_risk / total) * 100, 1) if total > 0 else 0,
+                "Low Risk": round((low_risk / total) * 100, 1) if total > 0 else 0
+            }
+        }
+        
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Processing error: {str(exc)}")
+
 @app.get("/favicon.ico", include_in_schema=False)
 def favicon():
     """Silence browser favicon requests."""
@@ -135,14 +209,12 @@ def predict_churn(customer: CustomerData):
         probabilities = clf.predict_proba(input_df)[0]
         churn_proba = float(probabilities[1]) if len(probabilities) > 1 else float(prediction_val)
 
-        if churn_proba >= 0.60:
-            risk_level = "HIGH"
+        risk_level = get_customer_risk(churn_proba).upper()
+        if risk_level == "HIGH":
             strategy = "Offer 25% discount on 1-Year contract commitment immediately."
-        elif churn_proba >= 0.35:
-            risk_level = "MEDIUM"
+        elif risk_level == "MEDIUM":
             strategy = "Send retention email offering complimentary streaming bundle add-on."
         else:
-            risk_level = "LOW"
             strategy = "Standard retention engagement. Candidate for cross-selling."
 
         annual_impact = round(customer.MonthlyCharges * 12.0, 2)
@@ -230,7 +302,7 @@ def predict_bulk_csv(file: UploadFile = File(...)):
 
         df["Churn_Prediction"] = predictions
         df["Churn_Probability"] = [round(float(p[1]), 4) if len(p) > 1 else float(pred) for p, pred in zip(probabilities, predictions)]
-        df["Risk_Level"] = ["HIGH" if prob >= 0.50 else ("MEDIUM" if prob >= 0.30 else "LOW") for prob in df["Churn_Probability"]]
+        df["Risk_Level"] = [get_customer_risk(prob).upper() for prob in df["Churn_Probability"]]
         df["Annual_Revenue_Risk"] = (df["MonthlyCharges"] * 12.0).round(2)
 
         def get_strategy(risk):

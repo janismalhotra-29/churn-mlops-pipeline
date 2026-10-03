@@ -1055,6 +1055,40 @@
         </div>
     </section>
 
+    <!-- SECTION 5.8: CUSTOMER RISK SEGMENTS -->
+    <section id="risk-segments" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
+            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Risk Analytics</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Customer Risk Segments</h2>
+            <p class="text-sm text-slate-400">Current batch churn probability distributions across High, Medium, and Low risk segments.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="glass-card p-6 rounded-2xl flex items-center justify-center">
+                <div class="w-full h-64">
+                    <canvas id="riskSegmentsChart"></canvas>
+                </div>
+            </div>
+            <div class="glass-card p-6 rounded-2xl flex flex-col justify-center">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="bg-slate-900 text-slate-400 uppercase text-xs">
+                        <tr>
+                            <th class="px-4 py-3 rounded-tl-lg">Segment</th>
+                            <th class="px-4 py-3 text-right">Threshold</th>
+                            <th class="px-4 py-3 text-right">Count</th>
+                            <th class="px-4 py-3 text-right rounded-tr-lg">% of Total</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/80" id="risk-segments-body">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+                <div class="mt-4 text-xs text-slate-400 text-center font-semibold" id="risk-segments-period">
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- SECTION 6: LIVE CUSTOMER DIRECTORY -->
     <section id="explorer" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
@@ -2003,13 +2037,76 @@
             });
         }
 
-        window.onload = () => {
-            updateCalculations();
-            calculateROI();
-            fetchStatsAndInitCharts();
-            init3DParticleNetwork();
-            init3DTiltCards();
-        };
+       window.onload = () => {
+    updateCalculations();
+    calculateROI();
+    fetchStatsAndInitCharts();
+    init3DParticleNetwork();
+    init3DTiltCards();
+    fetchRiskSegments();
+};
+        
+        async function fetchRiskSegments() {
+            try {
+                const res = await fetch('/api/risk-segments');
+                const data = await res.json();
+                
+                const high = data.segments["High Risk"];
+                const medium = data.segments["Medium Risk"];
+                const low = data.segments["Low Risk"];
+                
+                const highPct = data.distribution_percentages["High Risk"];
+                const mediumPct = data.distribution_percentages["Medium Risk"];
+                const lowPct = data.distribution_percentages["Low Risk"];
+                
+                document.getElementById('risk-segments-period').innerText = `Period: ${data.period}`;
+                
+                document.getElementById('risk-segments-body').innerHTML = `
+                    <tr class="hover:bg-slate-800/50 transition-colors">
+                        <td class="px-4 py-3 font-bold text-rose-400">High Risk</td>
+                        <td class="px-4 py-3 text-right font-mono text-xs">>= 0.70</td>
+                        <td class="px-4 py-3 text-right text-white font-semibold">${high}</td>
+                        <td class="px-4 py-3 text-right font-mono text-xs">${highPct}%</td>
+                    </tr>
+                    <tr class="hover:bg-slate-800/50 transition-colors">
+                        <td class="px-4 py-3 font-bold text-amber-400">Medium Risk</td>
+                        <td class="px-4 py-3 text-right font-mono text-xs">0.40 - 0.69</td>
+                        <td class="px-4 py-3 text-right text-white font-semibold">${medium}</td>
+                        <td class="px-4 py-3 text-right font-mono text-xs">${mediumPct}%</td>
+                    </tr>
+                    <tr class="hover:bg-slate-800/50 transition-colors">
+                        <td class="px-4 py-3 font-bold text-emerald-400">Low Risk</td>
+                        <td class="px-4 py-3 text-right font-mono text-xs">&lt; 0.40</td>
+                        <td class="px-4 py-3 text-right text-white font-semibold">${low}</td>
+                        <td class="px-4 py-3 text-right font-mono text-xs">${lowPct}%</td>
+                    </tr>
+                `;
+                
+                new Chart(document.getElementById('riskSegmentsChart').getContext('2d'), {
+                    type: 'pie',
+                    data: {
+                        labels: ['High Risk', 'Medium Risk', 'Low Risk'],
+                        datasets: [{
+                            data: [high, medium, low],
+                            backgroundColor: ['#f43f5e', '#fbbf24', '#34d399'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: '#94a3b8', font: { size: 12 } }
+                            }
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error("Failed to load risk segments:", err);
+            }
+        }
     </script>
 </body>
 </html>
