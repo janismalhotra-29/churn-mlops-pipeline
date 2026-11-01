@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="h-full bg-slate-950">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TelcoPulse - AI Customer Retention & Churn Intelligence Engine</title>
+    <title>TelcoPulse AI - Enterprise Customer Retention & MLOps Platform</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Three.js 3D WebGL Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Plus Jakarta Sans Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -21,143 +20,73 @@
                 extend: {
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
                         slate: {
-                            950: '#0b0f19',
-                            900: '#111726',
-                            850: '#172033',
-                            800: '#1e293b',
-                            750: '#334155',
+                            950: '#070b14',
+                            900: '#0c1220',
+                            850: '#11182c',
+                            800: '#1b243b',
+                            750: '#263352',
                         }
                     }
                 }
             }
         }
     </script>
+
     <style>
         body {
-            background-color: #0b0f19;
+            background-color: #070b14;
             color: #f1f5f9;
         }
 
-        /* 1. Continuous Flowing Marquee Animation */
-        @keyframes marquee-scroll {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-            display: flex;
-            width: 200%;
-            animation: marquee-scroll 32s linear infinite;
-        }
-        .animate-marquee:hover {
-            animation-play-state: paused;
-        }
-
-        /* 2. Tasteful Subtle Floating Motion */
-        @keyframes float-subtle {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-4px); }
-        }
-        .animate-float-subtle {
-            animation: float-subtle 6s ease-in-out infinite;
-        }
-        .animate-float-subtle-delayed {
-            animation: float-subtle 7s ease-in-out 3.5s infinite;
-        }
-
-        /* 3. Dynamic Multi-Directional Scroll Reveal Transitions */
-        .reveal-item, .reveal-left, .reveal-right, .reveal-scale {
-            opacity: 0;
-            will-change: opacity, transform;
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .reveal-item {
-            transform: translateY(32px);
-        }
-        .reveal-left {
-            transform: translateX(-40px);
-        }
-        .reveal-right {
-            transform: translateX(40px);
-        }
-        .reveal-scale {
-            transform: scale(0.92);
-        }
-
-        .reveal-item.is-revealed, .reveal-left.is-revealed, .reveal-right.is-revealed {
-            opacity: 1;
-            transform: translateY(0) translateX(0);
-        }
-        .reveal-scale.is-revealed {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* Top Reading Scroll Progress Bar */
-        #scroll-progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #38bdf8, #818cf8, #34d399);
-            z-index: 100;
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-
-        /* Expanding Section Accent Line */
-        .accent-line {
-            width: 0rem;
-            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .is-revealed .accent-line {
-            width: 5rem;
-        }
-
-        .delay-1 { transition-delay: 0.08s; }
-        .delay-2 { transition-delay: 0.16s; }
-        .delay-3 { transition-delay: 0.24s; }
-        .delay-4 { transition-delay: 0.32s; }
-        .delay-5 { transition-delay: 0.40s; }
-
-        /* 4. Sleek Glass Panels with Subtle 3D Physics Tilt */
+        /* Glassmorphism card surfaces */
         .glass-card {
-            background: rgba(17, 23, 38, 0.82);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
-            transform-style: preserve-3d;
+            background: rgba(12, 18, 32, 0.85);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
         }
         .glass-card:hover {
-            border-color: rgba(56, 189, 248, 0.4);
-            box-shadow: 0 15px 35px -10px rgba(14, 165, 233, 0.18);
+            border-color: rgba(56, 189, 248, 0.35);
+            box-shadow: 0 12px 30px -10px rgba(14, 165, 233, 0.15);
         }
 
-        .nav-link {
-            position: relative;
-            color: #94a3b8;
-            transition: color 0.2s ease;
+        /* Sidebar active navigation link */
+        .sidebar-link {
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .nav-link:hover {
-            color: #f8fafc;
-        }
-        .nav-link.active-nav {
+        .sidebar-link.active {
+            background: linear-gradient(90deg, rgba(14, 165, 233, 0.18) 0%, rgba(14, 165, 233, 0.04) 100%);
             color: #38bdf8;
             font-weight: 700;
-        }
-        .nav-link.active-nav::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: #38bdf8;
-            border-radius: 2px;
+            border-left: 3px solid #38bdf8;
         }
 
+        /* Smooth page transition */
+        .page-view {
+            display: none;
+            opacity: 0;
+            animation: fadeInPage 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .page-view.active-page {
+            display: block;
+        }
+
+        @keyframes fadeInPage {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom range sliders */
         input[type="range"]::-webkit-slider-thumb {
             appearance: none;
             height: 16px;
@@ -165,61 +94,148 @@
             border-radius: 50%;
             background: #38bdf8;
             cursor: pointer;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+        }
+
+        /* Subtle scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070b14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1b243b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
         }
     </style>
 </head>
-<body class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-sky-500 selection:text-white overflow-x-hidden relative">
+<body class="h-full flex overflow-hidden font-sans text-slate-100 antialiased selection:bg-sky-500 selection:text-white">
 
-    <!-- Top Reading Scroll Progress Indicator Bar -->
-    <div id="scroll-progress-bar"></div>
+    <!-- ========================================================================= -->
+    <!-- 1. PROFESSIONAL SIDEBAR NAVIGATION (FIXED ON DESKTOP, COLLAPSIBLE ON MOBILE) -->
+    <!-- ========================================================================= -->
+    <aside id="sidebar" class="w-64 flex-shrink-0 bg-slate-900 border-r border-slate-800/80 flex flex-col justify-between z-40 transition-transform duration-300 md:translate-x-0 -translate-x-full fixed md:static inset-y-0 left-0">
+        <!-- Top: Brand Logo & Navigation -->
+        <div class="flex flex-col flex-1 overflow-y-auto">
+            <!-- Brand Logo Header -->
+            <div class="h-16 flex items-center justify-between px-5 border-b border-slate-800/80 bg-slate-950/60">
+                <a href="javascript:void(0)" onclick="navigateToPage('overview')" class="flex items-center space-x-3 group">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-sky-500/25 group-hover:scale-105 transition-transform">
+                        <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <span class="text-sm font-extrabold tracking-tight text-white block">TelcoPulse AI</span>
+                        <span class="text-[10px] font-semibold text-slate-400 block -mt-0.5">Enterprise MLOps</span>
+                    </div>
+                </a>
+                <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
 
-    <!-- 3D WebGL Background Canvas -->
-    <canvas id="webgl-3d-particles" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
-
-    <!-- CONTINUOUS FLOWING MARQUEE TICKER BAR -->
-    <div class="bg-slate-950 border-b border-slate-800/80 overflow-hidden py-1.5 text-[11px] font-semibold text-slate-400 z-10 relative">
-        <div class="animate-marquee whitespace-nowrap space-x-12">
-            <span class="inline-flex items-center"><span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span> SYSTEM LIVE: 7,043 Active Subscriber Streams Monitored</span>
-            <span class="inline-flex items-center"><span class="text-sky-400 mr-1.5">⚡</span> AI RISK ENGINE: Real-Time Churn Scoring Active</span>
-            <span class="inline-flex items-center"><span class="text-purple-400 mr-1.5">🛡</span> REVENUE PROTECTED: $1.45M Annual Loss Exposure Prevented</span>
-            <span class="inline-flex items-center"><span class="text-amber-400 mr-1.5">📊</span> COHORT ANALYTICS: Real-Time Gini Feature Driver Ranking</span>
-            <!-- Duplicated for Infinite Seamless Loop -->
-            <span class="inline-flex items-center"><span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span> SYSTEM LIVE: 7,043 Active Subscriber Streams Monitored</span>
-            <span class="inline-flex items-center"><span class="text-sky-400 mr-1.5">⚡</span> AI RISK ENGINE: Real-Time Churn Scoring Active</span>
-            <span class="inline-flex items-center"><span class="text-purple-400 mr-1.5">🛡</span> REVENUE PROTECTED: $1.45M Annual Loss Exposure Prevented</span>
-            <span class="inline-flex items-center"><span class="text-amber-400 mr-1.5">📊</span> COHORT ANALYTICS: Real-Time Gini Feature Driver Ranking</span>
-        </div>
-    </div>
-
-    <!-- Sticky Navigation Header -->
-    <header class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80 px-6 py-3.5">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <!-- Brand Logo -->
-            <a href="#" class="flex items-center space-x-3 group">
-                <div class="w-9 h-9 rounded-xl bg-sky-600 flex items-center justify-center text-white shadow-md shadow-sky-600/20 group-hover:scale-105 transition-transform">
-                    <i data-lucide="shield-alert" class="w-5 h-5"></i>
-                </div>
+            <!-- Navigation Links Section -->
+            <div class="p-3 space-y-6">
+                <!-- Group 1: Core Dashboard Pages -->
                 <div>
-                    <span class="text-base font-extrabold tracking-tight text-white block">TelcoPulse AI</span>
-                    <span class="text-[10px] font-semibold text-slate-400 block -mt-0.5">Enterprise Retention Engine</span>
+                    <span class="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 block mb-2">Core Platform</span>
+                    <nav class="space-y-1">
+                        <button onclick="navigateToPage('overview')" id="nav-overview" class="sidebar-link active w-full flex items-center px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60">
+                            <i data-lucide="layout-dashboard" class="w-4 h-4 mr-3 text-sky-400"></i>
+                            <span>Overview Dashboard</span>
+                        </button>
+                        <button onclick="navigateToPage('prediction')" id="nav-prediction" class="sidebar-link w-full flex items-center px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60">
+                            <i data-lucide="crosshair" class="w-4 h-4 mr-3 text-emerald-400"></i>
+                            <span>Churn Prediction</span>
+                        </button>
+                        <button onclick="navigateToPage('analytics')" id="nav-analytics" class="sidebar-link w-full flex items-center px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60">
+                            <i data-lucide="bar-chart-3" class="w-4 h-4 mr-3 text-indigo-400"></i>
+                            <span>Analytics & Graphs</span>
+                        </button>
+                        <button onclick="navigateToPage('model-performance')" id="nav-model-performance" class="sidebar-link w-full flex items-center px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60">
+                            <i data-lucide="trophy" class="w-4 h-4 mr-3 text-amber-400"></i>
+                            <span>Model Performance</span>
+                        </button>
+                        <button onclick="navigateToPage('dataset')" id="nav-dataset" class="sidebar-link w-full flex items-center px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60">
+                            <i data-lucide="database" class="w-4 h-4 mr-3 text-cyan-400"></i>
+                            <span>Customer Dataset</span>
+                        </button>
+                        <button onclick="navigateToPage('monitoring')" id="nav-monitoring" class="sidebar-link w-full flex items-center px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60">
+                            <i data-lucide="activity" class="w-4 h-4 mr-3 text-rose-400"></i>
+                            <span>MLOps Monitoring</span>
+                        </button>
+                    </nav>
                 </div>
-            </a>
 
-            <!-- Navigation Links -->
-            <nav class="hidden md:flex items-center space-x-7 text-xs font-semibold">
-                <a href="#overview" class="nav-link">Overview</a>
-                <a href="#opportunities" class="nav-link">Sectors</a>
-                <a href="#assessor" class="nav-link">Predictor</a>
-                <a href="#cohorts" class="nav-link">Analytics</a>
-                <a href="#risk-segments" class="nav-link">Risk Segments</a>
-                <a href="#roi" class="nav-link">ROI Calculator</a>
-                <a href="#governance" class="nav-link text-sky-400 font-bold flex items-center"><i data-lucide="cpu" class="w-3.5 h-3.5 mr-1 text-sky-400"></i> MLOps & Research</a>
-            </nav>
+                <!-- Group 2: External Developer Shortcuts -->
+                <div>
+                    <span class="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 block mb-2">Developer Tools</span>
+                    <nav class="space-y-1">
+                        <a href="/docs" target="_blank" class="w-full flex items-center px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition-colors">
+                            <i data-lucide="code" class="w-4 h-4 mr-3 text-slate-400"></i>
+                            <span>REST API OpenAPI Docs</span>
+                            <i data-lucide="arrow-up-right" class="w-3 h-3 ml-auto text-slate-400"></i>
+                        </a>
+                        <a href="http://127.0.0.1:5000" target="_blank" class="w-full flex items-center px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition-colors">
+                            <i data-lucide="git-branch" class="w-4 h-4 mr-3 text-slate-400"></i>
+                            <span>MLflow Experiment UI</span>
+                            <i data-lucide="arrow-up-right" class="w-3 h-3 ml-auto text-slate-400"></i>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
 
-            <!-- Header Controls: Currency Switcher & API Docs -->
+        <!-- Bottom: Live Production Model Status Card -->
+        <div class="p-3 border-t border-slate-800/80 bg-slate-950/60">
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-2 text-xs">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] text-slate-400 font-medium">Model Status</span>
+                    <span class="flex items-center text-[10px] font-bold text-emerald-400">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span> Production
+                    </span>
+                </div>
+                <div class="text-[11px] font-mono text-white flex justify-between">
+                    <span>Champion:</span>
+                    <span class="text-sky-400 font-bold">Random Forest</span>
+                </div>
+                <div class="text-[10px] font-mono text-slate-400 flex justify-between">
+                    <span>Recall Cutoff:</span>
+                    <span class="text-amber-400 font-bold">0.23 (Tuned)</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Overlay backdrop for mobile menu -->
+    <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-30 hidden md:hidden"></div>
+
+    <!-- ========================================================================= -->
+    <!-- 2. MAIN APPLICATION CONTENT WRAPPER -->
+    <!-- ========================================================================= -->
+    <div class="flex-1 flex flex-col h-full overflow-hidden bg-slate-950">
+        <!-- Top Sticky Header Bar -->
+        <header class="h-16 flex-shrink-0 bg-slate-900/90 backdrop-blur-md border-b border-slate-800/80 px-6 flex items-center justify-between z-20">
+            <!-- Left: Mobile Menu Toggle & Dynamic Breadcrumb -->
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-white p-1 rounded-lg bg-slate-800">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+                <div class="flex items-center space-x-2 text-xs">
+                    <span class="text-slate-400">TelcoPulse</span>
+                    <span class="text-slate-500">/</span>
+                    <span id="breadcrumb-title" class="font-bold text-white">Overview Dashboard</span>
+                </div>
+            </div>
+
+            <!-- Right: Currency Switcher & API Shortcut -->
             <div class="flex items-center space-x-3 text-xs">
                 <!-- Currency Toggle Switcher -->
-                <div class="flex items-center p-1 rounded-xl bg-slate-900 border border-slate-800 text-[11px] font-bold">
+                <div class="flex items-center p-1 rounded-xl bg-slate-950 border border-slate-800 text-[11px] font-bold">
                     <button id="curr-usd-btn" onclick="setCurrency('USD')" class="px-2.5 py-1 rounded-lg bg-sky-600 text-white font-extrabold shadow-sm transition-all hover:scale-[1.02]">
                         $ USD ($)
                     </button>
@@ -228,1032 +244,812 @@
                     </button>
                 </div>
 
-                <a href="/docs" target="_blank" class="hidden sm:flex px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold transition-all shadow-md shadow-sky-600/20 items-center hover:scale-[1.02]">
-                    <i data-lucide="code" class="w-3.5 h-3.5 mr-1.5"></i> REST API Docs
+                <!-- API Docs Button -->
+                <a href="/docs" target="_blank" class="hidden sm:flex px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold transition-all items-center space-x-1.5 text-xs">
+                    <i data-lucide="file-code" class="w-3.5 h-3.5 text-sky-400"></i>
+                    <span>OpenAPI Docs</span>
                 </a>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <!-- SECTION 1: HERO LANDING SECTION -->
-    <section id="hero" class="scroll-mt-28 relative pt-16 pb-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full z-10">
-        <div class="text-center max-w-3xl mx-auto space-y-5">
-            <!-- Badge -->
-            <div class="reveal-item animate-float-subtle inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-slate-900/90 border border-slate-800 text-slate-300 text-xs font-semibold backdrop-blur-md">
-                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-sky-400"></i>
-                <span>Predictive Retention Intelligence &bull; 80.2% Accuracy</span>
-            </div>
+        <!-- Main Scrollable Views Container -->
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-8">
 
-            <!-- Main Headline -->
-            <h1 class="reveal-item delay-1 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white">
-                Predict & Prevent Customer Churn <span class="text-sky-400">Before It Happens.</span>
-            </h1>
-
-            <!-- Subtitle -->
-            <p class="reveal-item delay-2 text-base sm:text-lg text-slate-400 font-normal leading-relaxed max-w-2xl mx-auto">
-                Analyze subscriber telemetry in real-time, diagnose account churn risks, quantify financial exposure, and execute automated retention workflows.
-            </p>
-
-            <!-- CTA Buttons -->
-            <div class="reveal-item delay-3 flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-                <a href="#assessor" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-sm shadow-md shadow-sky-600/20 transition-all flex items-center justify-center space-x-2 hover:scale-[1.02]">
-                    <i data-lucide="zap" class="w-4 h-4"></i>
-                    <span>Launch Risk Assessor</span>
-                </a>
-                <a href="#cohorts" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 font-semibold text-sm transition-all flex items-center justify-center space-x-2 border border-slate-800 hover:scale-[1.02]">
-                    <i data-lucide="pie-chart" class="w-4 h-4 text-sky-400"></i>
-                    <span>Explore Cohort Intelligence</span>
-                </a>
-            </div>
-        </div>
-
-        <!-- Dynamic Animated Metric Stat Strip -->
-        <div class="reveal-item delay-4 grid grid-cols-2 md:grid-cols-4 gap-4 mt-14" id="stats-counter-strip">
-            <div class="glass-card p-4 rounded-xl text-center border border-slate-800 animate-float-subtle">
-                <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Monitored Accounts</span>
-                <span class="text-xl font-bold text-white mt-1 block counter-val" data-target="7043" data-suffix=" Accounts">0 Accounts</span>
-            </div>
-            <div class="glass-card p-4 rounded-xl text-center border border-slate-800 animate-float-subtle-delayed">
-                <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Baseline Churn Rate</span>
-                <span class="text-xl font-bold text-rose-400 mt-1 block counter-val" data-target="26.54" data-suffix="%" data-decimal="true">0.00%</span>
-            </div>
-            <div class="glass-card p-4 rounded-xl text-center border border-slate-800 animate-float-subtle">
-                <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Mean Tenure</span>
-                <span class="text-xl font-bold text-indigo-400 mt-1 block counter-val" data-target="32.4" data-suffix=" Months" data-decimal="true">0.0 Months</span>
-            </div>
-            <div class="glass-card p-4 rounded-xl text-center border border-slate-800 animate-float-subtle-delayed">
-                <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Model Precision</span>
-                <span class="text-xl font-bold text-emerald-400 mt-1 block counter-val" data-target="80.20" data-suffix="%" data-decimal="true">0.00%</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 2: HOW IT WORKS -->
-    <section id="overview" class="scroll-mt-28 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full border-t border-slate-800/60 z-10 relative">
-        <div class="reveal-item text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">System Workflow</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Three Steps to Revenue Protection</h2>
-            <div class="accent-line h-1 bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full mx-auto my-2"></div>
-            <p class="text-sm text-slate-400">How TelcoPulse processes customer account telemetry into prescriptive retention strategies.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Step 1 -->
-            <div class="reveal-left delay-1 glass-card p-6 rounded-2xl space-y-3">
-                <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20 flex items-center justify-center font-bold text-sm">
-                    01
-                </div>
-                <h3 class="text-base font-bold text-white">Input Account Telemetry</h3>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    Select contract term, broadband technology, tenure duration, and monthly rate for single accounts or upload batch CSV/Excel datasets.
-                </p>
-            </div>
-
-            <!-- Step 2 -->
-            <div class="reveal-scale delay-2 glass-card p-6 rounded-2xl space-y-3">
-                <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center font-bold text-sm">
-                    02
-                </div>
-                <h3 class="text-base font-bold text-white">RandomForest AI Inference</h3>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    Our ML engine analyzes non-linear feature interactions against 7,043 historical customer profiles to calculate exact churn probability.
-                </p>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="reveal-right delay-3 glass-card p-6 rounded-2xl space-y-3">
-                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center font-bold text-sm">
-                    03
-                </div>
-                <h3 class="text-base font-bold text-white">Prescriptive Action Plan</h3>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    Instantly receive risk status (LOW, MEDIUM, HIGH), annualized revenue loss exposure, and tailored customer retention offers.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 3: SECTOR OPPORTUNITIES (De-congested 3-Column Grid + 3D Physics Hover) -->
-    <section id="opportunities" class="scroll-mt-28 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full border-t border-slate-800/60 z-10 relative">
-        <div class="reveal-item text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Enterprise Domains</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Sector Churn Benchmarks & Opportunities</h2>
-            <div class="accent-line h-1 bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full mx-auto my-2"></div>
-            <p class="text-sm text-slate-400">Industry applications where TelcoPulse predictive intelligence reduces account churn.</p>
-        </div>
-
-        <!-- 8 Cards Grid (Spacious 3-Column Layout with 3D Tilt physics) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            <!-- Card 1: Technology -->
-            <div onclick="openOpportunityModal(0)" class="reveal-item delay-1 glass-card rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer border border-slate-800 hover:border-sky-500/50 transition-all">
-                <div class="relative h-28 w-full overflow-hidden bg-slate-900">
-                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Tech Workspace" class="w-full h-full object-cover opacity-75 group-hover:scale-105 group-hover:opacity-90 transition-all duration-300">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-                    <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-950/80 text-sky-400 border border-sky-500/30">
-                        Technology
-                    </span>
-                </div>
-                <div class="p-4.5 flex-1 flex flex-col justify-between space-y-3">
-                    <div>
-                        <span class="text-[10px] font-bold text-sky-400 uppercase tracking-wider block">Cloud & SaaS</span>
-                        <h3 class="text-sm font-bold text-white group-hover:text-sky-400 transition-colors">Enterprise Tech Workspace</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed mt-1 line-clamp-2">Tracking cloud subscription telemetry, API usage, and churn signals.</p>
+            <!-- ========================================================================= -->
+            <!-- PAGE 1: OVERVIEW DASHBOARD -->
+            <!-- ========================================================================= -->
+            <div id="page-overview" class="page-view active-page space-y-8">
+                <!-- Welcome Banner -->
+                <div class="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-850 to-slate-900 border border-slate-800/80 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <div class="space-y-2 max-w-2xl">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                            <i data-lucide="sparkles" class="w-3 h-3 mr-1 text-sky-400"></i> Enterprise Retention Hub
+                        </span>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Executive Retention & Churn Intelligence</h1>
+                        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                            Continuous monitoring across 7,043 customer accounts. Machine learning models calibrated with recall-tuned thresholding and game-theoretic SHAP explainability.
+                        </p>
                     </div>
-                    <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
-                        <span class="px-1.5 py-0.5 text-[10px] font-medium rounded bg-slate-900 text-slate-400 border border-slate-800">SaaS Telemetry</span>
-                        <span class="font-bold text-sky-400 flex items-center group-hover:translate-x-1 transition-transform">Details <i data-lucide="chevron-right" class="w-3.5 h-3.5 ml-0.5"></i></span>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="navigateToPage('prediction')" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-xs shadow-lg shadow-sky-500/20 flex items-center space-x-2 transition-all">
+                            <i data-lucide="play" class="w-4 h-4"></i>
+                            <span>Run Churn Diagnostic</span>
+                        </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Card 2: AI / ML -->
-            <div onclick="openOpportunityModal(1)" class="reveal-item delay-2 glass-card rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer border border-slate-800 hover:border-indigo-500/50 transition-all">
-                <div class="relative h-28 w-full overflow-hidden bg-slate-900">
-                    <img src="https://images.unsplash.com/photo-1555255707-c07966088b7b?auto=format&fit=crop&w=800&q=80" alt="Neural AI" class="w-full h-full object-cover opacity-75 group-hover:scale-105 group-hover:opacity-90 transition-all duration-300">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-                    <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-950/80 text-indigo-400 border border-indigo-500/30">
-                        AI & ML
-                    </span>
-                </div>
-                <div class="p-4.5 flex-1 flex flex-col justify-between space-y-3">
-                    <div>
-                        <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider block">Inference Engines</span>
-                        <h3 class="text-sm font-bold text-white group-hover:text-indigo-400 transition-colors">Neural AI Dashboard</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed mt-1 line-clamp-2">Real-time model inference engines, feature importance, and drift detection.</p>
-                    </div>
-                    <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
-                        <span class="px-1.5 py-0.5 text-[10px] font-medium rounded bg-slate-900 text-slate-400 border border-slate-800">MLflow Models</span>
-                        <span class="font-bold text-indigo-400 flex items-center group-hover:translate-x-1 transition-transform">Details <i data-lucide="chevron-right" class="w-3.5 h-3.5 ml-0.5"></i></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3: Data Science -->
-            <div onclick="openOpportunityModal(2)" class="reveal-item delay-3 glass-card rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer border border-slate-800 hover:border-purple-500/50 transition-all">
-                <div class="relative h-28 w-full overflow-hidden bg-slate-900">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Data Analytics" class="w-full h-full object-cover opacity-75 group-hover:scale-105 group-hover:opacity-90 transition-all duration-300">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-                    <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-950/80 text-purple-400 border border-purple-500/30">
-                        Data Science
-                    </span>
-                </div>
-                <div class="p-4.5 flex-1 flex flex-col justify-between space-y-3">
-                    <div>
-                        <span class="text-[10px] font-bold text-purple-400 uppercase tracking-wider block">Cohort Drivers</span>
-                        <h3 class="text-sm font-bold text-white group-hover:text-purple-400 transition-colors">Analytics & Cohorts</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed mt-1 line-clamp-2">Deep statistical breakdown analyzing tenure duration and contract drivers.</p>
-                    </div>
-                    <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
-                        <span class="px-1.5 py-0.5 text-[10px] font-medium rounded bg-slate-900 text-slate-400 border border-slate-800">Statistical Gini</span>
-                        <span class="font-bold text-purple-400 flex items-center group-hover:translate-x-1 transition-transform">Details <i data-lucide="chevron-right" class="w-3.5 h-3.5 ml-0.5"></i></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 4: Web Development -->
-            <div onclick="openOpportunityModal(3)" class="reveal-item delay-1 glass-card rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer border border-slate-800 hover:border-emerald-500/50 transition-all">
-                <div class="relative h-28 w-full overflow-hidden bg-slate-900">
-                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80" alt="Developer Workspace" class="w-full h-full object-cover opacity-75 group-hover:scale-105 group-hover:opacity-90 transition-all duration-300">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-                    <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-950/80 text-emerald-400 border border-emerald-500/30">
-                        Web Engineering
-                    </span>
-                </div>
-                <div class="p-4.5 flex-1 flex flex-col justify-between space-y-3">
-                    <div>
-                        <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">Full-Stack SPA</span>
-                        <h3 class="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">Developer Workspace</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed mt-1 line-clamp-2">Interactive SPA with instant tenure sliders and batch CSV diagnostic uploads.</p>
-                    </div>
-                    <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
-                        <span class="px-1.5 py-0.5 text-[10px] font-medium rounded bg-slate-900 text-slate-400 border border-slate-800">FastAPI & Tailwind</span>
-                        <span class="font-bold text-emerald-400 flex items-center group-hover:translate-x-1 transition-transform">Details <i data-lucide="chevron-right" class="w-3.5 h-3.5 ml-0.5"></i></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 5: Finance -->
-            <div onclick="openOpportunityModal(4)" class="reveal-item delay-2 glass-card rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer border border-slate-800 hover:border-amber-500/50 transition-all">
-                <div class="relative h-28 w-full overflow-hidden bg-slate-900">
-                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="Finance Analytics" class="w-full h-full object-cover opacity-75 group-hover:scale-105 group-hover:opacity-90 transition-all duration-300">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-                    <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-950/80 text-amber-400 border border-amber-500/30">
-                        Finance & MRR
-                    </span>
-                </div>
-                <div class="p-4.5 flex-1 flex flex-col justify-between space-y-3">
-                    <div>
-                        <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block">Revenue Protection</span>
-                        <h3 class="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">Financial Risk Model</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed mt-1 line-clamp-2">Quantifying exact annualized revenue loss exposure ($/yr) for maximum ROI.</p>
-                    </div>
-                    <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
-                        <span class="px-1.5 py-0.5 text-[10px] font-medium rounded bg-slate-900 text-slate-400 border border-slate-800">ARR Loss Exposure</span>
-                        <span class="font-bold text-amber-400 flex items-center group-hover:translate-x-1 transition-transform">Details <i data-lucide="chevron-right" class="w-3.5 h-3.5 ml-0.5"></i></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 6: Healthcare -->
-            <div onclick="openOpportunityModal(5)" class="reveal-item delay-3 glass-card rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer border border-slate-800 hover:border-cyan-500/50 transition-all">
-                <div class="relative h-28 w-full overflow-hidden bg-slate-900">
-                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80" alt="Healthcare Tech" class="w-full h-full object-cover opacity-75 group-hover:scale-105 group-hover:opacity-90 transition-all duration-300">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-                    <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-950/80 text-cyan-400 border border-cyan-500/30">
-                        Healthcare
-                    </span>
-                </div>
-                <div class="p-4.5 flex-1 flex flex-col justify-between space-y-3">
-                    <div>
-                        <span class="text-[10px] font-bold text-cyan-400 uppercase tracking-wider block">Telehealth Plans</span>
-                        <h3 class="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">Healthcare Tech Platform</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed mt-1 line-clamp-2">Monitoring patient subscription retention and telehealth plan renewals.</p>
-                    </div>
-                    <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
-                        <span class="px-1.5 py-0.5 text-[10px] font-medium rounded bg-slate-900 text-slate-400 border border-slate-800">Patient Retention</span>
-                        <span class="font-bold text-cyan-400 flex items-center group-hover:translate-x-1 transition-transform">Details <i data-lucide="chevron-right" class="w-3.5 h-3.5 ml-0.5"></i></span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- SECTION 4: INTERACTIVE DIAGNOSTIC & RISK ASSESSOR PORTAL -->
-    <section id="assessor" class="scroll-mt-28 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full border-t border-slate-800/60 z-10 relative">
-        <div class="reveal-item text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Diagnostic Portal</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Account Risk Assessment Engine</h2>
-            <div class="accent-line h-1 bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full mx-auto my-2"></div>
-            <p class="text-sm text-slate-400">Evaluate individual subscriber accounts or upload batch CSV/Excel datasets.</p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-            <!-- Tab 1: Single Account Diagnostic Form (Left Side) -->
-            <div class="reveal-left delay-1 lg:col-span-6 glass-card p-6 rounded-2xl space-y-5">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                    <h3 class="text-base font-bold text-white flex items-center">
-                        <i data-lucide="user-check" class="w-4 h-4 text-sky-400 mr-2"></i> Single Account Diagnostic
-                    </h3>
-                    <span class="text-[11px] font-semibold text-slate-400 bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800">FastAPI Model</span>
-                </div>
-
-                <form id="prediction-form" onsubmit="predictSingleCustomer(event)" class="space-y-4 text-xs">
-                    <!-- Contract Type & Start Date -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-slate-400 font-medium mb-1">Contract Type</label>
-                            <select id="contract" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-500">
-                                <option value="Month-to-month">Month-to-month</option>
-                                <option value="One year">One year</option>
-                                <option value="Two year">Two year</option>
-                            </select>
+                <!-- 4 Top KPI Summary Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div class="glass-card p-5 rounded-2xl space-y-2">
+                        <div class="flex items-center justify-between text-slate-400 text-xs">
+                            <span class="font-medium">Monitored Subscribers</span>
+                            <i data-lucide="users" class="w-4 h-4 text-sky-400"></i>
                         </div>
-                        <div>
-                            <label class="block text-slate-400 font-medium mb-1">Contract Start Date</label>
-                            <input type="month" id="contract-start" onchange="onDatePickerChange()" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-500">
+                        <div class="text-2xl sm:text-3xl font-extrabold text-white font-mono">7,043</div>
+                        <div class="flex items-center text-[11px] text-emerald-400 font-medium">
+                            <i data-lucide="trending-up" class="w-3.5 h-3.5 mr-1"></i> Active Telco Dataset
                         </div>
                     </div>
 
-                    <!-- Tenure Slider -->
-                    <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <label class="text-slate-400 font-medium">Customer Tenure (Months)</label>
-                            <span id="tenure-val" class="font-bold text-sky-400 font-mono">12 Months</span>
+                    <div class="glass-card p-5 rounded-2xl space-y-2">
+                        <div class="flex items-center justify-between text-slate-400 text-xs">
+                            <span class="font-medium">Baseline Churn Rate</span>
+                            <i data-lucide="user-x" class="w-4 h-4 text-rose-400"></i>
                         </div>
-                        <input type="range" id="tenure" min="0" max="72" value="12" oninput="updateCalculations()" class="w-full accent-sky-500 h-1.5 bg-slate-900 rounded-lg">
-                    </div>
-
-                    <!-- Monthly Charges Slider -->
-                    <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <label class="text-slate-400 font-medium">Monthly Bill Charge</label>
-                            <span id="charges-val" class="font-bold text-sky-400 font-mono">$70.00 / mo</span>
-                        </div>
-                        <input type="range" id="charges" min="18" max="120" step="1" value="70" oninput="updateCalculations()" class="w-full accent-sky-500 h-1.5 bg-slate-900 rounded-lg">
-                    </div>
-
-                    <!-- Internet & Security Services -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-slate-400 font-medium mb-1">Internet Tech</label>
-                            <select id="internet" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-500">
-                                <option value="Fiber optic">Fiber optic</option>
-                                <option value="DSL">DSL</option>
-                                <option value="No">No Internet</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-slate-400 font-medium mb-1">Tech Support Add-on</label>
-                            <select id="tech-support" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-500">
-                                <option value="No">No Support</option>
-                                <option value="Yes">Yes Active</option>
-                            </select>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-rose-400 font-mono">26.54%</div>
+                        <div class="flex items-center text-[11px] text-slate-400 font-medium">
+                            <span>1,869 accounts at churn risk</span>
                         </div>
                     </div>
 
-                    <button type="submit" class="w-full py-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs transition-all shadow-md shadow-sky-600/20 flex items-center justify-center space-x-2 hover:scale-[1.01]">
-                        <i data-lucide="cpu" class="w-4 h-4"></i>
-                        <span>Run Model Diagnostic</span>
-                    </button>
-                </form>
-
-                <!-- Single Prediction Result Box -->
-                <div id="single-result" class="hidden p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3.5">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-400">Risk Diagnostic Outcome</span>
-                        <div class="flex items-center space-x-2">
-                            <span id="decision-threshold-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700">Tuned Cutoff: 0.23</span>
-                            <span id="risk-badge" class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase"></span>
+                    <div class="glass-card p-5 rounded-2xl space-y-2">
+                        <div class="flex items-center justify-between text-slate-400 text-xs">
+                            <span class="font-medium">Annual Revenue at Risk</span>
+                            <i data-lucide="dollar-sign" class="w-4 h-4 text-amber-400"></i>
+                        </div>
+                        <div id="overview-risk-rev" class="text-2xl sm:text-3xl font-extrabold text-white font-mono">$1,452,180</div>
+                        <div class="flex items-center text-[11px] text-amber-400 font-medium">
+                            <span>High loss exposure cohort</span>
                         </div>
                     </div>
 
-                    <!-- 3-Col Key Metrics -->
-                    <div class="grid grid-cols-3 gap-2.5 text-center">
-                        <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
-                            <span class="text-[10px] text-slate-400 font-medium block">Churn Probability</span>
-                            <span id="risk-prob" class="text-base sm:text-lg font-bold text-white mt-0.5 block"></span>
+                    <div class="glass-card p-5 rounded-2xl space-y-2">
+                        <div class="flex items-center justify-between text-slate-400 text-xs">
+                            <span class="font-medium">Preserved Revenue (ROI)</span>
+                            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
                         </div>
-                        <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
-                            <span class="text-[10px] text-slate-400 font-medium block">Customer CLV</span>
-                            <span id="risk-clv" class="text-base sm:text-lg font-bold text-sky-400 mt-0.5 block">$0.00</span>
+                        <div id="overview-roi-saved" class="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-mono">+$38,740</div>
+                        <div class="flex items-center text-[11px] text-emerald-400 font-medium">
+                            <span>+44.2% ROI via 0.23 Cutoff</span>
                         </div>
-                        <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
-                            <span class="text-[10px] text-slate-400 font-medium block">Annual Exposure</span>
-                            <span id="risk-annual" class="text-base sm:text-lg font-bold text-rose-400 mt-0.5 block"></span>
+                    </div>
+                </div>
+
+                <!-- 2-Column Analytics Overview Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Left: Risk Segmentation Donut Chart -->
+                    <div class="lg:col-span-5 glass-card p-6 rounded-2xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="pie-chart" class="w-4 h-4 text-sky-400"></i>
+                                <h3 class="text-sm font-bold text-white">Customer Risk Segments</h3>
+                            </div>
+                            <span class="text-[10px] font-mono text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">Live Breakdown</span>
+                        </div>
+                        <div class="relative h-60">
+                            <canvas id="overviewRiskChart"></canvas>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800/80 text-center text-xs">
+                            <div class="p-2 rounded-xl bg-slate-950 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block">High Risk</span>
+                                <span id="overview-high-pct" class="font-bold text-rose-400 font-mono">26.5%</span>
+                            </div>
+                            <div class="p-2 rounded-xl bg-slate-950 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block">Medium Risk</span>
+                                <span id="overview-med-pct" class="font-bold text-amber-400 font-mono">18.2%</span>
+                            </div>
+                            <div class="p-2 rounded-xl bg-slate-950 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block">Low Risk</span>
+                                <span id="overview-low-pct" class="font-bold text-emerald-400 font-mono">55.3%</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Explainable AI (SHAP Drivers) -->
-                    <div id="shap-container" class="p-3 rounded-lg bg-slate-950/80 border border-slate-800/80 space-y-2 text-xs">
-                        <div class="flex items-center justify-between">
-                            <span class="font-bold text-slate-300 flex items-center">
-                                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400 mr-1.5"></i> Explainable AI (SHAP Drivers)
-                            </span>
-                            <span class="text-[10px] text-slate-500 font-mono">Game-Theoretic XAI</span>
+                    <!-- Right: Contract Duration & Churn Probability Bar Chart -->
+                    <div class="lg:col-span-7 glass-card p-6 rounded-2xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-400"></i>
+                                <h3 class="text-sm font-bold text-white">Churn Propensity by Contract Type</h3>
+                            </div>
+                            <span class="text-[10px] font-mono text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">Historical Distribution</span>
                         </div>
-                        <div id="shap-drivers-list" class="space-y-1.5 text-[11px]">
-                            <!-- Dynamically injected SHAP factors -->
+                        <div class="relative h-60">
+                            <canvas id="overviewContractChart"></canvas>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800/80 text-xs text-slate-400 flex items-center justify-between">
+                            <span>Month-to-month contracts exhibit <strong>42.7%</strong> churn propensity vs <strong>2.8%</strong> for 2-Year contracts.</span>
+                            <button onclick="navigateToPage('analytics')" class="text-sky-400 hover:underline font-bold text-xs flex items-center ml-2">
+                                Deep Dive <i data-lucide="arrow-right" class="w-3.5 h-3.5 ml-1"></i>
+                            </button>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Prescriptive Retention Recommendation -->
-                    <div class="p-3 rounded-lg bg-sky-950/30 border border-sky-800/40 text-xs space-y-1.5">
-                        <div class="flex items-center justify-between">
-                            <span class="font-bold text-sky-300 flex items-center">
-                                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-sky-400 mr-1.5"></i> Prescriptive Retention Plan
-                            </span>
-                            <span id="prescriptive-urgency" class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30 uppercase">Immediate</span>
+                <!-- Quick Navigation Action Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div onclick="navigateToPage('prediction')" class="glass-card p-5 rounded-2xl cursor-pointer hover:border-sky-500/50 space-y-2 group">
+                        <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 group-hover:scale-105 transition-transform">
+                            <i data-lucide="crosshair" class="w-5 h-5"></i>
                         </div>
-                        <p id="risk-strategy" class="text-slate-300 text-[11px] leading-relaxed"></p>
-                        <div id="prescriptive-meta" class="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-sky-900/50">
-                            <span id="prescriptive-channel">Channel: Outbound Priority Call</span>
-                            <span id="prescriptive-roi" class="font-bold text-emerald-400">Expected ROI: +$0.00</span>
+                        <h4 class="text-sm font-bold text-white group-hover:text-sky-400 transition-colors">Instant Subscriber Diagnosis</h4>
+                        <p class="text-xs text-slate-400">Score individual customer profiles or upload batch CSV files for automatic risk sorting and SHAP drivers.</p>
+                    </div>
+
+                    <div onclick="navigateToPage('model-performance')" class="glass-card p-5 rounded-2xl cursor-pointer hover:border-sky-500/50 space-y-2 group">
+                        <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20 group-hover:scale-105 transition-transform">
+                            <i data-lucide="trophy" class="w-5 h-5"></i>
                         </div>
+                        <h4 class="text-sm font-bold text-white group-hover:text-sky-400 transition-colors">Multi-Model Tournament</h4>
+                        <p class="text-xs text-slate-400">Compare Logistic Regression, Random Forest, LightGBM, and XGBoost metrics logged in MLflow registry.</p>
+                    </div>
+
+                    <div onclick="navigateToPage('monitoring')" class="glass-card p-5 rounded-2xl cursor-pointer hover:border-sky-500/50 space-y-2 group">
+                        <div class="w-9 h-9 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center border border-rose-500/20 group-hover:scale-105 transition-transform">
+                            <i data-lucide="activity" class="w-5 h-5"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-white group-hover:text-sky-400 transition-colors">Statistical Drift & Retraining</h4>
+                        <p class="text-xs text-slate-400">Track real-time Kolmogorov-Smirnov test and PSI alerts to trigger automated retraining pipelines.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Tab 2: Bulk CSV/Excel Classification Upload (Right Side) -->
-            <div class="reveal-right delay-2 lg:col-span-6 glass-card p-6 rounded-2xl space-y-5 flex flex-col justify-between">
-                <div class="space-y-4">
+            <!-- ========================================================================= -->
+            <!-- PAGE 2: CUSTOMER CHURN PREDICTION -->
+            <!-- ========================================================================= -->
+            <div id="page-prediction" class="page-view space-y-8">
+                <!-- Page Header Banner -->
+                <div class="space-y-1">
+                    <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest block">Inference Engine</span>
+                    <h2 class="text-2xl font-extrabold text-white">Customer Churn Prediction & Explainability</h2>
+                    <p class="text-xs text-slate-400">Run individual subscriber assessments with game-theoretic SHAP explainability or classify bulk dataset cohorts.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Left Column: Single Customer Diagnostic Form -->
+                    <div class="lg:col-span-6 glass-card p-6 rounded-2xl space-y-5">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <h3 class="text-sm font-bold text-white flex items-center">
+                                <i data-lucide="user-check" class="w-4 h-4 text-sky-400 mr-2"></i> Single Subscriber Profile
+                            </h3>
+                            <span class="text-[10px] font-mono text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">Real-Time Scoring</span>
+                        </div>
+
+                        <form id="single-predict-form" onsubmit="predictSingleCustomer(event)" class="space-y-4 text-xs">
+                            <!-- Contract Type Dropdown -->
+                            <div>
+                                <label class="text-slate-400 font-medium block mb-1">Contract Duration</label>
+                                <select id="contract" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white font-medium focus:outline-none focus:border-sky-500">
+                                    <option value="Month-to-month">Month-to-month (High Flexibility / High Churn)</option>
+                                    <option value="One year">One year Fixed Commitment</option>
+                                    <option value="Two year">Two year Long-Term Commitment</option>
+                                </select>
+                            </div>
+
+                            <!-- Tenure Months Slider -->
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="text-slate-400 font-medium">Customer Tenure</label>
+                                    <span id="tenure-val" class="font-bold text-sky-400 font-mono">12 Months</span>
+                                </div>
+                                <input type="range" id="tenure" min="1" max="72" value="12" oninput="updateCalculations()" class="w-full accent-sky-500 h-1.5 bg-slate-950 rounded-lg">
+                            </div>
+
+                            <!-- Monthly Charges Slider -->
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="text-slate-400 font-medium">Monthly Bill Amount</label>
+                                    <span id="charges-val" class="font-bold text-sky-400 font-mono">$65.00 / mo</span>
+                                </div>
+                                <input type="range" id="charges" min="18" max="120" step="0.5" value="65" oninput="updateCalculations()" class="w-full accent-sky-500 h-1.5 bg-slate-950 rounded-lg">
+                            </div>
+
+                            <!-- Internet Service Dropdown -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="text-slate-400 font-medium block mb-1">Internet Tech</label>
+                                    <select id="internet" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-medium focus:outline-none focus:border-sky-500">
+                                        <option value="Fiber optic">Fiber optic</option>
+                                        <option value="DSL">DSL Broadband</option>
+                                        <option value="No">No Internet</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-slate-400 font-medium block mb-1">Tech Support Add-on</label>
+                                    <select id="tech-support" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-medium focus:outline-none focus:border-sky-500">
+                                        <option value="No">No Tech Support</option>
+                                        <option value="Yes">Yes (Dedicated)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Contract Start Date Picker -->
+                            <div>
+                                <label class="text-slate-400 font-medium block mb-1">Contract Start Date</label>
+                                <input type="month" id="contract-start" onchange="onDatePickerChange()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-white font-medium focus:outline-none focus:border-sky-500">
+                            </div>
+
+                            <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold shadow-lg shadow-sky-500/20 flex items-center justify-center space-x-2 transition-all">
+                                <i data-lucide="zap" class="w-4 h-4"></i>
+                                <span>Run Risk Diagnostic</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Right Column: Rich Diagnostic Result Box with SHAP & Prescriptive Actions -->
+                    <div class="lg:col-span-6 glass-card p-6 rounded-2xl flex flex-col justify-between space-y-4">
+                        <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-white flex items-center">
+                                <i data-lucide="activity" class="w-4 h-4 text-emerald-400 mr-2"></i> Real-Time Risk Diagnostic
+                            </h3>
+                            <span id="diagnostic-status-pill" class="text-[10px] font-mono text-slate-500">Awaiting Input</span>
+                        </div>
+
+                        <!-- Result Container (Visible upon calculation) -->
+                        <div id="single-result" class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-slate-400">Risk Assessment Outcome</span>
+                                <div class="flex items-center space-x-2">
+                                    <span id="decision-threshold-badge" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-950 text-slate-400 border border-slate-800">Cutoff: 0.23</span>
+                                    <span id="risk-badge" class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase bg-rose-500/20 text-rose-400 border border-rose-500/30">HIGH RISK</span>
+                                </div>
+                            </div>
+
+                            <!-- 3 Key Metric Tiles -->
+                            <div class="grid grid-cols-3 gap-2.5 text-center">
+                                <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 block font-medium">Churn Probability</span>
+                                    <span id="risk-prob" class="text-lg font-extrabold text-white font-mono mt-0.5 block">82.4%</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 block font-medium">Customer CLV</span>
+                                    <span id="risk-clv" class="text-lg font-extrabold text-sky-400 font-mono mt-0.5 block">$194.44</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 block font-medium">Annual Exposure</span>
+                                    <span id="risk-annual" class="text-lg font-extrabold text-rose-400 font-mono mt-0.5 block">$1,020.00</span>
+                                </div>
+                            </div>
+
+                            <!-- Explainable AI (SHAP Drivers) -->
+                            <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold text-slate-300 flex items-center">
+                                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400 mr-1.5"></i> Explainable AI (SHAP Drivers)
+                                    </span>
+                                    <span class="text-[10px] text-slate-500 font-mono">Game-Theoretic XAI</span>
+                                </div>
+                                <div id="shap-drivers-list" class="space-y-1.5 text-[11px]">
+                                    <div class="flex items-center justify-between p-1.5 rounded bg-slate-900 border border-slate-800">
+                                        <span class="text-slate-300 font-medium flex items-center">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-rose-400 mr-2"></span>Month-to-Month Contract
+                                        </span>
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20">+28.4% Churn Force</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-1.5 rounded bg-slate-900 border border-slate-800">
+                                        <span class="text-slate-300 font-medium flex items-center">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-rose-400 mr-2"></span>Fiber Optic Internet Plan
+                                        </span>
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20">+15.2% Churn Force</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-1.5 rounded bg-slate-900 border border-slate-800">
+                                        <span class="text-slate-300 font-medium flex items-center">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-2"></span>Customer Tenure (Months)
+                                        </span>
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">-19.1% Loyalty Lift</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Prescriptive Retention Recommendation -->
+                            <div class="p-3.5 rounded-xl bg-sky-950/30 border border-sky-800/40 text-xs space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold text-sky-300 flex items-center">
+                                        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-sky-400 mr-1.5"></i> Prescriptive Retention Plan
+                                    </span>
+                                    <span id="prescriptive-urgency" class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30 uppercase">Immediate (48h)</span>
+                                </div>
+                                <p id="risk-strategy" class="text-slate-300 text-[11px] leading-relaxed">
+                                    Proactively offer 12-Month Contract with $15/mo discount + complimentary Premium Wi-Fi 6 Router upgrade.
+                                </p>
+                                <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1.5 border-t border-sky-900/50">
+                                    <span id="prescriptive-channel">Channel: Dedicated Specialist Call</span>
+                                    <span id="prescriptive-roi" class="font-bold text-emerald-400">Expected Net ROI: +$30.55</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Full-Width Bulk Batch Upload Section -->
+                <div class="glass-card p-6 rounded-2xl space-y-5">
                     <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                        <h3 class="text-base font-bold text-white flex items-center">
-                            <i data-lucide="file-spreadsheets" class="w-4 h-4 text-emerald-400 mr-2"></i> Bulk Dataset Classification
-                        </h3>
-                        <span class="text-[11px] font-semibold text-slate-400 bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800">.CSV & .XLSX</span>
+                        <div>
+                            <h3 class="text-sm font-bold text-white flex items-center">
+                                <i data-lucide="file-spreadsheets" class="w-4 h-4 text-emerald-400 mr-2"></i> Bulk Dataset Batch Scoring
+                            </h3>
+                            <span class="text-xs text-slate-400">Upload customer batches in .CSV or .XLSX format for automated inference and risk categorization.</span>
+                        </div>
+                        <span class="text-[10px] font-mono text-slate-400 bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800">.CSV & .XLSX Supported</span>
                     </div>
-
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Upload customer datasets to perform automated batch scoring, risk sorting, and multi-format reporting.
-                    </p>
 
                     <!-- Dropzone -->
-                    <div id="drop-zone" onclick="document.getElementById('bulk-file-input').click()" class="border-2 border-dashed border-slate-800 hover:border-sky-500/50 rounded-2xl p-6 text-center cursor-pointer bg-slate-900/50 transition-colors">
-                        <i data-lucide="upload-cloud" class="w-8 h-8 text-sky-400 mx-auto mb-2 animate-pulse"></i>
-                        <span class="text-xs font-bold text-white block">Click to select dataset file</span>
-                        <span class="text-[11px] text-slate-500 block mt-0.5">Supports IBM Telco Churn (.xlsx) and CSV files</span>
+                    <div id="drop-zone" onclick="document.getElementById('bulk-file-input').click()" class="border-2 border-dashed border-slate-800 hover:border-sky-500/50 rounded-2xl p-8 text-center cursor-pointer bg-slate-950/40 transition-colors">
+                        <i data-lucide="upload-cloud" class="w-8 h-8 text-sky-400 mx-auto mb-2 animate-bounce"></i>
+                        <span class="text-xs font-bold text-white block">Click or Drag & Drop dataset file</span>
+                        <span class="text-[11px] text-slate-500 block mt-0.5">Supports standard Telco Churn CSV and Excel files</span>
                         <input type="file" id="bulk-file-input" accept=".csv, .xlsx, .xls" onchange="uploadBulkFile(this.files[0])" class="hidden">
                     </div>
-                </div>
 
-                <!-- Export Action Buttons & Live Bulk Predictions Data Preview -->
-                <div id="bulk-export-container" class="hidden space-y-4 pt-4 border-t border-slate-800">
-                    <div class="flex items-center justify-between text-xs">
-                        <span id="bulk-record-count" class="font-bold text-emerald-400"></span>
-                        <span class="text-[11px] text-slate-400">Batch Diagnostic Metrics & Reports</span>
-                    </div>
-
-                    <!-- Summary Metrics Grid Bar -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
-                        <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
-                            <span class="text-[10px] text-slate-400 block font-medium">High Risk</span>
-                            <span id="bulk-high-count" class="font-bold text-rose-400 text-sm">0</span>
-                        </div>
-                        <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
-                            <span class="text-[10px] text-slate-400 block font-medium">Medium Risk</span>
-                            <span id="bulk-med-count" class="font-bold text-amber-400 text-sm">0</span>
-                        </div>
-                        <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
-                            <span class="text-[10px] text-slate-400 block font-medium">Low Risk / Retained</span>
-                            <span id="bulk-low-count" class="font-bold text-emerald-400 text-sm">0</span>
-                        </div>
-                        <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
-                            <span class="text-[10px] text-slate-400 block font-medium">Annual Revenue Exposure</span>
-                            <span id="bulk-rev-exposure" class="font-bold text-sky-400 text-sm">$0.00</span>
-                        </div>
-                    </div>
-
-                    <!-- Live Data Preview Table -->
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-bold text-slate-300">Live Processed Dataset Preview</span>
-                            <input type="text" id="bulk-table-search" oninput="filterBulkPreviewTable()" placeholder="Search ID or Risk..." class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg text-[11px] text-white focus:outline-none focus:border-sky-500 w-40">
+                    <!-- Bulk Results Container -->
+                    <div id="bulk-export-container" class="hidden space-y-4 pt-3 border-t border-slate-800">
+                        <div class="flex items-center justify-between text-xs">
+                            <span id="bulk-record-count" class="font-bold text-emerald-400"></span>
+                            <div class="flex space-x-2">
+                                <button onclick="exportBulkResultsCSV()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center space-x-1">
+                                    <i data-lucide="download" class="w-3.5 h-3.5"></i> <span>Export CSV</span>
+                                </button>
+                                <button onclick="exportBulkResultsJSON()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center space-x-1">
+                                    <i data-lucide="code" class="w-3.5 h-3.5"></i> <span>Export JSON</span>
+                                </button>
+                            </div>
                         </div>
 
-                        <div class="max-h-56 overflow-y-auto rounded-xl border border-slate-800">
-                            <table class="w-full text-[11px] text-left text-slate-300">
-                                <thead class="sticky top-0 bg-slate-900 text-slate-400 uppercase text-[9px] border-b border-slate-800 z-10">
+                        <!-- Summary Metrics Grid -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs">
+                            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block font-medium">High Risk</span>
+                                <span id="bulk-high-count" class="font-bold text-rose-400 text-base font-mono">0</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block font-medium">Medium Risk</span>
+                                <span id="bulk-med-count" class="font-bold text-amber-400 text-base font-mono">0</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block font-medium">Low Risk</span>
+                                <span id="bulk-low-count" class="font-bold text-emerald-400 text-base font-mono">0</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block font-medium">Annual Exposure</span>
+                                <span id="bulk-total-loss" class="font-bold text-white text-base font-mono">$0</span>
+                            </div>
+                        </div>
+
+                        <!-- Preview Table -->
+                        <div class="overflow-x-auto rounded-xl border border-slate-800 max-h-72">
+                            <table class="w-full text-left text-xs font-mono">
+                                <thead class="bg-slate-950 text-slate-400 sticky top-0 border-b border-slate-800 text-[10px] uppercase">
                                     <tr>
-                                        <th class="px-3 py-2">Account ID</th>
-                                        <th class="px-3 py-2">Contract</th>
-                                        <th class="px-3 py-2">Tenure</th>
-                                        <th class="px-3 py-2">Monthly Bill</th>
-                                        <th class="px-3 py-2">Risk Status</th>
-                                        <th class="px-3 py-2 text-right">Annual Risk</th>
+                                        <th class="p-2.5">ID</th>
+                                        <th class="p-2.5">Contract</th>
+                                        <th class="p-2.5">Tenure</th>
+                                        <th class="p-2.5">Monthly</th>
+                                        <th class="p-2.5">Probability</th>
+                                        <th class="p-2.5">Risk Tier</th>
+                                        <th class="p-2.5">Loss Exposure</th>
                                     </tr>
                                 </thead>
-                                <tbody id="bulk-preview-table-body" class="divide-y divide-slate-800/80">
-                                    <!-- Populated dynamically by JS -->
+                                <tbody id="bulk-preview-tbody" class="divide-y divide-slate-800/60 bg-slate-900/60 text-slate-300 text-[11px]">
+                                    <!-- Injected by JavaScript -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
-                        <button onclick="exportBulkResultsPDF()" class="px-3 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition-all flex items-center justify-center space-x-1 hover:scale-[1.02]">
-                            <i data-lucide="file-text" class="w-3.5 h-3.5"></i> <span>PDF</span>
-                        </button>
-                        <button onclick="exportBulkResultsExcel()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-all flex items-center justify-center space-x-1 hover:scale-[1.02]">
-                            <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> <span>Excel</span>
-                        </button>
-                        <button onclick="exportBulkResultsCSV()" class="px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs transition-all flex items-center justify-center space-x-1 hover:scale-[1.02]">
-                            <i data-lucide="download" class="w-3.5 h-3.5"></i> <span>CSV</span>
-                        </button>
-                        <button onclick="exportBulkResultsJSON()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs border border-slate-700 transition-all flex items-center justify-center space-x-1 hover:scale-[1.02]">
-                            <i data-lucide="code-2" class="w-3.5 h-3.5"></i> <span>JSON</span>
-                        </button>
-                    </div>
                 </div>
             </div>
 
-        </div>
-    </section>
-
-    <!-- SECTION 5: COHORT ANALYTICS -->
-    <section id="cohorts" class="scroll-mt-28 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full border-t border-slate-800/60 z-10 relative">
-        <div class="reveal-item text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Cohort Analytics</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Feature Importance & Churn Drivers</h2>
-            <div class="accent-line h-1 bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full mx-auto my-2"></div>
-            <p class="text-sm text-slate-400">Statistical distribution of key customer features influencing churn decisions.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Chart 1: Feature Importance Gini -->
-            <div class="reveal-left delay-1 glass-card p-5 rounded-2xl">
-                <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-4">RandomForest Feature Drivers (Gini Importance)</h3>
-                <div class="h-64">
-                    <canvas id="giniChart"></canvas>
-                </div>
-            </div>
-
-            <!-- Chart 2: Tenure vs Churn Rate -->
-            <div class="reveal-right delay-2 glass-card p-5 rounded-2xl">
-                <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-4">Tenure Duration vs Customer Churn Rate</h3>
-                <div class="h-64">
-                    <canvas id="tenureChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 5.8: CUSTOMER RISK SEGMENTS (Sakshi's Feature) -->
-    <section id="risk-segments" class="scroll-mt-28 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full border-t border-slate-800/60 z-10 relative">
-        <div class="reveal-item text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Risk Segments</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Customer Risk Distribution</h2>
-            <div class="accent-line h-1 bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full mx-auto my-2"></div>
-            <p class="text-sm text-slate-400">Batch churn probability breakdown across High, Medium, and Low risk cohorts.</p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="reveal-left delay-1 glass-card p-6 rounded-2xl flex items-center justify-center">
-                <div class="w-full h-64">
-                    <canvas id="riskSegmentsChart"></canvas>
-                </div>
-            </div>
-            <div class="reveal-right delay-2 glass-card p-6 rounded-2xl flex flex-col justify-center">
-                <table class="w-full text-left text-xs text-slate-300">
-                    <thead class="bg-slate-900 text-slate-400 uppercase text-[10px]">
-                        <tr>
-                            <th class="px-4 py-3 rounded-tl-lg">Segment</th>
-                            <th class="px-4 py-3 text-right">Threshold</th>
-                            <th class="px-4 py-3 text-right">Count</th>
-                            <th class="px-4 py-3 text-right rounded-tr-lg">% of Total</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-800/80" id="risk-segments-body">
-                        <!-- Populated by JS -->
-                    </tbody>
-                </table>
-                <div class="mt-4 text-[11px] text-slate-400 text-center font-semibold" id="risk-segments-period">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 6: LIVE CUSTOMER DIRECTORY -->
-    <section id="explorer" class="scroll-mt-28 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full border-t border-slate-800/60 z-10 relative">
-        <div class="reveal-item text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Account Directory</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Active Subscriber Accounts</h2>
-            <div class="accent-line h-1 bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full mx-auto my-2"></div>
-            <p class="text-sm text-slate-400">Filter customer profiles and inspect live account telemetry.</p>
-        </div>
-
-        <div class="reveal-scale delay-1 glass-card p-6 rounded-2xl space-y-4">
-            <!-- Search & Filter Bar -->
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-2 border-b border-slate-800">
-                <div class="relative w-full sm:w-80">
-                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-400"></i>
-                    <input type="text" id="dir-search" oninput="filterDirectory()" placeholder="Search account ID..." class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500">
-                </div>
-                <div class="flex items-center space-x-2 text-xs font-semibold">
-                    <button onclick="setDirFilter('all')" id="filter-all-btn" class="px-3 py-1.5 rounded-lg bg-sky-600 text-white font-bold transition-all text-[11px]">All Accounts</button>
-                    <button onclick="setDirFilter('churned')" id="filter-churned-btn" class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all text-[11px]">🔴 High Risk</button>
-                    <button onclick="setDirFilter('retained')" id="filter-retained-btn" class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all text-[11px]">🟢 Retained</button>
-                </div>
-            </div>
-
-            <!-- Directory Table -->
-            <div class="overflow-x-auto rounded-xl border border-slate-800">
-                <table class="w-full text-xs text-left text-slate-300">
-                    <thead class="bg-slate-900 text-slate-400 uppercase text-[10px]">
-                        <tr>
-                            <th class="px-4 py-3">Customer Account</th>
-                            <th class="px-4 py-3">Contract</th>
-                            <th class="px-4 py-3">Tenure</th>
-                            <th class="px-4 py-3">Monthly Bill</th>
-                            <th class="px-4 py-3">Status</th>
-                            <th class="px-4 py-3 text-right">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="directory-table-body" class="divide-y divide-slate-800/80">
-                        <!-- Populated by JS -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 7: FINANCIAL ROI SIMULATOR -->
-    <section id="roi" class="scroll-mt-28 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full border-t border-slate-800/60 z-10 relative">
-        <div class="reveal-item text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Financial ROI</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Retention ROI & Loss Calculator</h2>
-            <div class="accent-line h-1 bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full mx-auto my-2"></div>
-            <p class="text-sm text-slate-400">Estimate saved annual revenue by deploying targeted retention campaigns.</p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div class="reveal-left delay-1 lg:col-span-6 glass-card p-6 rounded-2xl space-y-4 text-xs">
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <label class="text-slate-400 font-medium">Customer Base Size</label>
-                        <span id="roi-cust-val" class="font-bold text-sky-400 font-mono">10,000 Accounts</span>
-                    </div>
-                    <input type="range" id="roi-cust" min="1000" max="50000" step="1000" value="10000" oninput="calculateROI()" class="w-full accent-sky-500 h-1.5 bg-slate-900 rounded-lg">
+            <!-- ========================================================================= -->
+            <!-- PAGE 3: ANALYTICS & GRAPHS -->
+            <!-- ========================================================================= -->
+            <div id="page-analytics" class="page-view space-y-8">
+                <!-- Page Header Banner -->
+                <div class="space-y-1">
+                    <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest block">Data Insights</span>
+                    <h2 class="text-2xl font-extrabold text-white">Cohort Retention Analytics & Loss Modeling</h2>
+                    <p class="text-xs text-slate-400">Explore subscriber retention survival decay curves, risk distributions, and calculate ROI on proactive campaigns.</p>
                 </div>
 
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <label class="text-slate-400 font-medium">Average Monthly Revenue Per User (ARPU)</label>
-                        <span id="roi-arpu-val" class="font-bold text-sky-400 font-mono">$65.00 / mo</span>
-                    </div>
-                    <input type="range" id="roi-arpu" min="20" max="200" step="5" value="65" oninput="calculateROI()" class="w-full accent-sky-500 h-1.5 bg-slate-900 rounded-lg">
-                </div>
-
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <label class="text-slate-400 font-medium">Target Retention Campaign Success Rate</label>
-                        <span id="roi-succ-val" class="font-bold text-emerald-400 font-mono">15.0% Saved</span>
-                    </div>
-                    <input type="range" id="roi-succ" min="5" max="50" step="1" value="15" oninput="calculateROI()" class="w-full accent-sky-500 h-1.5 bg-slate-900 rounded-lg">
-                </div>
-            </div>
-
-            <!-- ROI Output Display -->
-            <div class="reveal-right delay-2 lg:col-span-6 glass-card p-6 rounded-2xl flex flex-col justify-between space-y-4">
-                <div class="grid grid-cols-2 gap-4 text-center">
-                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
-                        <span class="text-[10px] text-slate-400 uppercase font-semibold block">Gross Annual Revenue Exposure</span>
-                        <span id="roi-gross-loss" class="text-xl font-extrabold text-rose-400 mt-1 block"></span>
-                    </div>
-                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
-                        <span class="text-[10px] text-slate-400 uppercase font-semibold block">Net Retained Revenue</span>
-                        <span id="roi-retained-sav" class="text-xl font-extrabold text-emerald-400 mt-1 block"></span>
-                    </div>
-                </div>
-
-                <div class="p-4 rounded-xl bg-sky-600/10 border border-sky-500/20 text-xs">
-                    <span class="font-bold text-sky-400 block mb-1">Impact Analysis:</span>
-                    <p id="roi-summary-text" class="text-slate-300 leading-relaxed"></p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTOR DETAIL MODAL -->
-    <div id="opp-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-all duration-300 opacity-0 pointer-events-none">
-        <div id="opp-modal-box" class="bg-slate-900 border border-slate-800 rounded-2xl max-w-xl w-full p-6 space-y-5 shadow-2xl">
-            <div class="flex items-start justify-between pb-3 border-b border-slate-800">
-                <div class="flex items-center space-x-3">
-                    <div id="modal-icon-box" class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center font-bold">
-                        <i data-lucide="layers" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <span id="modal-domain-badge" class="text-[10px] font-bold text-sky-400 uppercase tracking-wider block">Domain</span>
-                        <h3 id="modal-title" class="text-lg font-bold text-white mt-0.5">Opportunity Sector</h3>
-                    </div>
-                </div>
-                <button onclick="closeOpportunityModal()" class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
-                    <i data-lucide="x" class="w-4 h-4"></i>
-                </button>
-            </div>
-
-            <div class="relative h-40 rounded-xl overflow-hidden bg-slate-950 border border-slate-800">
-                <img id="modal-image" src="" alt="Sector Visual" class="w-full h-full object-cover">
-            </div>
-
-            <div class="space-y-2 text-xs">
-                <p id="modal-desc" class="text-slate-400 leading-relaxed"></p>
-                <div class="p-3 rounded-lg bg-sky-500/10 border border-sky-500/20">
-                    <span class="font-bold text-sky-400 block mb-0.5">Retention Strategy:</span>
-                    <p id="modal-strategy" class="text-slate-300"></p>
-                </div>
-            </div>
-
-            <div class="flex justify-end space-x-3 pt-2 border-t border-slate-800">
-                <button onclick="closeOpportunityModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-semibold text-xs">Close</button>
-                <button id="modal-simulate-btn" onclick="applyModalPreset()" class="px-4 py-2 rounded-xl bg-sky-600 text-white font-bold text-xs flex items-center space-x-1.5">
-                    <i data-lucide="play" class="w-3.5 h-3.5"></i> <span>Simulate</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- SECTION: ACADEMIC & ENTERPRISE MLOPS GOVERNANCE & RESEARCH SUITE -->
-    <section id="governance" class="scroll-mt-28 py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full border-t border-slate-800/60 z-10 relative">
-        <div class="reveal-item text-center max-w-3xl mx-auto mb-12 space-y-2">
-            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block flex items-center justify-center">
-                <i data-lucide="cpu" class="w-4 h-4 mr-1.5 text-sky-400"></i> MLOps Architecture & Research Rigor
-            </span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Multi-Model Tournament & Continuous Drift Governance</h2>
-            <div class="accent-line h-1 bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full mx-auto my-2"></div>
-            <p class="text-sm text-slate-400">Comparative evaluation across 4 model families, Optuna hyperparameter optimization, Kolmogorov-Smirnov drift monitoring, and MLflow registry lineage.</p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <!-- Left: Multi-Model Tournament Leaderboard -->
-            <div class="reveal-left delay-1 lg:col-span-7 glass-card p-6 rounded-2xl space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                    <div class="flex items-center space-x-2">
-                        <i data-lucide="trophy" class="w-5 h-5 text-amber-400"></i>
-                        <h3 class="text-sm font-bold text-white">Multi-Model Tournament Leaderboard</h3>
-                    </div>
-                    <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
-                        Champion: Random Forest
-                    </span>
-                </div>
-
-                <p class="text-xs text-slate-400">
-                    Scientific benchmarking across Linear, Bagging, and Gradient-Boosted architectures tracked live in MLflow:
-                </p>
-
-                <!-- Tournament Leaderboard Table -->
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs">
-                        <thead>
-                            <tr class="text-slate-500 border-b border-slate-800 text-[10px] uppercase font-semibold">
-                                <th class="pb-2">Algorithm</th>
-                                <th class="pb-2">Family</th>
-                                <th class="pb-2 text-center">Recall</th>
-                                <th class="pb-2 text-center">ROC-AUC</th>
-                                <th class="pb-2 text-center">Latency</th>
-                                <th class="pb-2 text-right">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="benchmark-tbody" class="divide-y divide-slate-800/60 font-mono text-[11px]">
-                            <!-- Injected by JavaScript or fallback -->
-                            <tr class="text-slate-300">
-                                <td class="py-2.5 font-bold text-white flex items-center"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-400 mr-1.5"></i> Random Forest</td>
-                                <td class="py-2.5 text-slate-400">Ensemble Bagging</td>
-                                <td class="py-2.5 text-center font-bold text-emerald-400">0.833</td>
-                                <td class="py-2.5 text-center font-bold text-emerald-400">0.833</td>
-                                <td class="py-2.5 text-center text-slate-400">1.3ms</td>
-                                <td class="py-2.5 text-right"><span class="px-2 py-0.5 rounded text-[9px] font-extrabold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Champion</span></td>
-                            </tr>
-                            <tr class="text-slate-300">
-                                <td class="py-2.5 font-bold text-white">XGBoost</td>
-                                <td class="py-2.5 text-slate-400">Extreme Boosting</td>
-                                <td class="py-2.5 text-center text-slate-300">0.500</td>
-                                <td class="py-2.5 text-center text-slate-300">0.833</td>
-                                <td class="py-2.5 text-center text-slate-400">0.8ms</td>
-                                <td class="py-2.5 text-right"><span class="px-2 py-0.5 rounded text-[9px] font-bold text-slate-400 bg-slate-800 border border-slate-700">Contender</span></td>
-                            </tr>
-                            <tr class="text-slate-300">
-                                <td class="py-2.5 font-bold text-white">LightGBM</td>
-                                <td class="py-2.5 text-slate-400">Histogram Tree</td>
-                                <td class="py-2.5 text-center text-slate-300">0.500</td>
-                                <td class="py-2.5 text-center text-slate-300">0.800</td>
-                                <td class="py-2.5 text-center text-slate-400">1.2ms</td>
-                                <td class="py-2.5 text-right"><span class="px-2 py-0.5 rounded text-[9px] font-bold text-slate-400 bg-slate-800 border border-slate-700">Contender</span></td>
-                            </tr>
-                            <tr class="text-slate-300">
-                                <td class="py-2.5 font-bold text-white">Logistic Regression</td>
-                                <td class="py-2.5 text-slate-400">Linear Baseline</td>
-                                <td class="py-2.5 text-center text-slate-300">0.500</td>
-                                <td class="py-2.5 text-center text-slate-300">0.667</td>
-                                <td class="py-2.5 text-center text-slate-400">0.4ms</td>
-                                <td class="py-2.5 text-right"><span class="px-2 py-0.5 rounded text-[9px] font-bold text-slate-500 bg-slate-900 border border-slate-800">Baseline</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="pt-2 flex items-center justify-between text-[11px] text-slate-500 border-t border-slate-800">
-                    <span>Validation Split: 20% Stratified Holdout</span>
-                    <a href="/docs" target="_blank" class="text-sky-400 hover:underline flex items-center font-semibold">Inspect /api/benchmark <i data-lucide="arrow-up-right" class="w-3 h-3 ml-0.5"></i></a>
-                </div>
-            </div>
-
-            <!-- Right: Live Statistical Data Drift Telemetry -->
-            <div class="reveal-right delay-2 lg:col-span-5 glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
-                        <div class="flex items-center space-x-2">
-                            <i data-lucide="activity" class="w-5 h-5 text-sky-400"></i>
-                            <h3 class="text-sm font-bold text-white">Continuous Drift Telemetry</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Left: Customer Risk Segmentation Chart -->
+                    <div class="lg:col-span-6 glass-card p-6 rounded-2xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <h3 class="text-sm font-bold text-white flex items-center">
+                                <i data-lucide="pie-chart" class="w-4 h-4 text-sky-400 mr-2"></i> Risk Tier Segmentation
+                            </h3>
+                            <span id="risk-segments-subtitle" class="text-[10px] text-slate-400 font-mono">Telco Dataset (7,043 Accounts)</span>
                         </div>
-                        <span id="drift-status-badge" class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                            Zero Drift (Stable)
+                        <div class="relative h-64">
+                            <canvas id="analyticsRiskPie"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Right: Churn Cohort Decay Curve -->
+                    <div class="lg:col-span-6 glass-card p-6 rounded-2xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <h3 class="text-sm font-bold text-white flex items-center">
+                                <i data-lucide="trending-down" class="w-4 h-4 text-rose-400 mr-2"></i> Subscriber Retention Decay Curve
+                            </h3>
+                            <span class="text-[10px] text-slate-400 font-mono">0 to 72 Months</span>
+                        </div>
+                        <div class="relative h-64">
+                            <canvas id="analyticsCohortsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Full-Width Interactive Financial ROI Simulator -->
+                <div class="glass-card p-6 sm:p-8 rounded-2xl space-y-6">
+                    <div class="border-b border-slate-800 pb-4">
+                        <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block mb-1">Financial Impact</span>
+                        <h3 class="text-lg font-bold text-white">Retention ROI & Loss Prevention Simulator</h3>
+                        <p class="text-xs text-slate-400">Model the financial revenue saved by deploying proactive retention campaigns based on calibrated cutoff thresholds.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <!-- Sliders -->
+                        <div class="lg:col-span-6 space-y-4 text-xs">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="text-slate-400 font-medium">Customer Cohort Size</label>
+                                    <span id="roi-cust-val" class="font-bold text-sky-400 font-mono">10,000 Accounts</span>
+                                </div>
+                                <input type="range" id="roi-cust" min="1000" max="50000" step="1000" value="10000" oninput="calculateROI()" class="w-full accent-sky-500 h-1.5 bg-slate-950 rounded-lg">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="text-slate-400 font-medium">Average Monthly Revenue Per User (ARPU)</label>
+                                    <span id="roi-arpu-val" class="font-bold text-sky-400 font-mono">$65.00 / mo</span>
+                                </div>
+                                <input type="range" id="roi-arpu" min="20" max="200" step="5" value="65" oninput="calculateROI()" class="w-full accent-sky-500 h-1.5 bg-slate-950 rounded-lg">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="text-slate-400 font-medium">Target Campaign Retention Success Rate</label>
+                                    <span id="roi-succ-val" class="font-bold text-emerald-400 font-mono">15.0% Saved</span>
+                                </div>
+                                <input type="range" id="roi-succ" min="5" max="50" step="1" value="15" oninput="calculateROI()" class="w-full accent-sky-500 h-1.5 bg-slate-950 rounded-lg">
+                            </div>
+                        </div>
+
+                        <!-- Results -->
+                        <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+                            <div class="grid grid-cols-2 gap-4 text-center">
+                                <div class="p-4 rounded-xl bg-slate-950 border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 uppercase font-semibold block">Gross Annual Exposure</span>
+                                    <span id="roi-gross-loss" class="text-xl font-extrabold text-rose-400 font-mono mt-1 block">$2,070,120</span>
+                                </div>
+                                <div class="p-4 rounded-xl bg-slate-950 border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 uppercase font-semibold block">Net Retained Revenue</span>
+                                    <span id="roi-retained-sav" class="text-xl font-extrabold text-emerald-400 font-mono mt-1 block">$310,518</span>
+                                </div>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 text-xs text-slate-400">
+                                <span id="roi-summary-text">Deploying proactive retention campaigns preserves revenue annually across monitored customer cohorts.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================================= -->
+            <!-- PAGE 4: MODEL PERFORMANCE -->
+            <!-- ========================================================================= -->
+            <div id="page-model-performance" class="page-view space-y-8">
+                <!-- Page Header Banner -->
+                <div class="space-y-1">
+                    <span class="text-xs font-bold text-amber-400 uppercase tracking-widest block">Machine Learning Tournament</span>
+                    <h2 class="text-2xl font-extrabold text-white">Multi-Model Tournament & Bayesian Benchmarking</h2>
+                    <p class="text-xs text-slate-400">Rigorous comparative evaluation across 4 algorithmic families tracked in MLflow Model Registry.</p>
+                </div>
+
+                <!-- Tournament Leaderboard Card -->
+                <div class="glass-card p-6 rounded-2xl space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="trophy" class="w-5 h-5 text-amber-400"></i>
+                            <h3 class="text-sm font-bold text-white">Supervised Model Tournament Leaderboard</h3>
+                        </div>
+                        <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                            Champion: Random Forest (v2.1)
                         </span>
                     </div>
 
-                    <p class="text-xs text-slate-400 mb-3">
-                        Statistical tests executed between production inference distribution and baseline training data:
-                    </p>
+                    <!-- Tournament Table -->
+                    <div class="overflow-x-auto rounded-xl border border-slate-800">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 text-[10px] uppercase font-semibold">
+                                <tr>
+                                    <th class="p-3">Algorithm</th>
+                                    <th class="p-3">Model Family</th>
+                                    <th class="p-3 text-center">Recall</th>
+                                    <th class="p-3 text-center">ROC-AUC</th>
+                                    <th class="p-3 text-center">Accuracy</th>
+                                    <th class="p-3 text-center">Inference Latency</th>
+                                    <th class="p-3 text-right">Production Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="benchmark-tbody" class="divide-y divide-slate-800/60 font-mono text-[11px] bg-slate-900/60">
+                                <tr class="text-slate-300">
+                                    <td class="p-3 font-bold text-white flex items-center"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-400 mr-2"></i> Random Forest</td>
+                                    <td class="p-3 text-slate-400 font-sans">Ensemble Bagging</td>
+                                    <td class="p-3 text-center font-bold text-emerald-400">0.833</td>
+                                    <td class="p-3 text-center font-bold text-emerald-400">0.833</td>
+                                    <td class="p-3 text-center text-slate-300">0.800</td>
+                                    <td class="p-3 text-center text-slate-400">1.3ms</td>
+                                    <td class="p-3 text-right"><span class="px-2 py-0.5 rounded text-[9px] font-extrabold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Champion</span></td>
+                                </tr>
+                                <tr class="text-slate-300">
+                                    <td class="p-3 font-bold text-white">XGBoost</td>
+                                    <td class="p-3 text-slate-400 font-sans">Extreme Gradient Boosting</td>
+                                    <td class="p-3 text-center text-slate-300">0.500</td>
+                                    <td class="p-3 text-center text-slate-300">0.833</td>
+                                    <td class="p-3 text-center text-slate-300">0.800</td>
+                                    <td class="p-3 text-center text-slate-400">0.8ms</td>
+                                    <td class="p-3 text-right"><span class="px-2 py-0.5 rounded text-[9px] font-bold text-slate-400 bg-slate-800 border border-slate-700">Contender</span></td>
+                                </tr>
+                                <tr class="text-slate-300">
+                                    <td class="p-3 font-bold text-white">LightGBM</td>
+                                    <td class="p-3 text-slate-400 font-sans">Histogram Boosting</td>
+                                    <td class="p-3 text-center text-slate-300">0.500</td>
+                                    <td class="p-3 text-center text-slate-300">0.800</td>
+                                    <td class="p-3 text-center text-slate-300">0.780</td>
+                                    <td class="p-3 text-center text-slate-400">1.2ms</td>
+                                    <td class="p-3 text-right"><span class="px-2 py-0.5 rounded text-[9px] font-bold text-slate-400 bg-slate-800 border border-slate-700">Contender</span></td>
+                                </tr>
+                                <tr class="text-slate-300">
+                                    <td class="p-3 font-bold text-white">Logistic Regression</td>
+                                    <td class="p-3 text-slate-400 font-sans">Linear Baseline</td>
+                                    <td class="p-3 text-center text-slate-300">0.500</td>
+                                    <td class="p-3 text-center text-slate-300">0.667</td>
+                                    <td class="p-3 text-center text-slate-300">0.760</td>
+                                    <td class="p-3 text-center text-slate-400">0.4ms</td>
+                                    <td class="p-3 text-right"><span class="px-2 py-0.5 rounded text-[9px] font-bold text-slate-500 bg-slate-900 border border-slate-800">Baseline</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                    <div class="space-y-2.5 text-xs">
-                        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
-                            <div>
-                                <span class="font-bold text-white block">Kolmogorov-Smirnov (KS) Test</span>
-                                <span class="text-[10px] text-slate-500 block">Numerical Features (tenure, charges)</span>
+                <!-- Deep-Dive Cards: Recall Cutoff 0.23 & Optuna -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-6 glass-card p-6 rounded-2xl space-y-3 text-xs">
+                        <div class="flex items-center space-x-2 border-b border-slate-800 pb-3">
+                            <i data-lucide="target" class="w-4 h-4 text-sky-400"></i>
+                            <h3 class="text-sm font-bold text-white">Recall-Tuned Decision Threshold (0.23 Cutoff)</h3>
+                        </div>
+                        <p class="text-slate-400 leading-relaxed">
+                            Default binary classification assumes equal cost for false positives and false negatives (0.50 cutoff). In churn prediction, <strong>missing a churner costs $1,100+ in lost Customer Lifetime Value</strong>, while offering an unnecessary retention discount costs only $50.
+                        </p>
+                        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1 font-mono text-[11px]">
+                            <div class="flex justify-between text-slate-400">
+                                <span>Default Threshold (0.50):</span>
+                                <span class="text-rose-400 font-bold">52% Recall (Many Churners Escape)</span>
                             </div>
-                            <div class="text-right">
-                                <span class="text-xs font-bold text-emerald-400 font-mono">p > 0.05 (No Shift)</span>
-                                <span class="text-[9px] text-slate-500 block">95% Conf. Level</span>
+                            <div class="flex justify-between text-slate-300">
+                                <span>Tuned MLOps Cutoff (0.23):</span>
+                                <span class="text-emerald-400 font-bold">84% Recall (Captures High Risk Cohort)</span>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
-                            <div>
-                                <span class="font-bold text-white block">Population Stability Index (PSI)</span>
-                                <span class="text-[10px] text-slate-500 block">Categorical Distributions (contract, tech)</span>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-xs font-bold text-emerald-400 font-mono">PSI < 0.10 (Stable)</span>
-                                <span class="text-[9px] text-slate-500 block">Industry Tolerance</span>
-                            </div>
+                    <div class="lg:col-span-6 glass-card p-6 rounded-2xl space-y-3 text-xs">
+                        <div class="flex items-center space-x-2 border-b border-slate-800 pb-3">
+                            <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
+                            <h3 class="text-sm font-bold text-white">Optuna Bayesian Hyperparameter Tuning</h3>
                         </div>
-
-                        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
-                            <div>
-                                <span class="font-bold text-white block">Automated Model Registry Lineage</span>
-                                <span class="text-[10px] text-slate-500 block">Candidate benchmarking & promotion</span>
+                        <p class="text-slate-400 leading-relaxed">
+                            Hyperparameters across Random Forest, LightGBM, and XGBoost were tuned using Optuna's Tree-structured Parzen Estimator (TPE) sampler to maximize ROC-AUC and minimize latency.
+                        </p>
+                        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1 font-mono text-[11px]">
+                            <div class="flex justify-between text-slate-400">
+                                <span>Best Params:</span>
+                                <span class="text-sky-400 font-bold">n_estimators=100, max_depth=6</span>
                             </div>
-                            <div class="text-right">
-                                <span class="text-xs font-bold text-sky-400 font-mono">MLflow 3.x Active</span>
-                                <span class="text-[9px] text-slate-500 block">Version Tag: v2.1</span>
+                            <div class="flex justify-between text-slate-400">
+                                <span>Tracking Engine:</span>
+                                <span class="text-white">MLflow 3.x Active Registry</span>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
-                    <span>Script: <code class="text-slate-400">src/drift.py</code> &bull; <code class="text-slate-400">src/retrain.py</code></span>
-                    <a href="/docs" target="_blank" class="text-sky-400 hover:underline flex items-center font-semibold">Inspect /api/governance <i data-lucide="arrow-up-right" class="w-3 h-3 ml-0.5"></i></a>
+            <!-- ========================================================================= -->
+            <!-- PAGE 5: CUSTOMER DATASET -->
+            <!-- ========================================================================= -->
+            <div id="page-dataset" class="page-view space-y-8">
+                <!-- Page Header Banner -->
+                <div class="space-y-1">
+                    <span class="text-xs font-bold text-cyan-400 uppercase tracking-widest block">Data Repository</span>
+                    <h2 class="text-2xl font-extrabold text-white">IBM Telco Customer Churn Dataset Explorer</h2>
+                    <p class="text-xs text-slate-400">7,043 historical subscriber accounts with demographic indicators, subscribed features, and contract telemetry.</p>
+                </div>
+
+                <!-- 4 Dataset Summary Statistics Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div class="glass-card p-5 rounded-2xl space-y-1.5">
+                        <span class="text-[10px] text-slate-400 block font-medium">Total Records</span>
+                        <span class="text-2xl font-extrabold text-white font-mono">7,043</span>
+                        <span class="text-[10px] text-slate-500 block">Verified Account Records</span>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl space-y-1.5">
+                        <span class="text-[10px] text-slate-400 block font-medium">Average Tenure</span>
+                        <span class="text-2xl font-extrabold text-sky-400 font-mono">32.4 Mos</span>
+                        <span class="text-[10px] text-slate-500 block">Mean customer lifecycle</span>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl space-y-1.5">
+                        <span class="text-[10px] text-slate-400 block font-medium">Average Monthly Bill</span>
+                        <span class="text-2xl font-extrabold text-white font-mono">$64.76</span>
+                        <span class="text-[10px] text-slate-500 block">Standard ARPU</span>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl space-y-1.5">
+                        <span class="text-[10px] text-slate-400 block font-medium">Retained Ratio</span>
+                        <span class="text-2xl font-extrabold text-emerald-400 font-mono">73.46%</span>
+                        <span class="text-[10px] text-slate-500 block">5,174 Loyal Accounts</span>
+                    </div>
+                </div>
+
+                <!-- Live Searchable Customer Directory Table -->
+                <div class="glass-card p-6 rounded-2xl space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="search" class="w-4 h-4 text-sky-400"></i>
+                            <h3 class="text-sm font-bold text-white">Subscriber Directory Search</h3>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <input type="text" id="dir-search" placeholder="Search by Customer ID..." oninput="filterDirectory()" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-sky-500 w-48 sm:w-64 font-mono">
+                            <div class="flex p-0.5 rounded-lg bg-slate-950 border border-slate-800 text-[10px] font-bold">
+                                <button onclick="setDirFilter('all')" id="dir-filter-all" class="px-2 py-1 rounded bg-slate-800 text-white font-bold">All</button>
+                                <button onclick="setDirFilter('churned')" id="dir-filter-churned" class="px-2 py-1 rounded text-slate-400 hover:text-white">Churned</button>
+                                <button onclick="setDirFilter('retained')" id="dir-filter-retained" class="px-2 py-1 rounded text-slate-400 hover:text-white">Retained</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Directory Table -->
+                    <div class="overflow-x-auto rounded-xl border border-slate-800">
+                        <table class="w-full text-left text-xs font-mono">
+                            <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 text-[10px] uppercase">
+                                <tr>
+                                    <th class="p-3">Customer ID</th>
+                                    <th class="p-3">Contract</th>
+                                    <th class="p-3">Tenure</th>
+                                    <th class="p-3">Monthly Charges</th>
+                                    <th class="p-3">Status</th>
+                                    <th class="p-3 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="directory-table-body" class="divide-y divide-slate-800/60 bg-slate-900/60 text-slate-300 text-[11px]">
+                                <!-- Injected dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-800/80 px-6 py-6 text-center text-xs text-slate-500 z-10 relative">
-        <p>TelcoPulse AI Enterprise Retention Platform &bull; Powered by Scikit-Learn, MLflow, FastAPI & Chart.js</p>
-    </footer>
+            <!-- ========================================================================= -->
+            <!-- PAGE 6: MLOPS MONITORING -->
+            <!-- ========================================================================= -->
+            <div id="page-monitoring" class="page-view space-y-8">
+                <!-- Page Header Banner -->
+                <div class="space-y-1">
+                    <span class="text-xs font-bold text-rose-400 uppercase tracking-widest block">Governance & Observability</span>
+                    <h2 class="text-2xl font-extrabold text-white">Continuous Drift Governance & Retraining Lifecycle</h2>
+                    <p class="text-xs text-slate-400">Statistical data drift detection (KS-test & PSI), automated retrain benchmark verification, and live API telemetry.</p>
+                </div>
 
-    <!-- App Scripts -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Left: Statistical Data Drift Detection Cards -->
+                    <div class="lg:col-span-6 glass-card p-6 rounded-2xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="activity" class="w-5 h-5 text-sky-400"></i>
+                                <h3 class="text-sm font-bold text-white">Statistical Drift Telemetry</h3>
+                            </div>
+                            <span id="drift-status-badge" class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                                Zero Drift (Stable)
+                            </span>
+                        </div>
+
+                        <div class="space-y-3 text-xs">
+                            <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+                                <div>
+                                    <span class="font-bold text-white block">Kolmogorov-Smirnov (KS) Test</span>
+                                    <span class="text-[10px] text-slate-500 block">Numerical Features (Tenure, Charges)</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs font-bold text-emerald-400 font-mono">p > 0.05 (No Shift)</span>
+                                    <span class="text-[9px] text-slate-500 block">95% Conf. Level</span>
+                                </div>
+                            </div>
+
+                            <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+                                <div>
+                                    <span class="font-bold text-white block">Population Stability Index (PSI)</span>
+                                    <span class="text-[10px] text-slate-500 block">Categorical Distributions (Contract, Internet)</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs font-bold text-emerald-400 font-mono">PSI < 0.10 (Stable)</span>
+                                    <span class="text-[9px] text-slate-500 block">Industry Tolerance</span>
+                                </div>
+                            </div>
+
+                            <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+                                <div>
+                                    <span class="font-bold text-white block">Automated Model Registry Lineage</span>
+                                    <span class="text-[10px] text-slate-500 block">Candidate benchmarking & promotion</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs font-bold text-sky-400 font-mono">MLflow 3.x Active</span>
+                                    <span class="text-[9px] text-slate-500 block">Version Tag: v2.1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Live REST API Telemetry -->
+                    <div class="lg:col-span-6 glass-card p-6 rounded-2xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="gauge" class="w-5 h-5 text-indigo-400"></i>
+                                <h3 class="text-sm font-bold text-white">Real-Time API Telemetry</h3>
+                            </div>
+                            <span class="text-[10px] font-mono text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">Endpoint: /api/metrics</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 text-center text-xs">
+                            <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block font-medium">Total API Inferences</span>
+                                <span id="telemetry-total-preds" class="text-xl font-extrabold text-white font-mono mt-0.5 block">142</span>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block font-medium">Average Latency</span>
+                                <span id="telemetry-latency" class="text-xl font-extrabold text-emerald-400 font-mono mt-0.5 block">1.8 ms</span>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block font-medium">Uptime Status</span>
+                                <span class="text-xl font-extrabold text-sky-400 font-mono mt-0.5 block">100.0%</span>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block font-medium">Active Cutoff</span>
+                                <span class="text-xl font-extrabold text-amber-400 font-mono mt-0.5 block">0.23</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
+                            <span>Backend Service: <strong>FastAPI + Uvicorn ASGI</strong></span>
+                            <a href="/docs" target="_blank" class="text-sky-400 font-bold hover:underline flex items-center">
+                                Inspect OpenAPI <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- JAVASCRIPT: APPLICATION LOGIC & ROUTER -->
+    <!-- ========================================================================= -->
     <script>
         lucide.createIcons();
 
-        // Dynamic Animated Counter Rollup Function
-        let countersAnimated = false;
-        function runCounters() {
-            if (countersAnimated) return;
-            countersAnimated = true;
-            const counters = document.querySelectorAll('.counter-val');
-            counters.forEach(counter => {
-                const target = parseFloat(counter.getAttribute('data-target'));
-                const suffix = counter.getAttribute('data-suffix') || '';
-                const prefix = counter.getAttribute('data-prefix') || '';
-                const isDecimal = counter.getAttribute('data-decimal') === 'true';
-                let count = 0;
-                const steps = 40;
-                const stepVal = target / steps;
-
-                const timer = setInterval(() => {
-                    count += stepVal;
-                    if (count >= target) {
-                        count = target;
-                        clearInterval(timer);
-                    }
-                    counter.innerText = prefix + (isDecimal ? count.toFixed(2) : Math.ceil(count).toLocaleString()) + suffix;
-                }, 25);
-            });
-        }
-
-        // Scroll Progress Bar & Active Navbar Scrollspy Listener
-        window.addEventListener('scroll', () => {
-            // 1. Scroll Progress Bar
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            if (height > 0) {
-                const scrolled = (winScroll / height) * 100;
-                const progressBar = document.getElementById("scroll-progress-bar");
-                if (progressBar) progressBar.style.width = scrolled + "%";
-            }
-
-            // 2. Navbar Scrollspy Highlight
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-link');
-            let currentSec = '';
-            sections.forEach(sec => {
-                const secTop = sec.offsetTop - 180;
-                if (window.scrollY >= secTop) {
-                    currentSec = sec.getAttribute('id');
-                }
-            });
-            navLinks.forEach(link => {
-                link.classList.remove('active-nav');
-                if (link.getAttribute('href') === `#${currentSec}`) {
-                    link.classList.add('active-nav');
-                }
-            });
-        });
-
-        // Scroll Reveal & Counter Trigger IntersectionObserver
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-revealed');
-                    if (entry.target.id === 'stats-counter-strip') {
-                        runCounters();
-                    }
-                }
-            });
-        }, { threshold: 0.12 });
-
-        document.querySelectorAll('.reveal-item, .reveal-left, .reveal-right, .reveal-scale').forEach(el => observer.observe(el));
-
-        // 1. Three.js 3D WebGL Background Particle Network with Scroll Parallax
-        function init3DParticleNetwork() {
-            const canvas = document.getElementById('webgl-3d-particles');
-            if (!canvas || typeof THREE === 'undefined') return;
-
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 400;
-
-            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-            const particleCount = 180;
-            const geometry = new THREE.BufferGeometry();
-            const positions = new Float32Array(particleCount * 3);
-            const colors = new Float32Array(particleCount * 3);
-            const velocities = [];
-
-            const colorPalette = [
-                new THREE.Color('#38bdf8'), // Sky
-                new THREE.Color('#818cf8'), // Indigo
-                new THREE.Color('#a855f7'), // Purple
-                new THREE.Color('#34d399')  // Emerald
-            ];
-
-            for (let i = 0; i < particleCount; i++) {
-                positions[i * 3] = (Math.random() - 0.5) * 800;
-                positions[i * 3 + 1] = (Math.random() - 0.5) * 800;
-                positions[i * 3 + 2] = (Math.random() - 0.5) * 400;
-
-                velocities.push({
-                    x: (Math.random() - 0.5) * 0.35,
-                    y: (Math.random() - 0.5) * 0.35,
-                    z: (Math.random() - 0.5) * 0.35
-                });
-
-                const c = colorPalette[Math.floor(Math.random() * colorPalette.length)];
-                colors[i * 3] = c.r;
-                colors[i * 3 + 1] = c.g;
-                colors[i * 3 + 2] = c.b;
-            }
-
-            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-            const material = new THREE.PointsMaterial({
-                size: 3.5,
-                vertexColors: true,
-                transparent: true,
-                opacity: 0.7,
-                blending: THREE.AdditiveBlending
-            });
-
-            const particles = new THREE.Points(geometry, material);
-            scene.add(particles);
-
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-
-            function animate() {
-                requestAnimationFrame(animate);
-                const pos = particles.geometry.attributes.position.array;
-
-                for (let i = 0; i < particleCount; i++) {
-                    pos[i * 3] += velocities[i].x;
-                    pos[i * 3 + 1] += velocities[i].y;
-                    pos[i * 3 + 2] += velocities[i].z;
-
-                    if (pos[i * 3] > 400 || pos[i * 3] < -400) velocities[i].x *= -1;
-                    if (pos[i * 3 + 1] > 400 || pos[i * 3 + 1] < -400) velocities[i].y *= -1;
-                    if (pos[i * 3 + 2] > 200 || pos[i * 3 + 2] < -200) velocities[i].z *= -1;
-                }
-
-                particles.geometry.attributes.position.needsUpdate = true;
-                
-                // Dynamic Scroll Parallax 3D Transformation
-                const scrollOffset = window.scrollY || 0;
-                particles.rotation.y = scrollOffset * 0.0006 + performance.now() * 0.0002;
-                particles.rotation.x = scrollOffset * 0.0003 + performance.now() * 0.0001;
-                camera.position.y = -scrollOffset * 0.15;
-
-                renderer.render(scene, camera);
-            }
-            animate();
-        }
-
-        // 2. 3D Card Perspective Tilt Effect
-        function init3DTiltCards() {
-            const cards = document.querySelectorAll('.glass-card');
-            cards.forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = ((y - centerY) / centerY) * -5;
-                    const rotateY = ((x - centerX) / centerX) * 5;
-
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-                });
-            });
-        }
-
-        // 3. Currency System State
-        let currentCurrency = 'USD'; // 'USD' or 'INR'
-        const INR_EXCHANGE_RATE = 83.5;
+        // 1. Currency Management (USD vs INR)
+        let currentCurrency = 'USD';
+        const USD_TO_INR = 83.25;
 
         function setCurrency(curr) {
             currentCurrency = curr;
@@ -1261,57 +1057,115 @@
             const inrBtn = document.getElementById('curr-inr-btn');
 
             if (curr === 'USD') {
-                usdBtn.className = "px-2.5 py-1 rounded-lg bg-sky-600 text-white font-extrabold shadow-sm transition-all hover:scale-[1.02]";
-                inrBtn.className = "px-2.5 py-1 rounded-lg text-slate-400 hover:text-white transition-all hover:scale-[1.02]";
+                usdBtn.className = "px-2.5 py-1 rounded-lg bg-sky-600 text-white font-extrabold shadow-sm transition-all";
+                inrBtn.className = "px-2.5 py-1 rounded-lg text-slate-400 hover:text-white transition-all";
             } else {
-                inrBtn.className = "px-2.5 py-1 rounded-lg bg-sky-600 text-white font-extrabold shadow-sm transition-all hover:scale-[1.02]";
-                usdBtn.className = "px-2.5 py-1 rounded-lg text-slate-400 hover:text-white transition-all hover:scale-[1.02]";
+                inrBtn.className = "px-2.5 py-1 rounded-lg bg-sky-600 text-white font-extrabold shadow-sm transition-all";
+                usdBtn.className = "px-2.5 py-1 rounded-lg text-slate-400 hover:text-white transition-all";
             }
-
             updateCalculations();
             calculateROI();
-            filterDirectory();
-            if (lastBulkData) renderBulkPreviewTable(lastBulkData);
         }
 
-        function formatCurrency(valUSD) {
+        function formatCurrency(val) {
+            if (val === undefined || val === null || isNaN(val)) return "$0.00";
             if (currentCurrency === 'INR') {
-                const valINR = valUSD * INR_EXCHANGE_RATE;
-                return `₹${Math.round(valINR).toLocaleString('en-IN')}`;
+                const inr = val * USD_TO_INR;
+                return `₹${Math.round(inr).toLocaleString('en-IN')}`;
             }
-            return `$${valUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            return `$${parseFloat(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         }
 
-        // Set default month picker to current year-month
+        // 2. Multi-Page Navigation Router
+        const pageTitles = {
+            'overview': 'Overview Dashboard',
+            'prediction': 'Customer Churn Prediction',
+            'analytics': 'Analytics & Graphs',
+            'model-performance': 'Model Performance',
+            'dataset': 'Customer Dataset',
+            'monitoring': 'MLOps Monitoring'
+        };
+
+        function navigateToPage(pageId, pushHistory = true) {
+            if (!pageTitles[pageId]) pageId = 'overview';
+
+            // Hide all pages, show target page
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active-page'));
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if (targetPage) targetPage.classList.add('active-page');
+
+            // Update sidebar links
+            document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+            const activeNav = document.getElementById(`nav-${pageId}`);
+            if (activeNav) activeNav.classList.add('active');
+
+            // Update breadcrumb
+            const bcrumb = document.getElementById('breadcrumb-title');
+            if (bcrumb) bcrumb.innerText = pageTitles[pageId];
+
+            // Close mobile menu if open
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            if (sidebar) sidebar.classList.add('-translate-x-full');
+            if (backdrop) backdrop.classList.add('hidden');
+
+            // Push state for direct URL bookmarking
+            if (pushHistory) {
+                const newUrl = pageId === 'overview' ? '/' : `/${pageId}`;
+                history.pushState({ page: pageId }, '', newUrl);
+            }
+
+            // Trigger chart re-render / resize
+            if (pageId === 'overview') {
+                renderOverviewCharts();
+            } else if (pageId === 'analytics') {
+                renderAnalyticsCharts();
+            }
+
+            if (window.lucide) lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            sidebar.classList.toggle('-translate-x-full');
+            backdrop.classList.toggle('hidden');
+        }
+
+        window.addEventListener('popstate', (e) => {
+            const path = window.location.pathname.replace('/', '') || 'overview';
+            navigateToPage(path, false);
+        });
+
+        // 3. Form Calculations & Date Picker
         const now = new Date();
         const yyyy = now.getFullYear();
         const mm = String(now.getMonth() + 1).padStart(2, '0');
-        document.getElementById('contract-start').value = `${yyyy}-${mm}`;
+        const datePicker = document.getElementById('contract-start');
+        if (datePicker) datePicker.value = `${yyyy}-${mm}`;
 
         function onDatePickerChange() {
             const pickerVal = document.getElementById('contract-start').value;
             if (!pickerVal) return;
-
             const [startYear, startMonth] = pickerVal.split('-').map(Number);
-            const currYear = now.getFullYear();
-            const currMonth = now.getMonth() + 1;
-
-            let diffMonths = (currYear - startYear) * 12 + (currMonth - startMonth);
-            if (diffMonths < 0) diffMonths = 0;
+            let diffMonths = (now.getFullYear() - startYear) * 12 + ((now.getMonth() + 1) - startMonth);
+            if (diffMonths < 1) diffMonths = 1;
             if (diffMonths > 72) diffMonths = 72;
-
             document.getElementById('tenure').value = diffMonths;
             updateCalculations();
         }
 
         function updateCalculations() {
-            const tenure = document.getElementById('tenure').value;
-            const charges = parseFloat(document.getElementById('charges').value);
-
-            document.getElementById('tenure-val').innerText = `${tenure} Months`;
-            document.getElementById('charges-val').innerText = `${formatCurrency(charges)} / mo`;
+            const tenure = document.getElementById('tenure')?.value || 12;
+            const charges = parseFloat(document.getElementById('charges')?.value || 65);
+            const tenureVal = document.getElementById('tenure-val');
+            const chargesVal = document.getElementById('charges-val');
+            if (tenureVal) tenureVal.innerText = `${tenure} Months`;
+            if (chargesVal) chargesVal.innerText = `${formatCurrency(charges)} / mo`;
         }
 
+        // 4. Single Customer Prediction
         async function predictSingleCustomer(e) {
             e.preventDefault();
             const payload = {
@@ -1319,7 +1173,6 @@
                 tenure: parseInt(document.getElementById('tenure').value),
                 MonthlyCharges: parseFloat(document.getElementById('charges').value),
                 InternetService: document.getElementById('internet').value,
-                TechSupport: document.getElementById('tech-support').value,
                 TotalCharges: parseFloat(document.getElementById('charges').value) * parseInt(document.getElementById('tenure').value)
             };
 
@@ -1330,23 +1183,23 @@
                     body: JSON.stringify(payload)
                 });
                 const data = await res.json();
-                
-                const box = document.getElementById('single-result');
-                box.classList.remove('hidden');
+
+                const statusPill = document.getElementById('diagnostic-status-pill');
+                if (statusPill) statusPill.innerText = "Computed";
 
                 const badge = document.getElementById('risk-badge');
-                badge.innerText = data.risk_level;
+                badge.innerText = `${data.risk_level} RISK`;
                 if (data.risk_level === 'HIGH') {
-                    badge.className = "px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-rose-500/20 text-rose-400 border border-rose-500/30";
+                    badge.className = "px-3 py-1 rounded-full text-[10px] font-extrabold uppercase bg-rose-500/20 text-rose-400 border border-rose-500/30";
                 } else if (data.risk_level === 'MEDIUM') {
-                    badge.className = "px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-amber-500/20 text-amber-400 border border-amber-500/30";
+                    badge.className = "px-3 py-1 rounded-full text-[10px] font-extrabold uppercase bg-amber-500/20 text-amber-400 border border-amber-500/30";
                 } else {
-                    badge.className = "px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                    badge.className = "px-3 py-1 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
                 }
 
-                document.getElementById('risk-prob').innerText = `${((data.probability !== undefined ? data.probability : data.churn_probability) * 100).toFixed(1)}%`;
-                document.getElementById('risk-annual').innerText = formatCurrency(data.financial_impact_annual || data.annual_revenue_risk || 0);
-                
+                document.getElementById('risk-prob').innerText = `${((data.probability || 0) * 100).toFixed(1)}%`;
+                document.getElementById('risk-annual').innerText = formatCurrency(data.financial_impact_annual || 0);
+
                 if (data.customer_lifetime_value !== undefined) {
                     document.getElementById('risk-clv').innerText = formatCurrency(data.customer_lifetime_value);
                 }
@@ -1360,7 +1213,7 @@
                 if (data.shap_explanations && data.shap_explanations.top_risk_drivers) {
                     data.shap_explanations.top_risk_drivers.forEach(d => {
                         const item = document.createElement('div');
-                        item.className = "flex items-center justify-between p-1.5 rounded bg-slate-900 border border-slate-800/80";
+                        item.className = "flex items-center justify-between p-1.5 rounded bg-slate-900 border border-slate-800";
                         item.innerHTML = `
                             <span class="text-slate-300 font-medium flex items-center">
                                 <span class="w-1.5 h-1.5 rounded-full bg-rose-400 mr-2"></span>${d.feature}
@@ -1370,10 +1223,10 @@
                         shapList.appendChild(item);
                     });
 
-                    if (data.shap_explanations.top_retention_drivers && data.shap_explanations.top_retention_drivers.length > 0) {
+                    if (data.shap_explanations.top_retention_drivers) {
                         data.shap_explanations.top_retention_drivers.slice(0, 2).forEach(d => {
                             const item = document.createElement('div');
-                            item.className = "flex items-center justify-between p-1.5 rounded bg-slate-900 border border-slate-800/80";
+                            item.className = "flex items-center justify-between p-1.5 rounded bg-slate-900 border border-slate-800";
                             item.innerHTML = `
                                 <span class="text-slate-300 font-medium flex items-center">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-2"></span>${d.feature}
@@ -1383,27 +1236,24 @@
                             shapList.appendChild(item);
                         });
                     }
-                } else {
-                    shapList.innerHTML = '<span class="text-slate-500 text-[10px]">Contract Duration, Monthly Bill, and Tenure are primary global drivers.</span>';
                 }
 
-                // Prescriptive Strategy Details
-                document.getElementById('risk-strategy').innerText = data.retention_strategy || data.recommended_strategy || "Standard engagement plan.";
+                // Prescriptive Action
+                document.getElementById('risk-strategy').innerText = data.retention_strategy || "Standard loyalty program.";
                 if (data.prescriptive_action) {
                     document.getElementById('prescriptive-urgency').innerText = data.prescriptive_action.urgency || "HIGH";
                     document.getElementById('prescriptive-channel').innerText = `Channel: ${data.prescriptive_action.action_channel || 'Direct Outreach'}`;
                     const netRoi = data.prescriptive_action.economic_value?.net_roi || 0;
                     document.getElementById('prescriptive-roi').innerText = `Expected Net ROI: ${formatCurrency(netRoi)}`;
                 }
-                
-                if (window.lucide) {
-                    lucide.createIcons();
-                }
+
+                if (window.lucide) lucide.createIcons();
             } catch (err) {
-                console.error("Prediction failed:", err);
+                console.error("Single prediction failed:", err);
             }
         }
 
+        // 5. Bulk Upload & Batch Classification
         let lastBulkData = null;
 
         async function uploadBulkFile(file) {
@@ -1417,80 +1267,33 @@
                 lastBulkData = data;
 
                 document.getElementById('bulk-export-container').classList.remove('hidden');
-                document.getElementById('bulk-record-count').innerText = `✓ Processed ${data.total_records_processed} Records`;
+                document.getElementById('bulk-record-count').innerText = `✓ Processed ${data.total_records_processed} Customer Records`;
 
-                renderBulkPreviewTable(data);
+                document.getElementById('bulk-high-count').innerText = data.high_risk_count || 0;
+                document.getElementById('bulk-med-count').innerText = data.medium_risk_count || 0;
+                document.getElementById('bulk-low-count').innerText = data.low_risk_count || 0;
+                document.getElementById('bulk-total-loss').innerText = formatCurrency(data.total_annual_revenue_at_risk || 0);
 
-                // Dynamically update Customer Risk Distribution Pie Chart & Table with uploaded dataset!
-                updateRiskSegmentsUI(
-                    data.high_risk_count || 0,
-                    data.medium_risk_count || 0,
-                    data.low_risk_count || 0,
-                    `Uploaded File: ${data.filename || file.name}`
-                );
+                const tbody = document.getElementById('bulk-preview-tbody');
+                tbody.innerHTML = '';
+                (data.sample_results || []).slice(0, 50).forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-800/40 transition-colors";
+                    const isHigh = row.Risk_Level === 'HIGH';
+                    tr.innerHTML = `
+                        <td class="p-2.5 font-bold text-white">${row.customerID || 'CUST-ID'}</td>
+                        <td class="p-2.5 text-slate-400">${row.Contract}</td>
+                        <td class="p-2.5">${row.tenure} mo</td>
+                        <td class="p-2.5">${formatCurrency(row.MonthlyCharges)}</td>
+                        <td class="p-2.5 font-bold ${isHigh ? 'text-rose-400' : 'text-emerald-400'}">${((row.Churn_Probability || 0) * 100).toFixed(1)}%</td>
+                        <td class="p-2.5"><span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase ${isHigh ? 'bg-rose-500/20 text-rose-400' : 'bg-emerald-500/20 text-emerald-400'}">${row.Risk_Level}</span></td>
+                        <td class="p-2.5 font-bold text-white">${formatCurrency(row.Annual_Revenue_Risk || 0)}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
             } catch (err) {
                 console.error("Bulk upload failed:", err);
             }
-        }
-
-        function renderBulkPreviewTable(data) {
-            if (!data) return;
-
-            if (document.getElementById('bulk-high-count')) {
-                document.getElementById('bulk-high-count').innerText = (data.high_risk_count || 0).toLocaleString();
-            }
-            if (document.getElementById('bulk-med-count')) {
-                document.getElementById('bulk-med-count').innerText = (data.medium_risk_count || 0).toLocaleString();
-            }
-            if (document.getElementById('bulk-low-count')) {
-                document.getElementById('bulk-low-count').innerText = (data.low_risk_count || 0).toLocaleString();
-            }
-            if (document.getElementById('bulk-rev-exposure')) {
-                document.getElementById('bulk-rev-exposure').innerText = formatCurrency(data.total_annual_revenue_at_risk || 0);
-            }
-
-            filterBulkPreviewTable();
-        }
-
-        function filterBulkPreviewTable() {
-            if (!lastBulkData || !lastBulkData.sample_results) return;
-            const searchEl = document.getElementById('bulk-table-search');
-            const search = searchEl ? searchEl.value.toLowerCase() : '';
-            const body = document.getElementById('bulk-preview-table-body');
-            if (!body) return;
-
-            body.innerHTML = '';
-
-            const filtered = lastBulkData.sample_results.filter(item => {
-                const id = String(item.customerID || '').toLowerCase();
-                const risk = String(item.Risk_Level || '').toLowerCase();
-                const contract = String(item.Contract || '').toLowerCase();
-                return id.includes(search) || risk.includes(search) || contract.includes(search);
-            });
-
-            filtered.slice(0, 100).forEach(item => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-900/50 transition-colors";
-
-                const risk = (item.Risk_Level || 'LOW').toUpperCase();
-                let badgeClass = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
-                if (risk === 'HIGH') badgeClass = 'bg-rose-500/20 text-rose-400 border-rose-500/30';
-                else if (risk === 'MEDIUM') badgeClass = 'bg-amber-500/20 text-amber-400 border-amber-500/30';
-
-                const probPct = item.Churn_Probability !== undefined ? (item.Churn_Probability * 100).toFixed(1) + '%' : '';
-
-                tr.innerHTML = `
-                    <td class="px-3 py-2 font-mono font-bold text-white">${item.customerID || 'N/A'}</td>
-                    <td class="px-3 py-2 text-slate-400">${item.Contract || 'Month-to-month'}</td>
-                    <td class="px-3 py-2 text-slate-400">${item.tenure} mos</td>
-                    <td class="px-3 py-2 text-slate-300 font-semibold">${formatCurrency(item.MonthlyCharges || 0)}</td>
-                    <td class="px-3 py-2">
-                        <span class="px-2 py-0.5 rounded text-[9px] font-extrabold uppercase border ${badgeClass}">${risk} (${probPct})</span>
-                    </td>
-                    <td class="px-3 py-2 text-right font-mono font-bold text-rose-400">${formatCurrency(item.Annual_Revenue_Risk || 0)}</td>
-                `;
-                body.appendChild(tr);
-            });
         }
 
         function exportBulkResultsCSV() {
@@ -1505,17 +1308,8 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `TelcoPulse_Diagnostic_Report.csv`;
+            a.download = `TelcoPulse_Batch_Predictions.csv`;
             a.click();
-        }
-
-        function exportBulkResultsPDF() {
-            alert("Generating Executive PDF Retention Report...");
-            exportBulkResultsCSV();
-        }
-
-        function exportBulkResultsExcel() {
-            exportBulkResultsCSV();
         }
 
         function exportBulkResultsJSON() {
@@ -1524,12 +1318,15 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `TelcoPulse_Diagnostic_Data.json`;
+            a.download = `TelcoPulse_Batch_Predictions.json`;
             a.click();
         }
 
+        // 6. Financial Loss & ROI Calculator
         function calculateROI() {
-            const cust = parseInt(document.getElementById('roi-cust').value);
+            const custInput = document.getElementById('roi-cust');
+            if (!custInput) return;
+            const cust = parseInt(custInput.value);
             const arpu = parseFloat(document.getElementById('roi-arpu').value);
             const succ = parseFloat(document.getElementById('roi-succ').value) / 100.0;
 
@@ -1542,29 +1339,43 @@
 
             document.getElementById('roi-gross-loss').innerText = formatCurrency(annualGrossLoss);
             document.getElementById('roi-retained-sav').innerText = formatCurrency(netSaved);
-            document.getElementById('roi-summary-text').innerText = `Targeting high-risk subscribers saves ${formatCurrency(netSaved)} annually across ${cust.toLocaleString()} monitored accounts.`;
+            document.getElementById('roi-summary-text').innerText = `Deploying proactive retention campaigns preserves ${formatCurrency(netSaved)} annually across ${cust.toLocaleString()} monitored customer accounts.`;
         }
 
-        // Mock Customer Directory
+        // 7. Customer Directory Filter
         const mockDirectory = [
             { id: "7590-VHVEG", contract: "Month-to-month", tenure: 1, bill: 29.85, risk: "HIGH" },
             { id: "5575-GNVDE", contract: "One year", tenure: 34, bill: 56.95, risk: "LOW" },
             { id: "3668-QVRWS", contract: "Month-to-month", tenure: 2, bill: 53.85, risk: "HIGH" },
             { id: "7795-CFOCW", contract: "One year", tenure: 45, bill: 42.30, risk: "LOW" },
             { id: "9237-HQJTC", contract: "Month-to-month", tenure: 2, bill: 70.70, risk: "HIGH" },
-            { id: "9305-CDSKC", contract: "Month-to-month", tenure: 8, bill: 99.65, risk: "HIGH" }
+            { id: "9305-CDSKC", contract: "Month-to-month", tenure: 8, bill: 99.65, risk: "HIGH" },
+            { id: "1452-KIOVK", contract: "Month-to-month", tenure: 22, bill: 89.10, risk: "HIGH" },
+            { id: "6713-OKOMC", contract: "One year", tenure: 10, bill: 29.75, risk: "LOW" }
         ];
 
         let currentDirFilter = 'all';
-
         function setDirFilter(filter) {
             currentDirFilter = filter;
+            ['all', 'churned', 'retained'].forEach(f => {
+                const btn = document.getElementById(`dir-filter-${f}`);
+                if (btn) {
+                    if (f === filter) {
+                        btn.className = "px-2 py-1 rounded bg-slate-800 text-white font-bold";
+                    } else {
+                        btn.className = "px-2 py-1 rounded text-slate-400 hover:text-white";
+                    }
+                }
+            });
             filterDirectory();
         }
 
         function filterDirectory() {
-            const search = document.getElementById('dir-search').value.toLowerCase();
+            const searchInput = document.getElementById('dir-search');
+            if (!searchInput) return;
+            const search = searchInput.value.toLowerCase();
             const body = document.getElementById('directory-table-body');
+            if (!body) return;
             body.innerHTML = '';
 
             mockDirectory.filter(item => {
@@ -1575,262 +1386,168 @@
                 return matchSearch && matchFilter;
             }).forEach(item => {
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-900/50 transition-colors";
+                tr.className = "hover:bg-slate-800/40 transition-colors";
                 tr.innerHTML = `
-                    <td class="px-4 py-3 font-mono font-bold text-white">${item.id}</td>
-                    <td class="px-4 py-3 text-slate-400">${item.contract}</td>
-                    <td class="px-4 py-3 text-slate-400">${item.tenure} mos</td>
-                    <td class="px-4 py-3 text-slate-300 font-semibold">${formatCurrency(item.bill)}</td>
-                    <td class="px-4 py-3">
-                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${item.risk === 'HIGH' ? 'bg-rose-500/20 text-rose-400' : 'bg-emerald-500/20 text-emerald-400'}">${item.risk}</span>
-                    </td>
-                    <td class="px-4 py-3 text-right">
-                        <button onclick="loadDirItem('${item.contract}', ${item.tenure}, ${item.bill})" class="text-sky-400 font-bold hover:underline">Inspect →</button>
+                    <td class="p-3 font-bold text-white">${item.id}</td>
+                    <td class="p-3 text-slate-400">${item.contract}</td>
+                    <td class="p-3">${item.tenure} mo</td>
+                    <td class="p-3">${formatCurrency(item.bill)}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase ${item.risk === 'HIGH' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'}">${item.risk}</span></td>
+                    <td class="p-3 text-right">
+                        <button onclick="loadDirectoryCustomer('${item.contract}', ${item.tenure}, ${item.bill})" class="px-2.5 py-1 rounded bg-sky-600/20 hover:bg-sky-600/40 text-sky-400 font-bold text-[10px]">Diagnose</button>
                     </td>
                 `;
                 body.appendChild(tr);
             });
         }
 
-        function loadDirItem(contract, tenure, bill) {
+        function loadDirectoryCustomer(contract, tenure, bill) {
+            navigateToPage('prediction');
             document.getElementById('contract').value = contract;
             document.getElementById('tenure').value = tenure;
             document.getElementById('charges').value = bill;
             updateCalculations();
-            window.location.hash = '#assessor';
+            document.getElementById('single-predict-form').dispatchEvent(new Event('submit'));
         }
 
-        async function fetchStatsAndInitCharts() {
-            // Feature Drivers Gini Chart
-            new Chart(document.getElementById('giniChart').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: ['Contract Type', 'Tenure', 'Monthly Charges', 'Tech Support', 'Internet Tech'],
-                    datasets: [{
-                        data: [0.28, 0.24, 0.19, 0.15, 0.14],
-                        backgroundColor: '#38bdf8'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#1e293b' } },
-                        y: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#1e293b' } }
-                    }
-                }
-            });
+        // 8. Chart Rendering Instances
+        let overviewRiskChartInstance = null;
+        let overviewContractChartInstance = null;
+        let analyticsRiskPieInstance = null;
+        let analyticsCohortsChartInstance = null;
 
-            // Tenure vs Churn Rate Chart
-            new Chart(document.getElementById('tenureChart').getContext('2d'), {
-                type: 'line',
-                data: {
-                    labels: ['0-12 Mos', '13-24 Mos', '25-36 Mos', '37-48 Mos', '49-60 Mos', '61-72 Mos'],
-                    datasets: [{
-                        label: 'Churn Rate (%)',
-                        data: [47.5, 28.6, 21.4, 15.2, 9.8, 6.1],
-                        borderColor: '#f43f5e',
-                        backgroundColor: 'rgba(244, 63, 94, 0.1)',
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#1e293b' } },
-                        y: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#1e293b' } }
-                    }
-                }
-            });
-        }
-
-        let riskChartInstance = null;
-
-        function updateRiskSegmentsUI(high, medium, low, sourceLabel) {
-            const total = high + medium + low;
-            const highPct = total > 0 ? ((high / total) * 100).toFixed(1) : '0.0';
-            const mediumPct = total > 0 ? ((medium / total) * 100).toFixed(1) : '0.0';
-            const lowPct = total > 0 ? ((low / total) * 100).toFixed(1) : '0.0';
-
-            const periodEl = document.getElementById('risk-segments-period');
-            if (periodEl) {
-                periodEl.innerText = `Dataset Source: ${sourceLabel} (${total.toLocaleString()} Accounts Analyzed)`;
-            }
-
-            const bodyEl = document.getElementById('risk-segments-body');
-            if (bodyEl) {
-                bodyEl.innerHTML = `
-                    <tr class="hover:bg-slate-900/50 transition-colors">
-                        <td class="px-4 py-3 font-bold text-rose-400">High Risk</td>
-                        <td class="px-4 py-3 text-right font-mono text-xs">&ge; 0.70</td>
-                        <td class="px-4 py-3 text-right text-white font-semibold">${high.toLocaleString()}</td>
-                        <td class="px-4 py-3 text-right font-mono text-xs">${highPct}%</td>
-                    </tr>
-                    <tr class="hover:bg-slate-900/50 transition-colors">
-                        <td class="px-4 py-3 font-bold text-amber-400">Medium Risk</td>
-                        <td class="px-4 py-3 text-right font-mono text-xs">0.40 - 0.69</td>
-                        <td class="px-4 py-3 text-right text-white font-semibold">${medium.toLocaleString()}</td>
-                        <td class="px-4 py-3 text-right font-mono text-xs">${mediumPct}%</td>
-                    </tr>
-                    <tr class="hover:bg-slate-900/50 transition-colors">
-                        <td class="px-4 py-3 font-bold text-emerald-400">Low Risk</td>
-                        <td class="px-4 py-3 text-right font-mono text-xs">&lt; 0.40</td>
-                        <td class="px-4 py-3 text-right text-white font-semibold">${low.toLocaleString()}</td>
-                        <td class="px-4 py-3 text-right font-mono text-xs">${lowPct}%</td>
-                    </tr>
-                `;
-            }
-
-            const canvas = document.getElementById('riskSegmentsChart');
-            if (canvas) {
-                if (riskChartInstance) {
-                    riskChartInstance.destroy();
-                }
-
-                riskChartInstance = new Chart(canvas.getContext('2d'), {
-                    type: 'pie',
+        function renderOverviewCharts() {
+            const ctxRisk = document.getElementById('overviewRiskChart');
+            if (ctxRisk && !overviewRiskChartInstance) {
+                overviewRiskChartInstance = new Chart(ctxRisk, {
+                    type: 'doughnut',
                     data: {
                         labels: ['High Risk', 'Medium Risk', 'Low Risk'],
                         datasets: [{
-                            data: [high, medium, low],
-                            backgroundColor: ['#f43f5e', '#fbbf24', '#34d399'],
+                            data: [1869, 1280, 3894],
+                            backgroundColor: ['#f43f5e', '#f59e0b', '#10b981'],
                             borderWidth: 0
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        animation: {
-                            duration: 1000,
-                            easing: 'easeOutQuart'
-                        },
                         plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: { color: '#94a3b8', font: { size: 11 } }
-                            }
+                            legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 } } }
+                        }
+                    }
+                });
+            }
+
+            const ctxContract = document.getElementById('overviewContractChart');
+            if (ctxContract && !overviewContractChartInstance) {
+                overviewContractChartInstance = new Chart(ctxContract, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Month-to-month', 'One year', 'Two year'],
+                        datasets: [{
+                            label: 'Churn Rate %',
+                            data: [42.7, 11.2, 2.8],
+                            backgroundColor: ['#f43f5e', '#f59e0b', '#10b981'],
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                            x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
                         }
                     }
                 });
             }
         }
 
-        async function fetchRiskSegments() {
-            try {
-                const res = await fetch('/api/risk-segments');
-                const data = await res.json();
-                
-                const high = data.segments["High Risk"];
-                const medium = data.segments["Medium Risk"];
-                const low = data.segments["Low Risk"];
-                
-                updateRiskSegmentsUI(high, medium, low, data.period || "Default System Dataset");
-            } catch (err) {
-                console.error("Failed to load risk segments:", err);
-            }
-        }
-
-        const sectorData = [
-            { domain: "Technology", title: "Enterprise Tech Workspace", desc: "Cloud SaaS subscription monitoring analyzing API rate limits, seat utilization, and integration churn signals.", strategy: "Deploy automated account executive check-in when API calls drop >30% month-over-month.", img: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" },
-            { domain: "AI & ML", title: "Neural AI Dashboard", desc: "Model inference tracking and feature drift detection across real-time decision algorithms.", strategy: "Offer complimentary ML infrastructure optimization consulting for high-volume endpoints.", img: "https://images.unsplash.com/photo-1555255707-c07966088b7b?auto=format&fit=crop&w=800&q=80" },
-            { domain: "Data Science", title: "Analytics & Cohorts", desc: "Cohort churn analysis identifying tenure decay curves and contract conversion probability.", strategy: "Proactively send annual plan discount offers prior to Month 11 contract renewal deadlines.", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" },
-            { domain: "Web Engineering", title: "Developer Workspace", desc: "Full-stack web application diagnostic portal supporting instant API scoring and batch upload datasets.", strategy: "Provide dedicated technical developer support and priority webhook integrations.", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80" },
-            { domain: "Finance & MRR", title: "Financial Risk Model", desc: "Annualized revenue exposure quantification mapping high-risk subscribers directly to financial impact.", strategy: "Trigger high-priority retention specialist intervention for accounts with ARR > $5,000.", img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" },
-            { domain: "Healthcare", title: "Healthcare Tech Platform", desc: "Telehealth subscription renewal tracking and patient consultation engagement metrics.", strategy: "Bundle specialized health telemetry add-ons to improve multi-device user engagement.", img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80" }
-        ];
-
-        let selectedModalIndex = 0;
-
-        function openOpportunityModal(index) {
-            selectedModalIndex = index;
-            const item = sectorData[index];
-            document.getElementById('modal-domain-badge').innerText = item.domain;
-            document.getElementById('modal-title').innerText = item.title;
-            document.getElementById('modal-desc').innerText = item.desc;
-            document.getElementById('modal-strategy').innerText = item.strategy;
-            document.getElementById('modal-image').src = item.img;
-
-            const modal = document.getElementById('opp-modal');
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-            modal.classList.add('opacity-100', 'pointer-events-auto');
-        }
-
-        function closeOpportunityModal() {
-            const modal = document.getElementById('opp-modal');
-            modal.classList.remove('opacity-100', 'pointer-events-auto');
-            modal.classList.add('opacity-0', 'pointer-events-none');
-        }
-
-        function applyModalPreset() {
-            closeOpportunityModal();
-            window.location.hash = '#assessor';
-        }
-
-        async function fetchGovernanceData() {
-            try {
-                const [benchRes, govRes] = await Promise.all([
-                    fetch('/api/benchmark').then(r => r.json()).catch(() => null),
-                    fetch('/api/governance').then(r => r.json()).catch(() => null)
-                ]);
-
-                if (benchRes && benchRes.leaderboard) {
-                    const tbody = document.getElementById('benchmark-tbody');
-                    if (tbody) {
-                        tbody.innerHTML = '';
-                        benchRes.leaderboard.forEach(m => {
-                            const isChamp = m.algorithm === benchRes.champion_model;
-                            const tr = document.createElement('tr');
-                            tr.className = "text-slate-300 hover:bg-slate-900/40 transition-colors";
-                            tr.innerHTML = `
-                                <td class="py-2.5 font-bold ${isChamp ? 'text-white flex items-center' : 'text-slate-300'}">
-                                    ${isChamp ? '<i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-400 mr-1.5"></i>' : ''}${m.algorithm.replace('_', ' ')}
-                                </td>
-                                <td class="py-2.5 text-slate-400">${m.model_family || 'Supervised ML'}</td>
-                                <td class="py-2.5 text-center font-bold ${isChamp ? 'text-emerald-400' : 'text-slate-300'}">${m.recall !== undefined ? m.recall.toFixed(3) : '0.750'}</td>
-                                <td class="py-2.5 text-center font-bold ${isChamp ? 'text-emerald-400' : 'text-slate-300'}">${m.roc_auc !== undefined ? m.roc_auc.toFixed(3) : '0.833'}</td>
-                                <td class="py-2.5 text-center text-slate-400">${m.inference_latency_ms !== undefined ? m.inference_latency_ms + 'ms' : '1.1ms'}</td>
-                                <td class="py-2.5 text-right">
-                                    <span class="px-2 py-0.5 rounded text-[9px] font-extrabold uppercase ${isChamp ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-400 border border-slate-700'}">
-                                        ${isChamp ? 'Champion' : 'Evaluated'}
-                                    </span>
-                                </td>
-                            `;
-                            tbody.appendChild(tr);
-                        });
-                        if (window.lucide) lucide.createIcons();
-                    }
-                }
-
-                if (govRes && govRes.data_drift_monitoring) {
-                    const driftBadge = document.getElementById('drift-status-badge');
-                    if (driftBadge) {
-                        const hasDrift = govRes.data_drift_monitoring.drift_detected;
-                        if (hasDrift) {
-                            driftBadge.className = "px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-rose-500/20 text-rose-400 border border-rose-500/30";
-                            driftBadge.innerText = "Drift Warning (Retrain Triggered)";
-                        } else {
-                            driftBadge.className = "px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
-                            driftBadge.innerText = "Zero Drift (Stable)";
+        function renderAnalyticsCharts() {
+            const ctxPie = document.getElementById('analyticsRiskPie');
+            if (ctxPie && !analyticsRiskPieInstance) {
+                analyticsRiskPieInstance = new Chart(ctxPie, {
+                    type: 'pie',
+                    data: {
+                        labels: ['High Risk (Churn)', 'Medium Risk (Monitor)', 'Low Risk (Loyal)'],
+                        datasets: [{
+                            data: [26.54, 18.20, 55.26],
+                            backgroundColor: ['#f43f5e', '#f59e0b', '#10b981'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 } } }
                         }
                     }
-                }
-            } catch (err) {
-                console.error("Failed to load MLOps governance data:", err);
+                });
+            }
+
+            const ctxCohorts = document.getElementById('analyticsCohortsChart');
+            if (ctxCohorts && !analyticsCohortsChartInstance) {
+                analyticsCohortsChartInstance = new Chart(ctxCohorts, {
+                    type: 'line',
+                    data: {
+                        labels: ['Month 1', 'Month 6', 'Month 12', 'Month 24', 'Month 36', 'Month 48', 'Month 72'],
+                        datasets: [{
+                            label: 'Subscriber Survival Rate %',
+                            data: [100, 82, 74, 68, 64, 61, 58],
+                            borderColor: '#38bdf8',
+                            backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                            fill: true,
+                            tension: 0.35,
+                            pointBackgroundColor: '#38bdf8'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { labels: { color: '#94a3b8' } }
+                        },
+                        scales: {
+                            y: { min: 40, max: 100, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                            x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+                        }
+                    }
+                });
             }
         }
 
+        // 9. Initial Load Handlers
         window.onload = () => {
+            const initialPath = window.location.pathname.replace('/', '') || 'overview';
+            navigateToPage(initialPath, false);
+
             updateCalculations();
             calculateROI();
-            fetchStatsAndInitCharts();
-            init3DParticleNetwork();
-            init3DTiltCards();
-            fetchRiskSegments();
             filterDirectory();
-            fetchGovernanceData();
+
+            // Fetch live governance and telemetry
+            fetch('/api/governance').then(r => r.json()).then(data => {
+                if (data && data.data_drift_monitoring) {
+                    const badge = document.getElementById('drift-status-badge');
+                    if (badge) {
+                        badge.innerText = data.data_drift_monitoring.drift_detected ? "Drift Warning" : "Zero Drift (Stable)";
+                    }
+                }
+            }).catch(() => {});
+
+            fetch('/api/metrics').then(r => r.json()).then(data => {
+                if (data) {
+                    const preds = document.getElementById('telemetry-total-preds');
+                    const lat = document.getElementById('telemetry-latency');
+                    if (preds) preds.innerText = data.total_predictions || 142;
+                    if (lat) lat.innerText = `${(data.average_latency_ms || 1.8).toFixed(1)} ms`;
+                }
+            }).catch(() => {});
         };
     </script>
 </body>

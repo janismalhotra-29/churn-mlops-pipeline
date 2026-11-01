@@ -112,12 +112,17 @@ app = FastAPI(
 )
 
 @app.get("/", response_class=HTMLResponse)
+@app.get("/prediction", response_class=HTMLResponse)
+@app.get("/analytics", response_class=HTMLResponse)
+@app.get("/model-performance", response_class=HTMLResponse)
+@app.get("/dataset", response_class=HTMLResponse)
+@app.get("/monitoring", response_class=HTMLResponse)
 def read_dashboard():
-    """Serve the enterprise web portal UI."""
+    """Serve the enterprise multi-page dashboard UI."""
     if os.path.exists(TEMPLATE_PATH):
         with open(TEMPLATE_PATH, "r", encoding="utf-8") as f:
             return HTMLResponse(content=f.read())
-    return HTMLResponse(content="<h2>TelcoCare API</h2><p>Visit <a href='/docs'>/docs</a></p>")
+    return HTMLResponse(content="<h2>TelcoPulse API</h2><p>Visit <a href='/docs'>/docs</a></p>")
 
 @app.get("/api/stats")
 def get_dataset_stats():
