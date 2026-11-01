@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-50">
+<html lang="en" class="h-full bg-[#081325]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TelcoPulse - Enterprise Customer Retention Analytics Platform</title>
+    <title>TelcoPulse AI - Enterprise Customer Retention & MLOps Platform</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Three.js 3D WebGL Library for Particle Constellation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Lucide Icons -->
@@ -15,51 +17,89 @@
     <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        navy: {
+                            950: '#060e1c',
+                            900: '#081325',
+                            850: '#0b1930',
+                            800: '#0d1e36',
+                            750: '#112543',
+                            700: '#162e52',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         body {
-            background-color: #f8fafc;
-            color: #0f172a;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #081325;
+            color: #f1f5f9;
             overflow-x: hidden;
         }
 
-        /* Clean Enterprise White Card Surfaces */
-        .exec-card, .kpi-tile {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+        /* PowerBI / Executive Dark Card Surfaces */
+        .exec-card, .tilt-card-3d {
+            background: #0d1e36;
+            border: 1px solid #1a365d;
             border-radius: 0.875rem;
-            box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.03);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.2);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+            transform-style: preserve-3d;
+            will-change: transform;
         }
-        .exec-card:hover, .kpi-tile:hover {
-            border-color: #cbd5e1;
-            box-shadow: 0 10px 20px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
-            transform: translateY(-1px);
+        .exec-card:hover, .tilt-card-3d:hover {
+            border-color: #2b6cb0;
+            box-shadow: 0 16px 30px -10px rgba(14, 165, 233, 0.2);
+        }
+
+        /* Top KPI Cards */
+        .kpi-tile {
+            background: linear-gradient(180deg, #0f233f 0%, #0c1c33 100%);
+            border: 1px solid #1e3a63;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+        .kpi-tile:hover {
+            border-color: #3182ce;
+            transform: translateY(-2px);
         }
 
         /* Sidebar Navigation Active Pill */
         .sidebar-link {
-            transition: all 0.15s ease-in-out;
-            color: #475569;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            color: #94a3b8;
         }
         .sidebar-link:hover {
-            background-color: #f1f5f9;
-            color: #0f172a;
+            background-color: #112543;
+            color: #ffffff;
+            transform: translateX(3px);
         }
         .sidebar-link.active {
-            background-color: #e0f2fe;
-            color: #0369a1;
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0.2) 0%, rgba(56, 189, 248, 0.05) 100%);
+            color: #38bdf8;
             font-weight: 700;
+            border-left: 3px solid #38bdf8;
         }
         .sidebar-link.active i {
-            color: #0284c7;
+            color: #38bdf8;
         }
 
         /* Page Entrance Animation */
         .page-view {
             display: none;
             opacity: 0;
-            animation: fadeInPage 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeInPage 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         .page-view.active-page {
             display: block;
@@ -68,11 +108,11 @@
         @keyframes fadeInPage {
             from {
                 opacity: 0;
-                transform: translateY(6px);
+                transform: translateY(8px) scale(0.995);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
@@ -82,18 +122,18 @@
             height: 18px;
             width: 18px;
             border-radius: 50%;
-            background: #0284c7;
+            background: #38bdf8;
             cursor: pointer;
-            box-shadow: 0 0 6px rgba(2, 132, 199, 0.4);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
             transition: transform 0.15s ease;
         }
         input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.15);
+            transform: scale(1.2);
         }
 
         /* Radial Speedometer Gauge Arc */
         .gauge-circle-bg {
-            stroke: #e2e8f0;
+            stroke: #1e3a63;
             stroke-width: 12;
             fill: none;
         }
@@ -106,32 +146,40 @@
         }
     </style>
 </head>
-<body class="h-full flex antialiased selection:bg-sky-500 selection:text-white">
+<body class="h-full flex antialiased relative selection:bg-sky-500 selection:text-white">
+
+    <!-- 3D WebGL Background Canvas for Particle Constellation -->
+    <canvas id="webgl-3d-particles" class="fixed inset-0 pointer-events-none z-0 opacity-30"></canvas>
+
+    <!-- Ambient Glowing Light Blobs -->
+    <div class="fixed top-20 left-1/4 w-96 h-96 bg-sky-500/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-20 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
     <!-- Mobile Backdrop -->
-    <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/30 backdrop-blur-xs z-40 hidden md:hidden"></div>
+    <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 hidden md:hidden"></div>
 
     <!-- ========================================================================= -->
-    <!-- FIXED SIDEBAR (Clean Corporate White & Slate) -->
+    <!-- FIXED SIDEBAR (Executive Dark Navy) -->
     <!-- ========================================================================= -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex flex-col transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#071120] border-r border-[#1a365d] flex flex-col transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0 shadow-2xl">
         
-        <!-- Brand Header with Crisp Corporate 3-Bar Chart Icon -->
-        <div class="h-18 px-5 border-b border-slate-100 flex items-center justify-between">
+        <!-- Brand Header with Glowing 3-Bar Chart Icon -->
+        <div class="h-18 px-5 border-b border-[#142947] flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-sky-600 flex items-center justify-center shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 via-sky-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-sky-500/25">
                     <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M4 19h4V9H4v10zm6 0h4V5h-4v14zm6 0h4v-7h-4v7z"/>
                     </svg>
                 </div>
                 <div>
-                    <span class="text-base font-extrabold text-slate-900 tracking-tight block leading-tight">TelcoPulse</span>
-                    <span class="text-[11px] font-bold text-sky-600 tracking-wide block">
-                        Enterprise Retention BI
+                    <span class="text-base font-extrabold text-white tracking-tight block leading-tight">TelcoPulse AI</span>
+                    <span class="text-[11px] font-bold text-sky-400 tracking-wide flex items-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-sky-400 mr-1.5 animate-pulse"></span>
+                        Executive MLOps
                     </span>
                 </div>
             </div>
-            <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-slate-600">
+            <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-white">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
@@ -171,39 +219,39 @@
             </nav>
 
             <!-- Developer Shortcuts -->
-            <div class="pt-4 border-t border-slate-100">
+            <div class="pt-4 border-t border-[#142947]">
                 <span class="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 block mb-2">Developer Tools</span>
                 <nav class="space-y-1">
-                    <a href="/docs" target="_blank" class="w-full flex items-center px-3.5 py-2 rounded-xl text-xs font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors">
+                    <a href="/docs" target="_blank" class="w-full flex items-center px-3.5 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-[#112543] transition-colors">
                         <i data-lucide="code" class="w-4 h-4 mr-3 text-slate-400"></i>
                         <span>REST API OpenAPI Docs</span>
-                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 ml-auto text-slate-300"></i>
+                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 ml-auto text-slate-500"></i>
                     </a>
-                    <a href="http://127.0.0.1:5000" target="_blank" title="Start MLflow: python -m mlflow ui --backend-store-uri sqlite:///mlflow.db --port 5000" class="w-full flex items-center px-3.5 py-2 rounded-xl text-xs font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors">
+                    <a href="http://127.0.0.1:5000" target="_blank" title="Start MLflow: python -m mlflow ui --backend-store-uri sqlite:///mlflow.db --port 5000" class="w-full flex items-center px-3.5 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-[#112543] transition-colors">
                         <i data-lucide="git-branch" class="w-4 h-4 mr-3 text-slate-400"></i>
                         <span>MLflow Experiment UI</span>
-                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded bg-sky-50 text-sky-700 font-mono font-bold border border-sky-100">:5000</span>
+                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded bg-sky-950 text-sky-400 border border-sky-800 font-mono font-bold">:5000</span>
                     </a>
                 </nav>
             </div>
         </div>
 
         <!-- Bottom: Production Model Widget -->
-        <div class="p-3 border-t border-slate-100 bg-slate-50/70">
-            <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-2 text-xs">
+        <div class="p-3 border-t border-[#142947] bg-[#060e1a]">
+            <div class="p-3 rounded-xl bg-[#0d1e36] border border-[#1a365d] space-y-2 text-xs">
                 <div class="flex items-center justify-between">
                     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Champion Model</span>
-                    <span class="flex items-center text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>Production
+                    <span class="flex items-center text-[10px] font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-800">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping mr-1.5"></span>Production
                     </span>
                 </div>
-                <div class="flex items-center justify-between text-slate-700">
-                    <span class="font-bold text-slate-900">RandomForest</span>
-                    <span class="font-mono text-[11px] font-bold text-sky-700 bg-sky-50 px-1.5 py-0.5 rounded border border-sky-100">v2.1</span>
+                <div class="flex items-center justify-between text-slate-300">
+                    <span class="font-bold text-white">RandomForest</span>
+                    <span class="font-mono text-[11px] font-bold text-sky-400 bg-sky-950 px-1.5 py-0.5 rounded border border-sky-800">v2.1</span>
                 </div>
-                <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1 border-t border-slate-100">
-                    <span>Cutoff: <strong class="font-mono text-slate-700">0.23</strong></span>
-                    <span>ROC-AUC: <strong class="font-mono text-sky-600 font-bold">84.6%</strong></span>
+                <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-[#142947]">
+                    <span>Cutoff: <strong class="font-mono text-white">0.23</strong></span>
+                    <span>ROC-AUC: <strong class="font-mono text-sky-400 font-bold">84.6%</strong></span>
                 </div>
             </div>
         </div>
@@ -212,19 +260,19 @@
     <!-- ========================================================================= -->
     <!-- MAIN WORKSPACE -->
     <!-- ========================================================================= -->
-    <div class="flex-1 md:pl-64 flex flex-col min-h-screen">
+    <div class="flex-1 md:pl-64 flex flex-col min-h-screen relative z-10">
         
-        <!-- Clean White Header -->
-        <header class="sticky top-0 z-30 h-16 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 sm:px-8 flex items-center justify-between">
+        <!-- Sticky Top Header -->
+        <header class="sticky top-0 z-30 h-16 bg-[#071120]/90 backdrop-blur-md border-b border-[#1a365d] px-4 sm:px-8 flex items-center justify-between shadow-md">
             
             <div class="flex items-center space-x-3">
-                <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-500 hover:text-slate-800">
+                <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-white">
                     <i data-lucide="menu" class="w-5 h-5"></i>
                 </button>
-                <div class="flex items-center space-x-2 text-xs text-slate-500">
-                    <span class="font-medium text-slate-400">TelcoPulse</span>
-                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-300"></i>
-                    <span id="breadcrumb-title" class="font-bold text-slate-900">Overview Dashboard</span>
+                <div class="flex items-center space-x-2 text-xs text-slate-400">
+                    <span class="font-medium text-slate-500">TelcoPulse AI</span>
+                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-600"></i>
+                    <span id="breadcrumb-title" class="font-bold text-white">Overview Dashboard</span>
                 </div>
             </div>
 
@@ -232,23 +280,23 @@
             <div class="flex items-center space-x-3">
                 
                 <!-- Currency Switcher ($ USD / ₹ INR) -->
-                <div class="flex p-0.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-bold">
-                    <button onclick="setCurrency('USD')" id="curr-usd" class="px-2.5 py-1 rounded-full bg-white text-slate-900 shadow-xs transition-all">
+                <div class="flex p-0.5 rounded-full bg-[#0d1e36] border border-[#1e3a63] text-xs font-bold shadow-inner">
+                    <button onclick="setCurrency('USD')" id="curr-usd" class="px-2.5 py-1 rounded-full bg-sky-500 text-white shadow-xs transition-all">
                         $ USD
                     </button>
-                    <button onclick="setCurrency('INR')" id="curr-inr" class="px-2.5 py-1 rounded-full text-slate-500 hover:text-slate-900 transition-all">
+                    <button onclick="setCurrency('INR')" id="curr-inr" class="px-2.5 py-1 rounded-full text-slate-400 hover:text-white transition-all">
                         ₹ INR
                     </button>
                 </div>
 
                 <!-- Primary Action Button: Run Churn Diagnostic -->
-                <button onclick="navigateToPage('prediction')" class="flex items-center px-4 py-1.5 rounded-full bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-xs hover:shadow transition-all space-x-1.5">
+                <button onclick="navigateToPage('prediction')" class="flex items-center px-4 py-1.5 rounded-full bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-600 hover:to-cyan-600 text-white text-xs font-bold shadow-md shadow-sky-500/25 hover:shadow-lg hover:scale-105 transition-all space-x-1.5">
                     <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
                     <span>Run Churn Diagnostic</span>
                 </button>
 
                 <!-- User Avatar: JM -->
-                <div class="w-8 h-8 rounded-full bg-sky-600 text-white font-extrabold text-xs flex items-center justify-center shadow-xs cursor-default">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-sky-500 to-cyan-400 text-white font-extrabold text-xs flex items-center justify-center shadow-md cursor-default">
                     JM
                 </div>
             </div>
@@ -258,114 +306,114 @@
         <main class="flex-1 p-4 sm:p-6 max-w-[1400px] w-full mx-auto space-y-6">
 
             <!-- ========================================================================= -->
-            <!-- PAGE 1: OVERVIEW DASHBOARD (Exact PowerBI Layout in Crisp Corporate White) -->
+            <!-- PAGE 1: OVERVIEW DASHBOARD (Exact PowerBI / Executive Analytics Layout) -->
             <!-- ========================================================================= -->
             <div id="page-overview" class="page-view active-page space-y-5">
                 
-                <!-- TOP KPI ROW: Exact 6 Cards matching user's image in White Tone -->
+                <!-- TOP KPI ROW: Exact 6 Cards matching user's image -->
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
                     
                     <!-- KPI 1: Total Customers -->
                     <div class="kpi-tile p-4 text-center space-y-1">
-                        <span id="kpi-total-cust" class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono tracking-tight block">7,043</span>
-                        <span class="text-[11px] font-semibold text-slate-500 block">Total Customers</span>
+                        <span id="kpi-total-cust" class="text-2xl sm:text-3xl font-extrabold text-white font-mono tracking-tight block">7,043</span>
+                        <span class="text-[11px] font-semibold text-slate-300 block">Total Customers</span>
                     </div>
 
                     <!-- KPI 2: Churned Customers -->
                     <div class="kpi-tile p-4 text-center space-y-1">
-                        <span id="kpi-churned-cust" class="text-2xl sm:text-3xl font-extrabold text-rose-500 font-mono tracking-tight block">1,869</span>
-                        <span class="text-[11px] font-semibold text-slate-500 block">Churned Customers</span>
+                        <span id="kpi-churned-cust" class="text-2xl sm:text-3xl font-extrabold text-[#feb2b2] font-mono tracking-tight block">1,869</span>
+                        <span class="text-[11px] font-semibold text-slate-300 block">Churned Customers</span>
                     </div>
 
                     <!-- KPI 3: Churn Rate -->
                     <div class="kpi-tile p-4 text-center space-y-1">
-                        <span id="kpi-churn-rate" class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono tracking-tight block">26.54%</span>
-                        <span class="text-[11px] font-semibold text-slate-500 block">Churn Rate</span>
+                        <span id="kpi-churn-rate" class="text-2xl sm:text-3xl font-extrabold text-white font-mono tracking-tight block">26.54%</span>
+                        <span class="text-[11px] font-semibold text-slate-300 block">Churn Rate</span>
                     </div>
 
                     <!-- KPI 4: Total Charges -->
                     <div class="kpi-tile p-4 text-center space-y-1">
-                        <span id="kpi-total-charges" class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono tracking-tight block">$16.06M</span>
-                        <span class="text-[11px] font-semibold text-slate-500 block">Total Charges</span>
+                        <span id="kpi-total-charges" class="text-2xl sm:text-3xl font-extrabold text-white font-mono tracking-tight block">$16.06M</span>
+                        <span class="text-[11px] font-semibold text-slate-300 block">Total Charges</span>
                     </div>
 
                     <!-- KPI 5: Total MRR -->
                     <div class="kpi-tile p-4 text-center space-y-1">
-                        <span id="kpi-total-mrr" class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono tracking-tight block">$456.12K</span>
-                        <span class="text-[11px] font-semibold text-slate-500 block">Total MRR</span>
+                        <span id="kpi-total-mrr" class="text-2xl sm:text-3xl font-extrabold text-white font-mono tracking-tight block">$456.12K</span>
+                        <span class="text-[11px] font-semibold text-slate-300 block">Total MRR</span>
                     </div>
 
                     <!-- KPI 6: Churned MRR -->
                     <div class="kpi-tile p-4 text-center space-y-1">
-                        <span id="kpi-churned-mrr" class="text-2xl sm:text-3xl font-extrabold text-rose-500 font-mono tracking-tight block">$139.13K</span>
-                        <span class="text-[11px] font-semibold text-slate-500 block">Churned MRR</span>
+                        <span id="kpi-churned-mrr" class="text-2xl sm:text-3xl font-extrabold text-[#feb2b2] font-mono tracking-tight block">$139.13K</span>
+                        <span class="text-[11px] font-semibold text-slate-300 block">Churned MRR</span>
                     </div>
                 </div>
 
-                <!-- MAIN 2x3 CHART GRID: Exact 6 Visualizations on White Cards -->
+                <!-- MAIN 2x3 CHART GRID: Exact 6 Visualizations matching user's image -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     
                     <!-- Chart 1 (Top Left): Total Customers by Churn -->
-                    <div class="exec-card p-5 space-y-3">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
-                            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide">Total Customers by Churn</h3>
+                    <div class="exec-card tilt-card-3d p-5 space-y-3">
+                        <div class="flex items-center justify-between border-b border-[#1a365d] pb-2.5">
+                            <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Total Customers by Churn</h3>
                         </div>
 
                         <div class="flex items-center justify-around h-52 pt-1">
                             <!-- Donut Canvas -->
                             <div class="relative w-44 h-44 flex-shrink-0">
                                 <canvas id="chartTotalChurnDonut"></canvas>
-                                <!-- Callout Labels -->
-                                <div class="absolute -top-1 left-2 text-[10px] font-mono text-rose-500 font-bold">2K (26.54%)</div>
-                                <div class="absolute -bottom-1 left-4 text-[10px] font-mono text-sky-600 font-bold">5K (73.46%)</div>
+                                <!-- Callout Labels In Overlay -->
+                                <div class="absolute -top-1 left-2 text-[10px] font-mono text-[#feb2b2] font-bold">2K (26.54%)</div>
+                                <div class="absolute -bottom-1 left-4 text-[10px] font-mono text-[#90cdf4] font-bold">5K (73.46%)</div>
                             </div>
 
                             <!-- Legend matching exact image style -->
                             <div class="space-y-2 text-xs">
-                                <span class="font-bold text-slate-700 block text-[11px] mb-1">Churn</span>
+                                <span class="font-bold text-slate-300 block text-[11px] mb-1">Churn</span>
                                 <div class="flex items-center space-x-2">
-                                    <span class="w-3 h-3 rounded-full bg-sky-400"></span>
-                                    <span class="text-slate-600 font-medium">No</span>
+                                    <span class="w-3 h-3 rounded-full bg-[#90cdf4]"></span>
+                                    <span class="text-slate-300 font-medium">No</span>
                                 </div>
                                 <div class="flex items-center space-x-2">
-                                    <span class="w-3 h-3 rounded-full bg-rose-300"></span>
-                                    <span class="text-slate-600 font-medium">Yes</span>
+                                    <span class="w-3 h-3 rounded-full bg-[#feb2b2]"></span>
+                                    <span class="text-slate-300 font-medium">Yes</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Chart 2 (Top Middle): Churn Rate by Internet Service -->
-                    <div class="exec-card p-5 space-y-3">
-                        <div class="flex flex-wrap items-center justify-between border-b border-slate-100 pb-2.5 gap-2">
-                            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide">Churn Rate by Internet Service</h3>
+                    <div class="exec-card tilt-card-3d p-5 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between border-b border-[#1a365d] pb-2.5 gap-2">
+                            <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Churn Rate by Internet Service</h3>
                             <!-- Legend on top matching image -->
-                            <div class="flex items-center space-x-2 text-[10px] font-medium text-slate-600">
-                                <span class="font-bold">Service:</span>
-                                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-rose-300 mr-1"></span>Fiber</span>
-                                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-sky-400 mr-1"></span>DSL</span>
-                                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-amber-300 mr-1"></span>No</span>
+                            <div class="flex items-center space-x-2 text-[10px] font-medium text-slate-300">
+                                <span>Internet Service</span>
+                                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-[#feb2b2] mr-1"></span>Fiber optic</span>
+                                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-[#90cdf4] mr-1"></span>DSL</span>
+                                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-[#fefcbf] mr-1"></span>No</span>
                             </div>
                         </div>
 
                         <div class="flex items-center justify-center h-52 relative pt-1">
                             <div class="relative w-44 h-44">
                                 <canvas id="chartInternetServiceDonut"></canvas>
-                                <div class="absolute top-1 right-2 text-[9px] font-mono text-amber-600 font-bold">7.40% (10.85%)</div>
-                                <div class="absolute top-8 left-0 text-[9px] font-mono text-rose-500 font-bold">18.96%<br>(27.78%)</div>
-                                <div class="absolute -bottom-1 right-4 text-[9px] font-mono text-sky-600 font-bold">41.89% (61.38%)</div>
+                                <div class="absolute top-1 right-2 text-[9px] font-mono text-[#fefcbf] font-bold">7.40% (10.85%)</div>
+                                <div class="absolute top-8 left-0 text-[9px] font-mono text-[#feb2b2] font-bold">18.96%<br>(27.78%)</div>
+                                <div class="absolute -bottom-1 right-4 text-[9px] font-mono text-[#90cdf4] font-bold">41.89% (61.38%)</div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Chart 3 (Top Right): Churn Rate by Demographic Category -->
-                    <div class="exec-card p-5 space-y-3">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
-                            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide">Churn Rate by Demographic Category</h3>
-                            <div class="flex items-center space-x-2 text-[10px] font-medium text-slate-600">
-                                <span class="font-bold">Status:</span>
-                                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-sky-400 mr-1"></span>No</span>
-                                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-rose-300 mr-1"></span>Yes</span>
+                    <div class="exec-card tilt-card-3d p-5 space-y-3">
+                        <div class="flex items-center justify-between border-b border-[#1a365d] pb-2.5">
+                            <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Churn Rate by Demographic Category</h3>
+                            <div class="flex items-center space-x-2 text-[10px] font-medium text-slate-300">
+                                <span>Status</span>
+                                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-[#90cdf4] mr-1"></span>No</span>
+                                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-[#feb2b2] mr-1"></span>Yes</span>
                             </div>
                         </div>
 
@@ -375,39 +423,39 @@
                     </div>
 
                     <!-- Chart 4 (Bottom Left): Churn Rate & Avg. Churned MRR by Contract Type (Treemap Tiles) -->
-                    <div class="exec-card p-5 space-y-3">
-                        <div class="border-b border-slate-100 pb-2.5">
-                            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide">Churn Rate & Avg. Churned MRR by Contract Type</h3>
+                    <div class="exec-card tilt-card-3d p-5 space-y-3">
+                        <div class="border-b border-[#1a365d] pb-2.5">
+                            <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Churn Rate & Avg. Churned MRR by Contract Type</h3>
                         </div>
 
-                        <!-- Treemap Mosaic Layout matching image in clean pastel shades -->
+                        <!-- Treemap Mosaic Layout matching image -->
                         <div class="h-52 grid grid-cols-12 gap-2 pt-1">
                             <!-- Large Month-to-month block (Left 8 cols) -->
-                            <div class="col-span-8 bg-sky-100 border border-sky-200 rounded-lg p-3 flex flex-col justify-between text-sky-950 transition-transform hover:scale-[1.01]">
+                            <div class="col-span-8 bg-[#90cdf4] rounded-lg p-3 flex flex-col justify-between text-[#0a192f] shadow-inner transition-transform hover:scale-[1.01]">
                                 <span class="font-bold text-xs">Month-to-month</span>
                                 <div class="text-right">
-                                    <span class="font-extrabold text-base sm:text-lg font-mono text-sky-900">42.71%</span>
+                                    <span class="font-extrabold text-base sm:text-lg font-mono">42.71%</span>
                                 </div>
                             </div>
 
                             <!-- Right Stack (4 cols): One year & Two year -->
                             <div class="col-span-4 flex flex-col gap-2">
-                                <div class="flex-1 bg-rose-100 border border-rose-200 rounded-lg p-2.5 flex flex-col justify-between text-rose-950 transition-transform hover:scale-[1.01]">
+                                <div class="flex-1 bg-[#feb2b2] rounded-lg p-2.5 flex flex-col justify-between text-[#0a192f] shadow-inner transition-transform hover:scale-[1.01]">
                                     <span class="font-bold text-[11px]">One year</span>
-                                    <span class="font-extrabold text-xs font-mono text-right text-rose-900">11.27%</span>
+                                    <span class="font-extrabold text-xs font-mono text-right">11.27%</span>
                                 </div>
-                                <div class="h-16 bg-amber-100 border border-amber-200 rounded-lg p-2 flex flex-col justify-between text-amber-950 transition-transform hover:scale-[1.01]">
+                                <div class="h-16 bg-[#fefcbf] rounded-lg p-2 flex flex-col justify-between text-[#0a192f] shadow-inner transition-transform hover:scale-[1.01]">
                                     <span class="font-bold text-[10px]">Two year</span>
-                                    <span class="font-extrabold text-xs font-mono text-right text-amber-900">2.83%</span>
+                                    <span class="font-extrabold text-xs font-mono text-right">2.83%</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Chart 5 (Bottom Middle): Total Customers by Tenure Group (Vertical Columns) -->
-                    <div class="exec-card p-5 space-y-3">
-                        <div class="border-b border-slate-100 pb-2.5">
-                            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide">Total Customers by Tenure Group</h3>
+                    <div class="exec-card tilt-card-3d p-5 space-y-3">
+                        <div class="border-b border-[#1a365d] pb-2.5">
+                            <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Total Customers by Tenure Group</h3>
                         </div>
 
                         <div class="h-52 pt-1">
@@ -416,9 +464,9 @@
                     </div>
 
                     <!-- Chart 6 (Bottom Right): Churn Rate by Payment Method (Smooth Wave / Column) -->
-                    <div class="exec-card p-5 space-y-3">
-                        <div class="border-b border-slate-100 pb-2.5">
-                            <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-wide">Churn Rate by Payment Method</h3>
+                    <div class="exec-card tilt-card-3d p-5 space-y-3">
+                        <div class="border-b border-[#1a365d] pb-2.5">
+                            <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Churn Rate by Payment Method</h3>
                         </div>
 
                         <div class="h-52 pt-1">
@@ -428,10 +476,10 @@
                 </div>
 
                 <!-- Footer Tag -->
-                <div class="flex items-center justify-between text-xs font-semibold text-slate-500 pt-2 border-t border-slate-200">
-                    <span>TelcoPulse · Enterprise Customer Retention BI Platform</span>
-                    <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-mono border border-slate-200">
-                        Executive Corporate Edition
+                <div class="flex items-center justify-between text-xs font-semibold text-slate-400 pt-2 border-t border-[#142947]">
+                    <span class="text-slate-400">TelcoPulse AI · Executive Retention Intelligence System</span>
+                    <span class="px-3 py-1 rounded-full bg-[#112543] text-sky-400 font-mono border border-[#1e3a63]">
+                        Enterprise Analytics Edition
                     </span>
                 </div>
             </div>
@@ -442,36 +490,36 @@
             <div id="page-prediction" class="page-view space-y-6">
                 
                 <div class="space-y-1">
-                    <span class="text-xs font-bold text-sky-600 uppercase tracking-widest block">Inference Engine</span>
-                    <h2 class="text-2xl font-extrabold text-slate-900">Single & Batch Churn Scoring</h2>
-                    <p class="text-xs text-slate-500">Run instant AI predictions with animated radial probability gauge, SHAP drivers, and prescriptive retention action plans.</p>
+                    <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Inference Engine</span>
+                    <h2 class="text-2xl font-extrabold text-white">Single & Batch Churn Scoring</h2>
+                    <p class="text-xs text-slate-400">Run instant AI predictions with animated radial probability gauge, SHAP drivers, and prescriptive retention action plans.</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     
                     <!-- Form: Single Customer Input -->
-                    <div class="lg:col-span-7 exec-card p-6 space-y-5">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="lg:col-span-7 exec-card tilt-card-3d p-6 space-y-5">
+                        <div class="flex items-center justify-between border-b border-[#1a365d] pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="user-check" class="w-5 h-5 text-sky-600"></i>
-                                <h3 class="text-sm font-bold text-slate-900">Customer Profile Diagnostic</h3>
+                                <i data-lucide="user-check" class="w-5 h-5 text-sky-400"></i>
+                                <h3 class="text-sm font-bold text-white">Customer Profile Diagnostic</h3>
                             </div>
-                            <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Endpoint: /predict</span>
+                            <span class="text-[10px] font-mono text-slate-400 bg-[#071120] px-2 py-0.5 rounded border border-[#1a365d]">Endpoint: /predict</span>
                         </div>
 
                         <form id="single-predict-form" onsubmit="predictSingleCustomer(event)" class="space-y-4">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Contract Type</label>
-                                    <select id="contract" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-medium focus:outline-none focus:border-sky-500 transition-all">
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Contract Type</label>
+                                    <select id="contract" class="w-full bg-[#071120] border border-[#1a365d] rounded-xl px-3 py-2 text-xs text-white font-medium focus:outline-none focus:border-sky-400 transition-all shadow-inner">
                                         <option value="Month-to-month">Month-to-month</option>
                                         <option value="One year">One year</option>
                                         <option value="Two year">Two year</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Internet Service</label>
-                                    <select id="internet" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-medium focus:outline-none focus:border-sky-500 transition-all">
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Internet Service</label>
+                                    <select id="internet" class="w-full bg-[#071120] border border-[#1a365d] rounded-xl px-3 py-2 text-xs text-white font-medium focus:outline-none focus:border-sky-400 transition-all shadow-inner">
                                         <option value="Fiber optic">Fiber optic</option>
                                         <option value="DSL">DSL</option>
                                         <option value="No">No Internet Service</option>
@@ -481,21 +529,21 @@
 
                             <div class="space-y-2">
                                 <div class="flex justify-between text-xs">
-                                    <label class="font-semibold text-slate-700">Customer Tenure</label>
-                                    <span id="tenure-val" class="font-bold text-sky-600 font-mono">12 Months</span>
+                                    <label class="font-semibold text-slate-300">Customer Tenure</label>
+                                    <span id="tenure-val" class="font-bold text-sky-400 font-mono">12 Months</span>
                                 </div>
-                                <input type="range" id="tenure" min="0" max="72" value="12" oninput="updateCalculations()" class="w-full accent-sky-600 h-1.5 bg-slate-200 rounded-lg">
+                                <input type="range" id="tenure" min="0" max="72" value="12" oninput="updateCalculations()" class="w-full accent-sky-400 h-1.5 bg-[#071120] rounded-lg">
                             </div>
 
                             <div class="space-y-2">
                                 <div class="flex justify-between text-xs">
-                                    <label class="font-semibold text-slate-700">Monthly Bill Amount</label>
-                                    <span id="charges-val" class="font-bold text-sky-600 font-mono">$65.50</span>
+                                    <label class="font-semibold text-slate-300">Monthly Bill Amount</label>
+                                    <span id="charges-val" class="font-bold text-sky-400 font-mono">$65.50</span>
                                 </div>
-                                <input type="range" id="charges" min="15" max="130" step="0.5" value="65.5" oninput="updateCalculations()" class="w-full accent-sky-600 h-1.5 bg-slate-200 rounded-lg">
+                                <input type="range" id="charges" min="15" max="130" step="0.5" value="65.5" oninput="updateCalculations()" class="w-full accent-sky-400 h-1.5 bg-[#071120] rounded-lg">
                             </div>
 
-                            <button type="submit" id="single-predict-btn" class="w-full py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs shadow-xs transition-all flex items-center justify-center space-x-2">
+                            <button type="submit" id="single-predict-btn" class="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-600 hover:to-cyan-600 text-white font-bold text-xs shadow-md shadow-sky-500/20 hover:scale-[1.01] transition-all flex items-center justify-center space-x-2">
                                 <i data-lucide="zap" class="w-4 h-4 fill-current"></i>
                                 <span>Calculate Churn Probability & Strategy</span>
                             </button>
@@ -503,15 +551,15 @@
                     </div>
 
                     <!-- Diagnostic Results Card with Animated SVG Speedometer & SHAP Drivers -->
-                    <div class="lg:col-span-5 exec-card p-6 space-y-4">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Diagnostic Results</span>
-                            <span id="diagnostic-status-pill" class="text-[10px] font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-100">Ready</span>
+                    <div class="lg:col-span-5 exec-card tilt-card-3d p-6 space-y-4">
+                        <div class="flex items-center justify-between border-b border-[#1a365d] pb-3">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Diagnostic Results</span>
+                            <span id="diagnostic-status-pill" class="text-[10px] font-bold text-sky-400 bg-sky-950 px-2 py-0.5 rounded-full border border-sky-800">Ready</span>
                         </div>
 
                         <!-- Animated SVG Radial Speedometer Gauge -->
                         <div class="flex flex-col items-center justify-center py-2">
-                            <div class="relative w-36 h-36">
+                            <div class="relative w-40 h-40">
                                 <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
                                     <defs>
                                         <linearGradient id="gauge-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -524,9 +572,9 @@
                                     <circle id="gauge-fill-arc" class="gauge-circle-fill" cx="60" cy="60" r="48" stroke-dasharray="301.59" stroke-dashoffset="156" />
                                 </svg>
                                 <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                    <span id="risk-prob" class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono tracking-tight leading-none">48.2%</span>
+                                    <span id="risk-prob" class="text-3xl font-extrabold text-white font-mono tracking-tight leading-none">48.2%</span>
                                     <span class="text-[10px] text-slate-400 font-semibold mt-1">Churn Risk</span>
-                                    <span id="risk-badge" class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-50 text-amber-700 border border-amber-200 mt-1">
+                                    <span id="risk-badge" class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-950/80 text-amber-400 border border-amber-800 mt-1">
                                         MEDIUM RISK
                                     </span>
                                 </div>
@@ -535,111 +583,111 @@
 
                         <!-- Financial Impact & CLV -->
                         <div class="grid grid-cols-2 gap-3">
-                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs">
+                            <div class="p-3 rounded-xl bg-[#071120] border border-[#1a365d] text-xs">
                                 <span class="text-[10px] text-slate-400 block font-medium">Annual Revenue at Risk</span>
-                                <span id="risk-annual" class="text-base font-extrabold text-slate-900 font-mono mt-0.5 block">$786.00</span>
+                                <span id="risk-annual" class="text-base font-extrabold text-white font-mono mt-0.5 block">$786.00</span>
                             </div>
-                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs">
+                            <div class="p-3 rounded-xl bg-[#071120] border border-[#1a365d] text-xs">
                                 <span class="text-[10px] text-slate-400 block font-medium">Customer Lifetime Value</span>
-                                <span id="risk-clv" class="text-base font-extrabold text-sky-600 font-mono mt-0.5 block">$1,452.00</span>
+                                <span id="risk-clv" class="text-base font-extrabold text-sky-400 font-mono mt-0.5 block">$1,452.00</span>
                             </div>
                         </div>
 
                         <!-- SHAP Explainable AI Waterfall Drivers -->
-                        <div class="space-y-2 pt-2 border-t border-slate-100">
+                        <div class="space-y-2 pt-2 border-t border-[#1a365d]">
                             <div class="flex items-center justify-between text-xs">
-                                <span class="font-bold text-slate-800 flex items-center">
-                                    <i data-lucide="cpu" class="w-3.5 h-3.5 mr-1.5 text-sky-600"></i>SHAP Explainable Drivers
+                                <span class="font-bold text-white flex items-center">
+                                    <i data-lucide="cpu" class="w-3.5 h-3.5 mr-1.5 text-sky-400"></i>SHAP Explainable Drivers
                                 </span>
-                                <span id="decision-threshold-badge" class="text-[10px] font-mono text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200">Cutoff: 0.23</span>
+                                <span id="decision-threshold-badge" class="text-[10px] font-mono text-slate-400 bg-[#071120] px-1.5 py-0.5 rounded border border-[#1a365d]">Cutoff: 0.23</span>
                             </div>
                             <div id="shap-drivers-list" class="space-y-1.5 text-xs">
-                                <div class="flex items-center justify-between p-1.5 rounded bg-slate-50 border border-slate-100">
-                                    <span class="text-slate-700 font-medium flex items-center">
+                                <div class="flex items-center justify-between p-1.5 rounded bg-[#071120] border border-[#1a365d]">
+                                    <span class="text-slate-300 font-medium flex items-center">
                                         <span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-2"></span>Month-to-month Contract
                                     </span>
-                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-50 text-rose-700 border border-rose-200">+28.4% Churn Force</span>
+                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-950/80 text-rose-400 border border-rose-800">+28.4% Churn Force</span>
                                 </div>
-                                <div class="flex items-center justify-between p-1.5 rounded bg-slate-50 border border-slate-100">
-                                    <span class="text-slate-700 font-medium flex items-center">
+                                <div class="flex items-center justify-between p-1.5 rounded bg-[#071120] border border-[#1a365d]">
+                                    <span class="text-slate-300 font-medium flex items-center">
                                         <span class="w-1.5 h-1.5 rounded-full bg-rose-400 mr-2"></span>Fiber Optic Charges
                                     </span>
-                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-50 text-rose-700 border border-rose-200">+14.2% Churn Force</span>
+                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-950/80 text-rose-400 border border-rose-800">+14.2% Churn Force</span>
                                 </div>
-                                <div class="flex items-center justify-between p-1.5 rounded bg-slate-50 border border-slate-100">
-                                    <span class="text-slate-700 font-medium flex items-center">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-sky-500 mr-2"></span>12-Month Tenure
+                                <div class="flex items-center justify-between p-1.5 rounded bg-[#071120] border border-[#1a365d]">
+                                    <span class="text-slate-300 font-medium flex items-center">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-sky-400 mr-2"></span>12-Month Tenure
                                     </span>
-                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-sky-50 text-sky-700 border border-sky-200">-9.5% Loyalty Lift</span>
+                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-sky-950/80 text-sky-400 border border-sky-800">-9.5% Loyalty Lift</span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Prescriptive Retention Strategy -->
-                        <div class="p-3.5 rounded-xl bg-sky-50/70 border border-sky-100 space-y-2 text-xs">
+                        <div class="p-3.5 rounded-xl bg-sky-950/50 border border-sky-800/80 space-y-2 text-xs">
                             <div class="flex items-center justify-between">
-                                <span class="font-bold text-sky-900 flex items-center">
-                                    <i data-lucide="shield-check" class="w-3.5 h-3.5 mr-1.5 text-sky-600"></i>Prescriptive Retention Action
+                                <span class="font-bold text-sky-300 flex items-center">
+                                    <i data-lucide="shield-check" class="w-3.5 h-3.5 mr-1.5 text-sky-400"></i>Prescriptive Retention Action
                                 </span>
-                                <span id="prescriptive-urgency" class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-sky-200 text-sky-900">HIGH URGENCY</span>
+                                <span id="prescriptive-urgency" class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-sky-900 text-sky-200">HIGH URGENCY</span>
                             </div>
-                            <p id="risk-strategy" class="text-slate-700 text-[11px] leading-relaxed">
+                            <p id="risk-strategy" class="text-slate-300 text-[11px] leading-relaxed">
                                 Offer 15% discount for 6 months on a 1-year contract lock-in with complimentary speed boost.
                             </p>
-                            <div class="flex items-center justify-between text-[10px] text-sky-800 pt-1 font-medium">
+                            <div class="flex items-center justify-between text-[10px] text-sky-300 pt-1 font-medium">
                                 <span id="prescriptive-channel">Channel: Dedicated Retention Outreach</span>
-                                <span id="prescriptive-roi" class="font-bold">Expected Net ROI: +$284</span>
+                                <span id="prescriptive-roi" class="font-bold text-sky-200">Expected Net ROI: +$284</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Batch / Bulk CSV Upload Section -->
-                <div class="exec-card p-6 space-y-4">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="exec-card tilt-card-3d p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-[#1a365d] pb-3">
                         <div class="flex items-center space-x-2">
-                            <i data-lucide="layers" class="w-5 h-5 text-sky-600"></i>
-                            <h3 class="text-sm font-bold text-slate-900">Bulk CSV / Excel Batch Classification</h3>
+                            <i data-lucide="layers" class="w-5 h-5 text-sky-400"></i>
+                            <h3 class="text-sm font-bold text-white">Bulk CSV / Excel Batch Classification</h3>
                         </div>
-                        <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Endpoint: /predict/bulk</span>
+                        <span class="text-[10px] font-mono text-slate-400 bg-[#071120] px-2 py-0.5 rounded border border-[#1a365d]">Endpoint: /predict/bulk</span>
                     </div>
 
-                    <div id="bulk-dropzone" onclick="document.getElementById('bulk-file-input').click()" class="border-2 border-dashed border-slate-200 hover:border-sky-400 hover:bg-sky-50/30 rounded-2xl p-8 text-center cursor-pointer transition-all space-y-2">
+                    <div id="bulk-dropzone" onclick="document.getElementById('bulk-file-input').click()" class="border-2 border-dashed border-[#1a365d] hover:border-sky-400 hover:bg-sky-950/20 rounded-2xl p-8 text-center cursor-pointer transition-all space-y-2">
                         <input type="file" id="bulk-file-input" accept=".csv, .xlsx, .xls" class="hidden" onchange="uploadBulkFile(this.files[0])">
-                        <div class="w-12 h-12 rounded-full bg-sky-50 text-sky-600 mx-auto flex items-center justify-center border border-sky-100">
+                        <div class="w-12 h-12 rounded-full bg-sky-950 text-sky-400 mx-auto flex items-center justify-center border border-sky-800">
                             <i data-lucide="upload-cloud" class="w-6 h-6"></i>
                         </div>
                         <div>
-                            <span class="text-xs font-bold text-slate-800 block">Click to upload or drag and drop customer dataset</span>
+                            <span class="text-xs font-bold text-white block">Click to upload or drag and drop customer dataset</span>
                             <span class="text-[11px] text-slate-400">Supports standard CSV or Microsoft Excel spreadsheets (.csv, .xlsx, .xls)</span>
                         </div>
                     </div>
 
                     <!-- Bulk Results Preview Section -->
-                    <div id="bulk-results-section" class="hidden space-y-4 pt-4 border-t border-slate-100">
+                    <div id="bulk-results-section" class="hidden space-y-4 pt-4 border-t border-[#1a365d]">
                         <div class="flex flex-wrap items-center justify-between gap-2">
                             <div class="flex items-center space-x-2 text-xs">
-                                <span class="font-bold text-slate-800">Scored Cohort:</span>
-                                <span id="bulk-total-count" class="font-mono font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded border border-sky-100">0 Accounts</span>
-                                <span id="bulk-high-count" class="font-mono font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-100">0 High</span>
-                                <span id="bulk-med-count" class="font-mono font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">0 Medium</span>
-                                <span id="bulk-low-count" class="font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">0 Low</span>
+                                <span class="font-bold text-white">Scored Cohort:</span>
+                                <span id="bulk-total-count" class="font-mono font-bold text-sky-400 bg-sky-950 px-2 py-0.5 rounded border border-sky-800">0 Accounts</span>
+                                <span id="bulk-high-count" class="font-mono font-bold text-rose-400 bg-rose-950 px-2 py-0.5 rounded border border-rose-800">0 High</span>
+                                <span id="bulk-med-count" class="font-mono font-bold text-amber-400 bg-amber-950 px-2 py-0.5 rounded border border-amber-800">0 Medium</span>
+                                <span id="bulk-low-count" class="font-mono font-bold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">0 Low</span>
                             </div>
                             <div class="flex space-x-2">
-                                <button onclick="exportBulkResultsCSV()" class="px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition-all flex items-center space-x-1 shadow-xs">
+                                <button onclick="exportBulkResultsCSV()" class="px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold transition-all flex items-center space-x-1 shadow-sm">
                                     <i data-lucide="download" class="w-3.5 h-3.5"></i>
                                     <span>Export Enriched CSV</span>
                                 </button>
-                                <button onclick="exportBulkResultsJSON()" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all flex items-center space-x-1">
+                                <button onclick="exportBulkResultsJSON()" class="px-3 py-1.5 rounded-lg bg-[#112543] hover:bg-[#162e52] text-slate-300 text-xs font-bold transition-all flex items-center space-x-1">
                                     <i data-lucide="file-json" class="w-3.5 h-3.5"></i>
                                     <span>JSON</span>
                                 </button>
                             </div>
                         </div>
 
-                        <div class="overflow-x-auto rounded-xl border border-slate-200 max-h-60">
+                        <div class="overflow-x-auto rounded-xl border border-[#1a365d] max-h-60">
                             <table class="w-full text-left text-xs font-mono">
-                                <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 text-[10px] uppercase">
+                                <thead class="bg-[#071120] text-slate-400 border-b border-[#1a365d] text-[10px] uppercase">
                                     <tr>
                                         <th class="p-2.5">Row</th>
                                         <th class="p-2.5">Contract</th>
@@ -650,7 +698,7 @@
                                         <th class="p-2.5">At Risk Annual</th>
                                     </tr>
                                 </thead>
-                                <tbody id="bulk-preview-body" class="divide-y divide-slate-100 bg-white text-slate-700 text-[11px]">
+                                <tbody id="bulk-preview-body" class="divide-y divide-[#142947] bg-[#09172c] text-slate-300 text-[11px]">
                                 </tbody>
                             </table>
                         </div>
@@ -664,86 +712,86 @@
             <div id="page-analytics" class="page-view space-y-6">
                 
                 <div class="space-y-1">
-                    <span class="text-xs font-bold text-sky-600 uppercase tracking-widest block">Executive Finance</span>
-                    <h2 class="text-2xl font-extrabold text-slate-900">Cohort Retention & Financial ROI Simulator</h2>
-                    <p class="text-xs text-slate-500">Simulate customer retention campaigns and examine churn survival curves across customer cohorts.</p>
+                    <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Executive Finance</span>
+                    <h2 class="text-2xl font-extrabold text-white">Cohort Retention & Financial ROI Simulator</h2>
+                    <p class="text-xs text-slate-400">Simulate customer retention campaigns and examine churn survival curves across customer cohorts.</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     
                     <!-- Left: Interactive Financial ROI Simulator -->
-                    <div class="lg:col-span-6 exec-card p-6 space-y-5">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="lg:col-span-6 exec-card tilt-card-3d p-6 space-y-5">
+                        <div class="flex items-center justify-between border-b border-[#1a365d] pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="calculator" class="w-5 h-5 text-sky-600"></i>
-                                <h3 class="text-sm font-bold text-slate-900">Financial ROI Simulator</h3>
+                                <i data-lucide="calculator" class="w-5 h-5 text-sky-400"></i>
+                                <h3 class="text-sm font-bold text-white">Financial ROI Simulator</h3>
                             </div>
-                            <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Decision Threshold: 0.23</span>
+                            <span class="text-[10px] font-mono text-slate-400 bg-[#071120] px-2 py-0.5 rounded border border-[#1a365d]">Decision Threshold: 0.23</span>
                         </div>
 
                         <div class="space-y-4">
                             <div class="space-y-1.5">
                                 <div class="flex justify-between text-xs">
-                                    <label class="font-semibold text-slate-700">Target Cohort Size</label>
-                                    <span id="roi-cust-val" class="font-bold text-sky-600 font-mono">10,000 Accounts</span>
+                                    <label class="font-semibold text-slate-300">Target Cohort Size</label>
+                                    <span id="roi-cust-val" class="font-bold text-sky-400 font-mono">10,000 Accounts</span>
                                 </div>
-                                <input type="range" id="roi-cust" min="1000" max="50000" step="1000" value="10000" oninput="calculateROI()" class="w-full accent-sky-600 h-1.5 bg-slate-200 rounded-lg">
+                                <input type="range" id="roi-cust" min="1000" max="50000" step="1000" value="10000" oninput="calculateROI()" class="w-full accent-sky-400 h-1.5 bg-[#071120] rounded-lg">
                             </div>
 
                             <div class="space-y-1.5">
                                 <div class="flex justify-between text-xs">
-                                    <label class="font-semibold text-slate-700">Average Monthly Spend</label>
-                                    <span id="roi-spend-val" class="font-bold text-sky-600 font-mono">$65.00 / mo</span>
+                                    <label class="font-semibold text-slate-300">Average Monthly Spend</label>
+                                    <span id="roi-spend-val" class="font-bold text-sky-400 font-mono">$65.00 / mo</span>
                                 </div>
-                                <input type="range" id="roi-spend" min="20" max="120" step="5" value="65" oninput="calculateROI()" class="w-full accent-sky-600 h-1.5 bg-slate-200 rounded-lg">
+                                <input type="range" id="roi-spend" min="20" max="120" step="5" value="65" oninput="calculateROI()" class="w-full accent-sky-400 h-1.5 bg-[#071120] rounded-lg">
                             </div>
 
                             <div class="space-y-1.5">
                                 <div class="flex justify-between text-xs">
-                                    <label class="font-semibold text-slate-700">Retention Incentive Cost</label>
-                                    <span id="roi-cost-val" class="font-bold text-sky-600 font-mono">$25.00 / customer</span>
+                                    <label class="font-semibold text-slate-300">Retention Incentive Cost</label>
+                                    <span id="roi-cost-val" class="font-bold text-sky-400 font-mono">$25.00 / customer</span>
                                 </div>
-                                <input type="range" id="roi-cost" min="5" max="80" step="5" value="25" oninput="calculateROI()" class="w-full accent-sky-600 h-1.5 bg-slate-200 rounded-lg">
+                                <input type="range" id="roi-cost" min="5" max="80" step="5" value="25" oninput="calculateROI()" class="w-full accent-sky-400 h-1.5 bg-[#071120] rounded-lg">
                             </div>
 
                             <div class="space-y-1.5">
                                 <div class="flex justify-between text-xs">
-                                    <label class="font-semibold text-slate-700">Offer Acceptance Rate</label>
-                                    <span id="roi-succ-val" class="font-bold text-sky-600 font-mono">35%</span>
+                                    <label class="font-semibold text-slate-300">Offer Acceptance Rate</label>
+                                    <span id="roi-succ-val" class="font-bold text-sky-400 font-mono">35%</span>
                                 </div>
-                                <input type="range" id="roi-succ" min="10" max="80" step="5" value="35" oninput="calculateROI()" class="w-full accent-sky-600 h-1.5 bg-slate-200 rounded-lg">
+                                <input type="range" id="roi-succ" min="10" max="80" step="5" value="35" oninput="calculateROI()" class="w-full accent-sky-400 h-1.5 bg-[#071120] rounded-lg">
                             </div>
                         </div>
 
                         <!-- Live ROI Output Grid -->
-                        <div class="grid grid-cols-2 gap-3 pt-3 border-t border-slate-100 text-xs">
-                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                        <div class="grid grid-cols-2 gap-3 pt-3 border-t border-[#1a365d] text-xs">
+                            <div class="p-3 rounded-xl bg-[#071120] border border-[#1a365d]">
                                 <span class="text-[10px] text-slate-400 block font-medium">Saved Customers</span>
-                                <span id="roi-saved-cust" class="text-base font-extrabold text-slate-900 font-mono mt-0.5 block">246 Accounts</span>
+                                <span id="roi-saved-cust" class="text-base font-extrabold text-white font-mono mt-0.5 block">246 Accounts</span>
                             </div>
-                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                            <div class="p-3 rounded-xl bg-[#071120] border border-[#1a365d]">
                                 <span class="text-[10px] text-slate-400 block font-medium">Gross Revenue Preserved</span>
-                                <span id="roi-gross-rev" class="text-base font-extrabold text-slate-900 font-mono mt-0.5 block">$191,880</span>
+                                <span id="roi-gross-rev" class="text-base font-extrabold text-white font-mono mt-0.5 block">$191,880</span>
                             </div>
-                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                            <div class="p-3 rounded-xl bg-[#071120] border border-[#1a365d]">
                                 <span class="text-[10px] text-slate-400 block font-medium">Campaign Investment</span>
-                                <span id="roi-campaign-cost" class="text-base font-extrabold text-rose-500 font-mono mt-0.5 block">$66,350</span>
+                                <span id="roi-campaign-cost" class="text-base font-extrabold text-rose-400 font-mono mt-0.5 block">$66,350</span>
                             </div>
-                            <div class="p-3 rounded-xl bg-sky-50 border border-sky-100">
-                                <span class="text-[10px] text-sky-700 block font-bold">Net Profit Saved (ROI)</span>
-                                <span id="roi-net-profit" class="text-base font-extrabold text-sky-900 font-mono mt-0.5 block">+$125,530</span>
+                            <div class="p-3 rounded-xl bg-sky-950/60 border border-sky-800">
+                                <span class="text-[10px] text-sky-400 block font-bold">Net Profit Saved (ROI)</span>
+                                <span id="roi-net-profit" class="text-base font-extrabold text-sky-300 font-mono mt-0.5 block">+$125,530</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Right: Cohort Retention Survival Curve -->
-                    <div class="lg:col-span-6 exec-card p-6 space-y-4">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="lg:col-span-6 exec-card tilt-card-3d p-6 space-y-4">
+                        <div class="flex items-center justify-between border-b border-[#1a365d] pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="line-chart" class="w-5 h-5 text-sky-600"></i>
-                                <h3 class="text-sm font-bold text-slate-900">Subscriber Survival Curve (Kaplan-Meier Style)</h3>
+                                <i data-lucide="line-chart" class="w-5 h-5 text-sky-400"></i>
+                                <h3 class="text-sm font-bold text-white">Subscriber Survival Curve (Kaplan-Meier Style)</h3>
                             </div>
-                            <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">72 Months Cohort</span>
+                            <span class="text-[10px] font-mono text-slate-400 bg-[#071120] px-2 py-0.5 rounded border border-[#1a365d]">72 Months Cohort</span>
                         </div>
                         <div class="h-64">
                             <canvas id="analyticsCohortsChart"></canvas>
@@ -758,24 +806,24 @@
             <div id="page-model-performance" class="page-view space-y-6">
                 
                 <div class="space-y-1">
-                    <span class="text-xs font-bold text-sky-600 uppercase tracking-widest block">Benchmarking & XAI</span>
-                    <h2 class="text-2xl font-extrabold text-slate-900">Multi-Model Championship & Explainability</h2>
-                    <p class="text-xs text-slate-500">Cross-validation benchmark of Random Forest against XGBoost, LightGBM, and Logistic Regression with Global SHAP attribution.</p>
+                    <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Benchmarking & XAI</span>
+                    <h2 class="text-2xl font-extrabold text-white">Multi-Model Championship & Explainability</h2>
+                    <p class="text-xs text-slate-400">Cross-validation benchmark of Random Forest against XGBoost, LightGBM, and Logistic Regression with Global SHAP attribution.</p>
                 </div>
 
                 <!-- Multi-Model Leaderboard Table -->
-                <div class="exec-card p-6 space-y-4">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="exec-card tilt-card-3d p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-[#1a365d] pb-3">
                         <div class="flex items-center space-x-2">
-                            <i data-lucide="trophy" class="w-5 h-5 text-amber-500"></i>
-                            <h3 class="text-sm font-bold text-slate-900">Algorithm Tournament Leaderboard</h3>
+                            <i data-lucide="trophy" class="w-5 h-5 text-amber-400"></i>
+                            <h3 class="text-sm font-bold text-white">Algorithm Tournament Leaderboard</h3>
                         </div>
-                        <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">5-Fold Stratified CV</span>
+                        <span class="text-[10px] font-mono text-slate-400 bg-[#071120] px-2 py-0.5 rounded border border-[#1a365d]">5-Fold Stratified CV</span>
                     </div>
 
-                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <div class="overflow-x-auto rounded-xl border border-[#1a365d]">
                         <table class="w-full text-left text-xs font-mono">
-                            <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 text-[10px] uppercase">
+                            <thead class="bg-[#071120] text-slate-400 border-b border-[#1a365d] text-[10px] uppercase">
                                 <tr>
                                     <th class="p-3">Rank</th>
                                     <th class="p-3">Algorithm</th>
@@ -788,54 +836,54 @@
                                     <th class="p-3 text-right">Status</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-100 bg-white text-slate-700 text-[11px]">
-                                <tr class="bg-sky-50/50 font-bold">
-                                    <td class="p-3 text-amber-500">#1</td>
-                                    <td class="p-3 text-slate-900 flex items-center">
-                                        <span class="w-2 h-2 rounded-full bg-sky-600 mr-2"></span>Random Forest
+                            <tbody class="divide-y divide-[#142947] bg-[#09172c] text-slate-300 text-[11px]">
+                                <tr class="bg-sky-950/40 font-bold">
+                                    <td class="p-3 text-amber-400">#1</td>
+                                    <td class="p-3 text-white flex items-center">
+                                        <span class="w-2 h-2 rounded-full bg-sky-400 mr-2 animate-ping"></span>Random Forest
                                     </td>
-                                    <td class="p-3 text-slate-500">Ensemble Bagging</td>
+                                    <td class="p-3 text-slate-400">Ensemble Bagging</td>
                                     <td class="p-3">80.2%</td>
                                     <td class="p-3">67.8%</td>
-                                    <td class="p-3 text-sky-700">80.4%</td>
+                                    <td class="p-3 text-sky-400">80.4%</td>
                                     <td class="p-3">73.6%</td>
-                                    <td class="p-3 text-sky-700 font-extrabold">84.6%</td>
+                                    <td class="p-3 text-sky-400 font-extrabold">84.6%</td>
                                     <td class="p-3 text-right">
-                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-sky-100 text-sky-800 border border-sky-200">CHAMPION</span>
+                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-sky-900 text-sky-300 border border-sky-700">CHAMPION</span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="p-3 text-slate-400">#2</td>
-                                    <td class="p-3 text-slate-800 font-semibold">XGBoost</td>
-                                    <td class="p-3 text-slate-400">Gradient Boosting</td>
+                                    <td class="p-3 text-slate-500">#2</td>
+                                    <td class="p-3 text-slate-200 font-semibold">XGBoost</td>
+                                    <td class="p-3 text-slate-500">Gradient Boosting</td>
                                     <td class="p-3">79.5%</td>
                                     <td class="p-3">66.4%</td>
                                     <td class="p-3">78.1%</td>
                                     <td class="p-3">71.8%</td>
                                     <td class="p-3">83.9%</td>
-                                    <td class="p-3 text-right text-slate-400">Candidate</td>
+                                    <td class="p-3 text-right text-slate-500">Candidate</td>
                                 </tr>
                                 <tr>
-                                    <td class="p-3 text-slate-400">#3</td>
-                                    <td class="p-3 text-slate-800 font-semibold">LightGBM</td>
-                                    <td class="p-3 text-slate-400">Histogram Boosting</td>
+                                    <td class="p-3 text-slate-500">#3</td>
+                                    <td class="p-3 text-slate-200 font-semibold">LightGBM</td>
+                                    <td class="p-3 text-slate-500">Histogram Boosting</td>
                                     <td class="p-3">79.1%</td>
                                     <td class="p-3">65.9%</td>
                                     <td class="p-3">77.5%</td>
                                     <td class="p-3">71.2%</td>
                                     <td class="p-3">83.4%</td>
-                                    <td class="p-3 text-right text-slate-400">Candidate</td>
+                                    <td class="p-3 text-right text-slate-500">Candidate</td>
                                 </tr>
                                 <tr>
-                                    <td class="p-3 text-slate-400">#4</td>
-                                    <td class="p-3 text-slate-800 font-semibold">Logistic Regression</td>
-                                    <td class="p-3 text-slate-400">Linear Baseline</td>
+                                    <td class="p-3 text-slate-500">#4</td>
+                                    <td class="p-3 text-slate-200 font-semibold">Logistic Regression</td>
+                                    <td class="p-3 text-slate-500">Linear Baseline</td>
                                     <td class="p-3">78.0%</td>
                                     <td class="p-3">63.1%</td>
                                     <td class="p-3">74.2%</td>
                                     <td class="p-3">68.2%</td>
                                     <td class="p-3">81.7%</td>
-                                    <td class="p-3 text-right text-slate-400">Baseline</td>
+                                    <td class="p-3 text-right text-slate-500">Baseline</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -843,63 +891,63 @@
                 </div>
 
                 <!-- Global SHAP Feature Importance Ranking -->
-                <div class="exec-card p-6 space-y-4">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="exec-card tilt-card-3d p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-[#1a365d] pb-3">
                         <div class="flex items-center space-x-2">
-                            <i data-lucide="bar-chart" class="w-5 h-5 text-sky-600"></i>
-                            <h3 class="text-sm font-bold text-slate-900">Global SHAP Feature Attribution (TreeExplainer)</h3>
+                            <i data-lucide="bar-chart" class="w-5 h-5 text-sky-400"></i>
+                            <h3 class="text-sm font-bold text-white">Global SHAP Feature Attribution (TreeExplainer)</h3>
                         </div>
-                        <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Mean |SHAP Value|</span>
+                        <span class="text-[10px] font-mono text-slate-400 bg-[#071120] px-2 py-0.5 rounded border border-[#1a365d]">Mean |SHAP Value|</span>
                     </div>
 
                     <div class="space-y-3 text-xs">
                         <div class="space-y-1">
-                            <div class="flex justify-between font-semibold text-slate-700">
+                            <div class="flex justify-between font-semibold text-slate-300">
                                 <span>Customer Tenure (Months)</span>
-                                <span class="font-mono text-sky-700 font-bold">0.384 (Highest Impact)</span>
+                                <span class="font-mono text-sky-400 font-bold">0.384 (Highest Impact)</span>
                             </div>
-                            <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                                <div class="bg-sky-600 h-2.5 rounded-full" style="width: 95%"></div>
+                            <div class="w-full bg-[#071120] rounded-full h-2.5 overflow-hidden border border-[#1a365d]">
+                                <div class="bg-gradient-to-r from-sky-500 to-cyan-400 h-2.5 rounded-full" style="width: 95%"></div>
                             </div>
                         </div>
 
                         <div class="space-y-1">
-                            <div class="flex justify-between font-semibold text-slate-700">
+                            <div class="flex justify-between font-semibold text-slate-300">
                                 <span>Contract Type (Month-to-month vs 1/2 Year)</span>
-                                <span class="font-mono text-sky-700 font-bold">0.312</span>
+                                <span class="font-mono text-sky-400 font-bold">0.312</span>
                             </div>
-                            <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                                <div class="bg-sky-500 h-2.5 rounded-full" style="width: 78%"></div>
+                            <div class="w-full bg-[#071120] rounded-full h-2.5 overflow-hidden border border-[#1a365d]">
+                                <div class="bg-gradient-to-r from-sky-400 to-cyan-500 h-2.5 rounded-full" style="width: 78%"></div>
                             </div>
                         </div>
 
                         <div class="space-y-1">
-                            <div class="flex justify-between font-semibold text-slate-700">
+                            <div class="flex justify-between font-semibold text-slate-300">
                                 <span>Monthly Bill Charges ($)</span>
-                                <span class="font-mono text-sky-700 font-bold">0.246</span>
+                                <span class="font-mono text-sky-400 font-bold">0.246</span>
                             </div>
-                            <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                                <div class="bg-sky-400 h-2.5 rounded-full" style="width: 61%"></div>
+                            <div class="w-full bg-[#071120] rounded-full h-2.5 overflow-hidden border border-[#1a365d]">
+                                <div class="bg-gradient-to-r from-cyan-400 to-sky-500 h-2.5 rounded-full" style="width: 61%"></div>
                             </div>
                         </div>
 
                         <div class="space-y-1">
-                            <div class="flex justify-between font-semibold text-slate-700">
+                            <div class="flex justify-between font-semibold text-slate-300">
                                 <span>Internet Service (Fiber Optic vs DSL)</span>
-                                <span class="font-mono text-sky-700 font-bold">0.182</span>
+                                <span class="font-mono text-sky-400 font-bold">0.182</span>
                             </div>
-                            <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                                <div class="bg-sky-300 h-2.5 rounded-full" style="width: 45%"></div>
+                            <div class="w-full bg-[#071120] rounded-full h-2.5 overflow-hidden border border-[#1a365d]">
+                                <div class="bg-gradient-to-r from-cyan-300 to-cyan-400 h-2.5 rounded-full" style="width: 45%"></div>
                             </div>
                         </div>
 
                         <div class="space-y-1">
-                            <div class="flex justify-between font-semibold text-slate-700">
+                            <div class="flex justify-between font-semibold text-slate-300">
                                 <span>Total Accumulated Charges ($)</span>
-                                <span class="font-mono text-sky-700 font-bold">0.128</span>
+                                <span class="font-mono text-sky-400 font-bold">0.128</span>
                             </div>
-                            <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                                <div class="bg-slate-300 h-2.5 rounded-full" style="width: 32%"></div>
+                            <div class="w-full bg-[#071120] rounded-full h-2.5 overflow-hidden border border-[#1a365d]">
+                                <div class="bg-gradient-to-r from-slate-400 to-sky-400 h-2.5 rounded-full" style="width: 32%"></div>
                             </div>
                         </div>
                     </div>
@@ -912,31 +960,31 @@
             <div id="page-dataset" class="page-view space-y-6">
                 
                 <div class="space-y-1">
-                    <span class="text-xs font-bold text-sky-600 uppercase tracking-widest block">Data Repository</span>
-                    <h2 class="text-2xl font-extrabold text-slate-900">Customer Records Explorer</h2>
-                    <p class="text-xs text-slate-500">Search customer records, filter by churn status or risk profile, and load any customer into the diagnostic scorer.</p>
+                    <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Data Repository</span>
+                    <h2 class="text-2xl font-extrabold text-white">Customer Records Explorer</h2>
+                    <p class="text-xs text-slate-400">Search customer records, filter by churn status or risk profile, and load any customer into the diagnostic scorer.</p>
                 </div>
 
-                <div class="exec-card p-6 space-y-4">
-                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                <div class="exec-card tilt-card-3d p-6 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[#1a365d] pb-3">
                         <div class="flex items-center space-x-2">
-                            <i data-lucide="database" class="w-5 h-5 text-sky-600"></i>
-                            <h3 class="text-sm font-bold text-slate-900">Customer Directory</h3>
+                            <i data-lucide="database" class="w-5 h-5 text-sky-400"></i>
+                            <h3 class="text-sm font-bold text-white">Customer Directory</h3>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <input type="text" id="dir-search" placeholder="Search by Customer ID..." oninput="filterDirectory()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-sky-500 w-48 sm:w-64 font-mono">
-                            <div class="flex p-0.5 rounded-lg bg-slate-100 border border-slate-200 text-[10px] font-bold">
-                                <button onclick="setDirFilter('all')" id="dir-filter-all" class="px-2 py-1 rounded bg-white text-slate-900 font-bold shadow-xs">All</button>
-                                <button onclick="setDirFilter('churned')" id="dir-filter-churned" class="px-2 py-1 rounded text-slate-500 hover:text-slate-900">Churned</button>
-                                <button onclick="setDirFilter('retained')" id="dir-filter-retained" class="px-2 py-1 rounded text-slate-500 hover:text-slate-900">Retained</button>
+                            <input type="text" id="dir-search" placeholder="Search by Customer ID..." oninput="filterDirectory()" class="bg-[#071120] border border-[#1a365d] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-sky-400 w-48 sm:w-64 font-mono">
+                            <div class="flex p-0.5 rounded-lg bg-[#071120] border border-[#1a365d] text-[10px] font-bold">
+                                <button onclick="setDirFilter('all')" id="dir-filter-all" class="px-2 py-1 rounded bg-sky-500 text-white font-bold shadow-xs">All</button>
+                                <button onclick="setDirFilter('churned')" id="dir-filter-churned" class="px-2 py-1 rounded text-slate-400 hover:text-white">Churned</button>
+                                <button onclick="setDirFilter('retained')" id="dir-filter-retained" class="px-2 py-1 rounded text-slate-400 hover:text-white">Retained</button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Directory Table -->
-                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <div class="overflow-x-auto rounded-xl border border-[#1a365d]">
                         <table class="w-full text-left text-xs font-mono">
-                            <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 text-[10px] uppercase">
+                            <thead class="bg-[#071120] text-slate-400 border-b border-[#1a365d] text-[10px] uppercase">
                                 <tr>
                                     <th class="p-3">Customer ID</th>
                                     <th class="p-3">Contract</th>
@@ -946,7 +994,7 @@
                                     <th class="p-3 text-right">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="directory-table-body" class="divide-y divide-slate-100 bg-white text-slate-700 text-[11px]">
+                            <tbody id="directory-table-body" class="divide-y divide-[#142947] bg-[#09172c] text-slate-300 text-[11px]">
                                 <!-- Injected dynamically by JS -->
                             </tbody>
                         </table>
@@ -960,94 +1008,94 @@
             <div id="page-monitoring" class="page-view space-y-6">
                 
                 <div class="space-y-1">
-                    <span class="text-xs font-bold text-sky-600 uppercase tracking-widest block">Governance & Observability</span>
-                    <h2 class="text-2xl font-extrabold text-slate-900">Continuous Drift Governance & Retraining Lifecycle</h2>
-                    <p class="text-xs text-slate-500">Statistical data drift detection (KS-test & PSI), automated retrain benchmark verification, and live API telemetry.</p>
+                    <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Governance & Observability</span>
+                    <h2 class="text-2xl font-extrabold text-white">Continuous Drift Governance & Retraining Lifecycle</h2>
+                    <p class="text-xs text-slate-400">Statistical data drift detection (KS-test & PSI), automated retrain benchmark verification, and live API telemetry.</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     
                     <!-- Left: Statistical Data Drift Detection Cards -->
-                    <div class="lg:col-span-6 exec-card p-6 space-y-4">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="lg:col-span-6 exec-card tilt-card-3d p-6 space-y-4">
+                        <div class="flex items-center justify-between border-b border-[#1a365d] pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="activity" class="w-5 h-5 text-sky-600"></i>
-                                <h3 class="text-sm font-bold text-slate-900">Statistical Drift Telemetry</h3>
+                                <i data-lucide="activity" class="w-5 h-5 text-sky-400"></i>
+                                <h3 class="text-sm font-bold text-white">Statistical Drift Telemetry</h3>
                             </div>
-                            <span id="drift-status-badge" class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+                            <span id="drift-status-badge" class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-emerald-950/80 text-emerald-400 border border-emerald-800 flex items-center">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-ping"></span>
                                 Zero Drift (Stable)
                             </span>
                         </div>
 
                         <div class="space-y-3 text-xs">
-                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                            <div class="p-3.5 rounded-xl bg-[#071120] border border-[#1a365d] flex items-center justify-between">
                                 <div>
-                                    <span class="font-bold text-slate-800 block">Kolmogorov-Smirnov (KS) Test</span>
-                                    <span class="text-[10px] text-slate-500 block">Numerical Features (Tenure, Charges)</span>
+                                    <span class="font-bold text-white block">Kolmogorov-Smirnov (KS) Test</span>
+                                    <span class="text-[10px] text-slate-400 block">Numerical Features (Tenure, Charges)</span>
                                 </div>
                                 <div class="text-right">
-                                    <span class="text-xs font-bold text-emerald-600 font-mono">p > 0.05 (No Shift)</span>
-                                    <span class="text-[9px] text-slate-400 block">95% Conf. Level</span>
+                                    <span class="text-xs font-bold text-emerald-400 font-mono">p > 0.05 (No Shift)</span>
+                                    <span class="text-[9px] text-slate-500 block">95% Conf. Level</span>
                                 </div>
                             </div>
 
-                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                            <div class="p-3.5 rounded-xl bg-[#071120] border border-[#1a365d] flex items-center justify-between">
                                 <div>
-                                    <span class="font-bold text-slate-800 block">Population Stability Index (PSI)</span>
-                                    <span class="text-[10px] text-slate-500 block">Categorical Distributions (Contract, Internet)</span>
+                                    <span class="font-bold text-white block">Population Stability Index (PSI)</span>
+                                    <span class="text-[10px] text-slate-400 block">Categorical Distributions (Contract, Internet)</span>
                                 </div>
                                 <div class="text-right">
-                                    <span class="text-xs font-bold text-emerald-600 font-mono">PSI < 0.10 (Stable)</span>
-                                    <span class="text-[9px] text-slate-400 block">Industry Tolerance</span>
+                                    <span class="text-xs font-bold text-emerald-400 font-mono">PSI < 0.10 (Stable)</span>
+                                    <span class="text-[9px] text-slate-500 block">Industry Tolerance</span>
                                 </div>
                             </div>
 
-                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                            <div class="p-3.5 rounded-xl bg-[#071120] border border-[#1a365d] flex items-center justify-between">
                                 <div>
-                                    <span class="font-bold text-slate-800 block">Automated Model Registry Lineage</span>
-                                    <span class="text-[10px] text-slate-500 block">Candidate benchmarking & promotion</span>
+                                    <span class="font-bold text-white block">Automated Model Registry Lineage</span>
+                                    <span class="text-[10px] text-slate-400 block">Candidate benchmarking & promotion</span>
                                 </div>
                                 <div class="text-right">
-                                    <span class="text-xs font-bold text-sky-700 font-mono">MLflow 3.x Active</span>
-                                    <span class="text-[9px] text-slate-400 block">Version Tag: v2.1</span>
+                                    <span class="text-xs font-bold text-sky-400 font-mono">MLflow 3.x Active</span>
+                                    <span class="text-[9px] text-slate-500 block">Version Tag: v2.1</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Right: Live REST API Telemetry -->
-                    <div class="lg:col-span-6 exec-card p-6 space-y-4">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="lg:col-span-6 exec-card tilt-card-3d p-6 space-y-4">
+                        <div class="flex items-center justify-between border-b border-[#1a365d] pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="gauge" class="w-5 h-5 text-sky-600"></i>
-                                <h3 class="text-sm font-bold text-slate-900">Real-Time API Telemetry</h3>
+                                <i data-lucide="gauge" class="w-5 h-5 text-sky-400"></i>
+                                <h3 class="text-sm font-bold text-white">Real-Time API Telemetry</h3>
                             </div>
-                            <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Endpoint: /api/metrics</span>
+                            <span class="text-[10px] font-mono text-slate-400 bg-[#071120] px-2 py-0.5 rounded border border-[#1a365d]">Endpoint: /api/metrics</span>
                         </div>
 
                         <div class="grid grid-cols-2 gap-3 text-center text-xs">
-                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                            <div class="p-3.5 rounded-xl bg-[#071120] border border-[#1a365d]">
                                 <span class="text-[10px] text-slate-400 block font-medium">Total API Inferences</span>
-                                <span id="telemetry-total-preds" class="text-xl font-extrabold text-slate-900 font-mono mt-0.5 block">142</span>
+                                <span id="telemetry-total-preds" class="text-xl font-extrabold text-white font-mono mt-0.5 block">142</span>
                             </div>
-                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                            <div class="p-3.5 rounded-xl bg-[#071120] border border-[#1a365d]">
                                 <span class="text-[10px] text-slate-400 block font-medium">Average Latency</span>
-                                <span id="telemetry-latency" class="text-xl font-extrabold text-emerald-600 font-mono mt-0.5 block">1.8 ms</span>
+                                <span id="telemetry-latency" class="text-xl font-extrabold text-emerald-400 font-mono mt-0.5 block">1.8 ms</span>
                             </div>
-                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                            <div class="p-3.5 rounded-xl bg-[#071120] border border-[#1a365d]">
                                 <span class="text-[10px] text-slate-400 block font-medium">Uptime Status</span>
-                                <span class="text-xl font-extrabold text-sky-600 font-mono mt-0.5 block">100.0%</span>
+                                <span class="text-xl font-extrabold text-sky-400 font-mono mt-0.5 block">100.0%</span>
                             </div>
-                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                            <div class="p-3.5 rounded-xl bg-[#071120] border border-[#1a365d]">
                                 <span class="text-[10px] text-slate-400 block font-medium">Active Cutoff</span>
-                                <span class="text-xl font-extrabold text-amber-600 font-mono mt-0.5 block">0.23</span>
+                                <span class="text-xl font-extrabold text-amber-400 font-mono mt-0.5 block">0.23</span>
                             </div>
                         </div>
 
-                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 flex items-center justify-between">
-                            <span>Backend Service: <strong class="text-slate-800">FastAPI + Uvicorn ASGI</strong></span>
-                            <a href="/docs" target="_blank" class="text-sky-600 font-bold hover:underline flex items-center">
+                        <div class="p-3 rounded-xl bg-[#071120] border border-[#1a365d] text-[11px] text-slate-300 flex items-center justify-between">
+                            <span>Backend Service: <strong class="text-white">FastAPI + Uvicorn ASGI</strong></span>
+                            <a href="/docs" target="_blank" class="text-sky-400 font-bold hover:underline flex items-center">
                                 Inspect OpenAPI <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 ml-1"></i>
                             </a>
                         </div>
@@ -1055,31 +1103,31 @@
                 </div>
 
                 <!-- MLflow Experiment Tracking Quickstart Banner -->
-                <div class="exec-card p-6 space-y-4">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="exec-card tilt-card-3d p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-[#1a365d] pb-3">
                         <div class="flex items-center space-x-2">
-                            <i data-lucide="git-pull-request" class="w-5 h-5 text-sky-600"></i>
-                            <h3 class="text-sm font-bold text-slate-900">MLflow Experiment Registry & Artifact Store</h3>
+                            <i data-lucide="git-pull-request" class="w-5 h-5 text-sky-400"></i>
+                            <h3 class="text-sm font-bold text-white">MLflow Experiment Registry & Artifact Store</h3>
                         </div>
-                        <a href="http://127.0.0.1:5000" target="_blank" class="px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 text-xs font-bold flex items-center space-x-1.5 transition-colors">
+                        <a href="http://127.0.0.1:5000" target="_blank" class="px-3 py-1.5 rounded-xl bg-sky-950 hover:bg-sky-900 text-sky-300 border border-sky-800 text-xs font-bold flex items-center space-x-1.5 transition-colors shadow-sm">
                             <span>Open MLflow Dashboard (:5000)</span>
                             <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
                         </a>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                        <div class="p-3.5 rounded-xl bg-[#071120] border border-[#1a365d]">
                             <span class="text-[10px] text-slate-400 uppercase font-bold block">Tracking Backend</span>
-                            <span class="text-sm font-bold text-slate-900 font-mono mt-1 block">SQLite (mlflow.db)</span>
-                            <span class="text-[10px] text-slate-500 mt-1 block">19 runs logged with parameters & metrics</span>
+                            <span class="text-sm font-bold text-white font-mono mt-1 block">SQLite (mlflow.db)</span>
+                            <span class="text-[10px] text-slate-400 mt-1 block">19 runs logged with parameters & metrics</span>
                         </div>
-                        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                        <div class="p-3.5 rounded-xl bg-[#071120] border border-[#1a365d]">
                             <span class="text-[10px] text-slate-400 uppercase font-bold block">Experiments Tracked</span>
-                            <span class="text-sm font-bold text-emerald-600 font-mono mt-1 block">3 Active Experiments</span>
-                            <span class="text-[10px] text-slate-500 mt-1 block">Tournament, Retraining, Baseline</span>
+                            <span class="text-sm font-bold text-emerald-400 font-mono mt-1 block">3 Active Experiments</span>
+                            <span class="text-[10px] text-slate-400 mt-1 block">Tournament, Retraining, Baseline</span>
                         </div>
-                        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                        <div class="p-3.5 rounded-xl bg-[#071120] border border-[#1a365d]">
                             <span class="text-[10px] text-slate-400 uppercase font-bold block">Terminal Launch Command</span>
-                            <code class="text-[10px] font-mono text-sky-800 bg-sky-50 border border-sky-100 px-2 py-1 rounded block mt-1 overflow-x-auto select-all">python -m mlflow ui --backend-store-uri sqlite:///mlflow.db --port 5000</code>
+                            <code class="text-[10px] font-mono text-sky-300 bg-[#060e1a] border border-[#1a365d] px-2 py-1 rounded block mt-1 overflow-x-auto select-all">python -m mlflow ui --backend-store-uri sqlite:///mlflow.db --port 5000</code>
                         </div>
                     </div>
                 </div>
@@ -1089,7 +1137,7 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- JAVASCRIPT: APPLICATION LOGIC, ROUTER & CHARTS -->
+    <!-- JAVASCRIPT: APPLICATION LOGIC, CHARTS, PARTICLES & TILT -->
     <!-- ========================================================================= -->
     <script>
         // 1. Currency Management ($ USD vs ₹ INR)
@@ -1102,11 +1150,11 @@
             const btnInr = document.getElementById('curr-inr');
 
             if (curr === 'USD') {
-                btnUsd.className = "px-2.5 py-1 rounded-full bg-white text-slate-900 shadow-xs transition-all";
-                btnInr.className = "px-2.5 py-1 rounded-full text-slate-500 hover:text-slate-900 transition-all";
+                btnUsd.className = "px-2.5 py-1 rounded-full bg-sky-500 text-white shadow-xs transition-all";
+                btnInr.className = "px-2.5 py-1 rounded-full text-slate-400 hover:text-white transition-all";
             } else {
-                btnInr.className = "px-2.5 py-1 rounded-full bg-white text-slate-900 shadow-xs transition-all";
-                btnUsd.className = "px-2.5 py-1 rounded-full text-slate-500 hover:text-slate-900 transition-all";
+                btnInr.className = "px-2.5 py-1 rounded-full bg-sky-500 text-white shadow-xs transition-all";
+                btnUsd.className = "px-2.5 py-1 rounded-full text-slate-400 hover:text-white transition-all";
             }
 
             updateCalculations();
@@ -1170,6 +1218,7 @@
                 renderAnalyticsCharts();
             }
 
+            init3DTiltCards();
             if (window.lucide) lucide.createIcons();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -1228,11 +1277,11 @@
                 const badge = document.getElementById('risk-badge');
                 badge.innerText = `${data.risk_level} RISK`;
                 if (data.risk_level === 'HIGH') {
-                    badge.className = "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-rose-50 text-rose-700 border border-rose-200 mt-1";
+                    badge.className = "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-rose-950/80 text-rose-400 border border-rose-800 mt-1";
                 } else if (data.risk_level === 'MEDIUM') {
-                    badge.className = "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-50 text-amber-700 border border-amber-200 mt-1";
+                    badge.className = "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-950/80 text-amber-400 border border-amber-800 mt-1";
                 } else {
-                    badge.className = "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 mt-1";
+                    badge.className = "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-emerald-950/80 text-emerald-400 border border-emerald-800 mt-1";
                 }
 
                 // Animate SVG Radial Gauge
@@ -1260,12 +1309,12 @@
                 if (data.shap_explanations && data.shap_explanations.top_risk_drivers) {
                     data.shap_explanations.top_risk_drivers.forEach(d => {
                         const item = document.createElement('div');
-                        item.className = "flex items-center justify-between p-1.5 rounded bg-slate-50 border border-slate-100";
+                        item.className = "flex items-center justify-between p-1.5 rounded bg-[#071120] border border-[#1a365d]";
                         item.innerHTML = `
-                            <span class="text-slate-700 font-medium flex items-center">
+                            <span class="text-slate-300 font-medium flex items-center">
                                 <span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-2"></span>${d.feature}
                             </span>
-                            <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-50 text-rose-700 border border-rose-200">${d.impact_pct} Churn Force</span>
+                            <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-950/80 text-rose-400 border border-rose-800">${d.impact_pct} Churn Force</span>
                         `;
                         shapList.appendChild(item);
                     });
@@ -1273,12 +1322,12 @@
                     if (data.shap_explanations.top_retention_drivers) {
                         data.shap_explanations.top_retention_drivers.slice(0, 2).forEach(d => {
                             const item = document.createElement('div');
-                            item.className = "flex items-center justify-between p-1.5 rounded bg-slate-50 border border-slate-100";
+                            item.className = "flex items-center justify-between p-1.5 rounded bg-[#071120] border border-[#1a365d]";
                             item.innerHTML = `
-                                <span class="text-slate-700 font-medium flex items-center">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-sky-500 mr-2"></span>${d.feature}
+                                <span class="text-slate-300 font-medium flex items-center">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-sky-400 mr-2"></span>${d.feature}
                                 </span>
-                                <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-sky-50 text-sky-700 border border-sky-200">${d.impact_pct} Loyalty Lift</span>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-sky-950/80 text-sky-400 border border-sky-800">${d.impact_pct} Loyalty Lift</span>
                             `;
                             shapList.appendChild(item);
                         });
@@ -1330,13 +1379,13 @@
                 const records = data.scored_records || [];
                 records.slice(0, 10).forEach((r, idx) => {
                     const tr = document.createElement('tr');
-                    const riskColor = r.risk_level === 'HIGH' ? 'text-rose-700 bg-rose-50 border border-rose-200' : (r.risk_level === 'MEDIUM' ? 'text-amber-700 bg-amber-50 border border-amber-200' : 'text-emerald-700 bg-emerald-50 border border-emerald-200');
+                    const riskColor = r.risk_level === 'HIGH' ? 'text-rose-400 bg-rose-950/80 border border-rose-800' : (r.risk_level === 'MEDIUM' ? 'text-amber-400 bg-amber-950/80 border border-amber-800' : 'text-emerald-400 bg-emerald-950/80 border border-emerald-800');
                     tr.innerHTML = `
                         <td class="p-2.5 font-bold">#${idx + 1}</td>
                         <td class="p-2.5">${r.Contract || 'Month-to-month'}</td>
                         <td class="p-2.5">${r.tenure || 0} mo</td>
                         <td class="p-2.5">${formatCurrency(r.MonthlyCharges || 0)}</td>
-                        <td class="p-2.5 font-bold text-slate-900">${((r.probability || 0) * 100).toFixed(1)}%</td>
+                        <td class="p-2.5 font-bold text-white">${((r.probability || 0) * 100).toFixed(1)}%</td>
                         <td class="p-2.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${riskColor}">${r.risk_level}</span></td>
                         <td class="p-2.5 font-bold">${formatCurrency(r.financial_impact_annual || 0)}</td>
                     `;
@@ -1423,9 +1472,9 @@
             ['all', 'churned', 'retained'].forEach(f => {
                 const btn = document.getElementById(`dir-filter-${f}`);
                 if (f === filter) {
-                    btn.className = "px-2 py-1 rounded bg-white text-slate-900 font-bold shadow-xs";
+                    btn.className = "px-2 py-1 rounded bg-sky-500 text-white font-bold shadow-xs";
                 } else {
-                    btn.className = "px-2 py-1 rounded text-slate-500 hover:text-slate-900";
+                    btn.className = "px-2 py-1 rounded text-slate-400 hover:text-white";
                 }
             });
             filterDirectory();
@@ -1446,17 +1495,17 @@
                 const tr = document.createElement('tr');
                 const isChurn = c.status === 'Churned';
                 tr.innerHTML = `
-                    <td class="p-3 font-bold text-slate-900">${c.id}</td>
+                    <td class="p-3 font-bold text-white">${c.id}</td>
                     <td class="p-3">${c.contract}</td>
                     <td class="p-3">${c.tenure} Months</td>
                     <td class="p-3">${formatCurrency(c.monthly)}</td>
                     <td class="p-3">
-                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isChurn ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isChurn ? 'bg-rose-950/80 text-rose-400 border border-rose-800' : 'bg-emerald-950/80 text-emerald-400 border border-emerald-800'}">
                             ${c.status}
                         </span>
                     </td>
                     <td class="p-3 text-right">
-                        <button onclick="loadDirectoryCustomer('${c.contract}', ${c.tenure}, ${c.monthly})" class="px-2.5 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 text-[10px] font-bold transition-all shadow-xs">
+                        <button onclick="loadDirectoryCustomer('${c.contract}', ${c.tenure}, ${c.monthly})" class="px-2.5 py-1 rounded-lg bg-sky-950 hover:bg-sky-900 text-sky-400 border border-sky-800 text-[10px] font-bold transition-all shadow-xs">
                             Score
                         </button>
                     </td>
@@ -1474,7 +1523,7 @@
             document.getElementById('single-predict-form').dispatchEvent(new Event('submit'));
         }
 
-        // 8. EXACT EXECUTIVE CHARTS IN WHITE/SLATE CORPORATE THEME
+        // 8. EXACT EXECUTIVE CHARTS MATCHING USER'S IMAGE
         let chartTotalChurnDonutInstance = null;
         let chartInternetServiceDonutInstance = null;
         let chartDemographicHBarInstance = null;
@@ -1492,16 +1541,16 @@
                         labels: ['No', 'Yes'],
                         datasets: [{
                             data: [5174, 1869],
-                            backgroundColor: ['#38bdf8', '#fb7185'],
-                            borderColor: '#ffffff',
-                            borderWidth: 2,
+                            backgroundColor: ['#90cdf4', '#feb2b2'],
+                            borderColor: '#0d1e36',
+                            borderWidth: 3,
                             cutout: '62%'
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        animation: { animateScale: true, animateRotate: true, duration: 1000 },
+                        animation: { animateScale: true, animateRotate: true, duration: 1200 },
                         plugins: { legend: { display: false } }
                     }
                 });
@@ -1516,16 +1565,16 @@
                         labels: ['Fiber optic', 'DSL', 'No'],
                         datasets: [{
                             data: [1297, 459, 113],
-                            backgroundColor: ['#fb7185', '#38bdf8', '#facc15'],
-                            borderColor: '#ffffff',
-                            borderWidth: 2,
+                            backgroundColor: ['#feb2b2', '#90cdf4', '#fefcbf'],
+                            borderColor: '#0d1e36',
+                            borderWidth: 3,
                             cutout: '58%'
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        animation: { animateScale: true, animateRotate: true, duration: 1000 },
+                        animation: { animateScale: true, animateRotate: true, duration: 1200 },
                         plugins: { legend: { display: false } }
                     }
                 });
@@ -1542,7 +1591,7 @@
                             {
                                 label: 'No',
                                 data: [23.61, 32.96, 31.28],
-                                backgroundColor: '#38bdf8',
+                                backgroundColor: '#90cdf4',
                                 borderRadius: 4,
                                 barPercentage: 0.7,
                                 categoryPercentage: 0.8
@@ -1550,7 +1599,7 @@
                             {
                                 label: 'Yes',
                                 data: [41.68, 19.66, 15.45],
-                                backgroundColor: '#fb7185',
+                                backgroundColor: '#feb2b2',
                                 borderRadius: 4,
                                 barPercentage: 0.7,
                                 categoryPercentage: 0.8
@@ -1561,24 +1610,24 @@
                         indexAxis: 'y',
                         responsive: true,
                         maintainAspectRatio: false,
-                        animation: { duration: 1000 },
+                        animation: { duration: 1200 },
                         plugins: { legend: { display: false } },
                         scales: {
                             x: {
                                 max: 50,
-                                grid: { color: '#f1f5f9' },
-                                ticks: { color: '#64748b', font: { size: 10 }, callback: v => v + '%' }
+                                grid: { color: '#162e52' },
+                                ticks: { color: '#94a3b8', font: { size: 10 }, callback: v => v + '%' }
                             },
                             y: {
                                 grid: { display: false },
-                                ticks: { color: '#334155', font: { size: 10, weight: 'bold' } }
+                                ticks: { color: '#cbd5e1', font: { size: 10, weight: 'bold' } }
                             }
                         }
                     }
                 });
             }
 
-            // Chart 5: Total Customers by Tenure Group (Vertical Columns)
+            // Chart 5: Total Customers by Tenure Group (Vertical Columns with value labels)
             const ctx5 = document.getElementById('chartTenureGroupBar');
             if (ctx5 && !chartTenureGroupBarInstance) {
                 chartTenureGroupBarInstance = new Chart(ctx5, {
@@ -1588,7 +1637,7 @@
                         datasets: [{
                             label: 'Total Customers',
                             data: [2186, 1024, 1594, 832, 1407],
-                            backgroundColor: '#38bdf8',
+                            backgroundColor: '#90cdf4',
                             borderRadius: 6,
                             barThickness: 28
                         }]
@@ -1596,30 +1645,30 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        animation: { duration: 1000 },
+                        animation: { duration: 1300 },
                         plugins: { legend: { display: false } },
                         scales: {
                             y: {
                                 max: 2500,
-                                grid: { color: '#f1f5f9' },
-                                ticks: { color: '#64748b', font: { size: 10 } }
+                                grid: { color: '#162e52' },
+                                ticks: { color: '#94a3b8', font: { size: 10 } }
                             },
                             x: {
                                 grid: { display: false },
-                                ticks: { color: '#334155', font: { size: 10, weight: 'bold' } }
+                                ticks: { color: '#cbd5e1', font: { size: 10, weight: 'bold' } }
                             }
                         }
                     }
                 });
             }
 
-            // Chart 6: Churn Rate by Payment Method (Smooth Wave + Bar in Corporate Blue)
+            // Chart 6: Churn Rate by Payment Method (Smooth Wave Line + Bar)
             const ctx6 = document.getElementById('chartPaymentMethodWave');
             if (ctx6 && !chartPaymentMethodWaveInstance) {
                 const wCtx = ctx6.getContext('2d');
                 const waveGrad = wCtx.createLinearGradient(0, 0, 0, 160);
-                waveGrad.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
-                waveGrad.addColorStop(1, 'rgba(56, 189, 248, 0.02)');
+                waveGrad.addColorStop(0, 'rgba(144, 205, 244, 0.4)');
+                waveGrad.addColorStop(1, 'rgba(144, 205, 244, 0.05)');
 
                 chartPaymentMethodWaveInstance = new Chart(ctx6, {
                     type: 'line',
@@ -1630,12 +1679,12 @@
                                 type: 'line',
                                 label: 'Churn Rate %',
                                 data: [45.3, 19.1, 16.7, 15.2],
-                                borderColor: '#0284c7',
+                                borderColor: '#90cdf4',
                                 borderWidth: 3,
                                 backgroundColor: waveGrad,
                                 fill: true,
                                 tension: 0.4,
-                                pointBackgroundColor: '#0284c7',
+                                pointBackgroundColor: '#90cdf4',
                                 pointBorderColor: '#ffffff',
                                 pointRadius: 5
                             },
@@ -1643,7 +1692,7 @@
                                 type: 'bar',
                                 label: 'Volume Bars',
                                 data: [45.3, 19.1, 16.7, 15.2],
-                                backgroundColor: 'rgba(56, 189, 248, 0.2)',
+                                backgroundColor: 'rgba(144, 205, 244, 0.25)',
                                 borderRadius: 6,
                                 barThickness: 26
                             }
@@ -1652,18 +1701,18 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        animation: { duration: 1000 },
+                        animation: { duration: 1400 },
                         plugins: { legend: { display: false } },
                         scales: {
                             y: {
                                 min: 0,
                                 max: 50,
-                                grid: { color: '#f1f5f9' },
-                                ticks: { color: '#64748b', font: { size: 10 }, callback: v => v + '%' }
+                                grid: { color: '#162e52' },
+                                ticks: { color: '#94a3b8', font: { size: 10 }, callback: v => v + '%' }
                             },
                             x: {
                                 grid: { display: false },
-                                ticks: { color: '#334155', font: { size: 9, weight: 'bold' } }
+                                ticks: { color: '#cbd5e1', font: { size: 9, weight: 'bold' } }
                             }
                         }
                     }
@@ -1676,8 +1725,8 @@
             if (ctxCohorts && !analyticsCohortsChartInstance) {
                 const aCtx = ctxCohorts.getContext('2d');
                 const cohortGrad = aCtx.createLinearGradient(0, 0, 0, 180);
-                cohortGrad.addColorStop(0, 'rgba(2, 132, 199, 0.2)');
-                cohortGrad.addColorStop(1, 'rgba(2, 132, 199, 0.01)');
+                cohortGrad.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
+                cohortGrad.addColorStop(1, 'rgba(56, 189, 248, 0.02)');
 
                 analyticsCohortsChartInstance = new Chart(ctxCohorts, {
                     type: 'line',
@@ -1686,12 +1735,12 @@
                         datasets: [{
                             label: 'Subscriber Survival Rate %',
                             data: [100, 82, 74, 68, 64, 61, 58],
-                            borderColor: '#0284c7',
+                            borderColor: '#38bdf8',
                             borderWidth: 3,
                             backgroundColor: cohortGrad,
                             fill: true,
                             tension: 0.35,
-                            pointBackgroundColor: '#0284c7',
+                            pointBackgroundColor: '#38bdf8',
                             pointBorderColor: '#ffffff',
                             pointBorderWidth: 2,
                             pointRadius: 4
@@ -1700,18 +1749,138 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        animation: { duration: 1000 },
-                        plugins: { legend: { labels: { color: '#64748b' } } },
+                        animation: { duration: 1400 },
+                        plugins: { legend: { labels: { color: '#94a3b8' } } },
                         scales: {
-                            y: { min: 40, max: 100, grid: { color: '#f1f5f9' }, ticks: { color: '#64748b' } },
-                            x: { grid: { color: '#f1f5f9' }, ticks: { color: '#64748b' } }
+                            y: { min: 40, max: 100, grid: { color: '#1a365d' }, ticks: { color: '#94a3b8' } },
+                            x: { grid: { color: '#1a365d' }, ticks: { color: '#94a3b8' } }
                         }
                     }
                 });
             }
         }
 
-        // 9. Initial Load Handlers
+        // 9. Three.js 3D WebGL Particle Constellation
+        function init3DParticleNetwork() {
+            const canvas = document.getElementById('webgl-3d-particles');
+            if (!canvas || typeof THREE === 'undefined') return;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 400;
+
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            const particleCount = 130;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            const velocities = [];
+
+            const colorPalette = [
+                new THREE.Color('#38bdf8'), // Sky
+                new THREE.Color('#90cdf4'), // Light Blue
+                new THREE.Color('#feb2b2'), // Soft Pink
+                new THREE.Color('#fefcbf')  // Pastel Yellow
+            ];
+
+            for (let i = 0; i < particleCount; i++) {
+                positions[i * 3] = (Math.random() - 0.5) * 800;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 800;
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 400;
+
+                velocities.push({
+                    x: (Math.random() - 0.5) * 0.35,
+                    y: (Math.random() - 0.5) * 0.35,
+                    z: (Math.random() - 0.5) * 0.35
+                });
+
+                const c = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+                colors[i * 3] = c.r;
+                colors[i * 3 + 1] = c.g;
+                colors[i * 3 + 2] = c.b;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 3.5,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.6
+            });
+
+            const pointCloud = new THREE.Points(geometry, material);
+            scene.add(pointCloud);
+
+            let mouseX = 0, mouseY = 0;
+            window.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX - window.innerWidth / 2) * 0.05;
+                mouseY = (e.clientY - window.innerHeight / 2) * 0.05;
+            });
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                const pos = geometry.attributes.position.array;
+                for (let i = 0; i < particleCount; i++) {
+                    pos[i * 3] += velocities[i].x;
+                    pos[i * 3 + 1] += velocities[i].y;
+                    pos[i * 3 + 2] += velocities[i].z;
+
+                    if (pos[i * 3] < -400 || pos[i * 3] > 400) velocities[i].x *= -1;
+                    if (pos[i * 3 + 1] < -400 || pos[i * 3 + 1] > 400) velocities[i].y *= -1;
+                    if (pos[i * 3 + 2] < -200 || pos[i * 3 + 2] > 200) velocities[i].z *= -1;
+                }
+                geometry.attributes.position.needsUpdate = true;
+
+                pointCloud.rotation.x += 0.0008;
+                pointCloud.rotation.y += 0.0012;
+
+                camera.position.x += (mouseX - camera.position.x) * 0.03;
+                camera.position.y += (-mouseY - camera.position.y) * 0.03;
+                camera.lookAt(scene.position);
+
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        // 10. 3D Perspective Card Tilt Interactions
+        function init3DTiltCards() {
+            const cards = document.querySelectorAll('.exec-card, .tilt-card-3d');
+            cards.forEach(card => {
+                if (card.dataset.tiltInitialized) return;
+                card.dataset.tiltInitialized = "true";
+
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -5;
+                    const rotateY = ((x - centerX) / centerX) * 5;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                });
+            });
+        }
+
+        // 11. Initial Load Handlers
         window.onload = () => {
             const initialPath = window.location.pathname.replace('/', '') || 'overview';
             navigateToPage(initialPath, false);
@@ -1720,6 +1889,10 @@
             calculateROI();
             filterDirectory();
 
+            init3DParticleNetwork();
+            init3DTiltCards();
+
+            // Fetch live governance and telemetry
             fetch('/api/governance').then(r => r.json()).then(data => {
                 if (data && data.data_drift_monitoring) {
                     const badge = document.getElementById('drift-status-badge');
