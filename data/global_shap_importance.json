@@ -1,0 +1,21 @@
+{
+  "method": "SHAP (TreeExplainer)",
+  "sample_size": 24,
+  "global_importance": [
+    {
+      "feature": "Customer Tenure (Months)",
+      "mean_abs_shap": 0.1618,
+      "relative_influence": 40.4
+    },
+    {
+      "feature": "Monthly Bill Amount",
+      "mean_abs_shap": 0.1568,
+      "relative_influence": 39.17
+    },
+    {
+      "feature": "Lifetime Spend Total",
+      "mean_abs_shap": 0.0818,
+      "relative_influence": 20.43
+    }
+  ]
+}

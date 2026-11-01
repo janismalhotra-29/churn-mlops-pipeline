@@ -1,0 +1,37 @@
+{
+  "status": "drift_detected",
+  "overall_drift_detected": true,
+  "drift_ratio": 1.0,
+  "drifted_features": [
+    "tenure",
+    "MonthlyCharges",
+    "TotalCharges"
+  ],
+  "retraining_recommended": true,
+  "feature_metrics": {
+    "tenure": {
+      "ks_statistic": 1.0,
+      "p_value": 0.0,
+      "psi": 6.9008,
+      "drift_detected": true,
+      "baseline_mean": 29.85,
+      "current_mean": 5.13
+    },
+    "MonthlyCharges": {
+      "ks_statistic": 1.0,
+      "p_value": 0.0,
+      "psi": 6.9008,
+      "drift_detected": true,
+      "baseline_mean": 64.76,
+      "current_mean": 131.63
+    },
+    "TotalCharges": {
+      "ks_statistic": 1.0,
+      "p_value": 0.0,
+      "psi": 6.9008,
+      "drift_detected": true,
+      "baseline_mean": 1803.54,
+      "current_mean": 3504.34
+    }
+  }
+}

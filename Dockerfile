@@ -11,8 +11,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy source directory and serialized trained model artifact
+# Copy source directory, data files, and serialized trained model artifact
 COPY src/ ./src/
+COPY data/ ./data/
 COPY churn_model.pkl .
 
 # Expose FastAPI application port

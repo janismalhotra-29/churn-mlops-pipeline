@@ -80,12 +80,70 @@ def test_bulk_predict_csv_upload():
     assert data["total_records_processed"] == 2
     assert "sample_results" in data
 
+def test_predict_endpoint_invalid_tenure_negative():
+    """Test POST /predict rejects negative tenure with HTTP 422."""
+    payload = {
+        "tenure": -5,
+        "MonthlyCharges": 50.0,
+        "TotalCharges": 250.0,
+        "Contract": "Month-to-month",
+        "InternetService": "DSL"
+    }
+    response = client.post("/predict", json=payload)
+    assert response.status_code == 422
+
+def test_predict_endpoint_invalid_categorical_input():
+    """Test POST /predict rejects invalid contract type with HTTP 422."""
+    payload = {
+        "tenure": 12,
+        "MonthlyCharges": 50.0,
+        "TotalCharges": 600.0,
+        "Contract": "Infinite Contract",  # Invalid
+        "InternetService": "DSL"
+    }
+    response = client.post("/predict", json=payload)
+    assert response.status_code == 422
+
+def test_predict_endpoint_missing_required_fields():
+    """Test POST /predict rejects request missing required MonthlyCharges with HTTP 422."""
+    payload = {
+        "tenure": 12,
+        "TotalCharges": 600.0
+    }
+    response = client.post("/predict", json=payload)
+    assert response.status_code == 422
+
+def test_predict_decision_threshold_logic():
+    """Test that prediction equals 1 when probability >= decision_threshold."""
+    payload = {
+        "tenure": 1,
+        "MonthlyCharges": 110.0,
+        "TotalCharges": 110.0,
+        "Contract": "Month-to-month",
+        "InternetService": "Fiber optic"
+    }
+    response = client.post("/predict", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert "decision_threshold" in data
+    thresh = data["decision_threshold"]
+    prob = data["probability"]
+    expected_pred = 1 if prob >= thresh else 0
+    assert data["prediction"] == expected_pred
+
+def test_model_loading_and_artifact_integrity():
+    """Test that model artifact loads properly and contains pipeline steps."""
+    from src.app import get_model, get_threshold
+    pipeline = get_model()
+    threshold = get_threshold()
+    assert pipeline is not None
+    assert 0.0 <= threshold <= 1.0
+    assert hasattr(pipeline, "predict")
+    assert hasattr(pipeline, "predict_proba")
+
 def test_risk_segments_endpoint():
     """Test GET /api/risk-segments returns calculated statistics based on probabilities."""
     response = client.get("/api/risk-segments")
-    # if dataset exists, this should be 200
-    # For now, it might be 404 if data/raw_churn_data.csv doesn't exist during test, 
-    # but the environment has it so it should be 200.
     if response.status_code == 200:
         data = response.json()
         assert "period" in data
@@ -94,4 +152,17 @@ def test_risk_segments_endpoint():
         assert "High Risk" in data["segments"]
         assert "Medium Risk" in data["segments"]
         assert "Low Risk" in data["segments"]
+
+def test_api_metrics_endpoint():
+    """Test GET /api/metrics returns live operational and inference metrics."""
+    response = client.get("/api/metrics")
+    assert response.status_code == 200
+    data = response.json()
+    assert "total_requests" in data
+    assert "total_predictions" in data
+    assert "predictions_by_risk" in data
+    assert "average_latency_ms" in data
+    assert "model_decision_threshold" in data
+
+
 
