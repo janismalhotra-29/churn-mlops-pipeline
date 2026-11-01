@@ -14,24 +14,24 @@
       "p_value": 0.0,
       "psi": 6.9008,
       "drift_detected": true,
-      "baseline_mean": 30.21,
-      "current_mean": 5.11
+      "baseline_mean": 29.93,
+      "current_mean": 5.33
     },
     "MonthlyCharges": {
       "ks_statistic": 1.0,
       "p_value": 0.0,
       "psi": 6.9008,
       "drift_detected": true,
-      "baseline_mean": 65.43,
-      "current_mean": 132.81
+      "baseline_mean": 64.73,
+      "current_mean": 130.8
     },
     "TotalCharges": {
       "ks_statistic": 1.0,
       "p_value": 0.0,
       "psi": 6.9008,
       "drift_detected": true,
-      "baseline_mean": 1799.11,
-      "current_mean": 3498.34
+      "baseline_mean": 1811.05,
+      "current_mean": 3513.81
     }
   }
 }
