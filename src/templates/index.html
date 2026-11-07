@@ -1418,7 +1418,16 @@
 
             
         // 5.1 Live What-If Counterfactual Simulation & Retention Dispatch Engine
-        let lastWhatIfOutreach = null;
+        let lastWhatIfOutreach = {
+            recipient: "customer@telecom.com",
+            subject: "Exclusive VIP Upgrade: Save $15/mo on your Telecom Plan!",
+            voucher_code: "TELCO-SAVE15-1YR",
+            contract_term: "One year",
+            monthly_rate: "$70.00/mo (was $85.00/mo)",
+            tech_support_included: "Free 24/7 Priority Helpdesk",
+            body: "Dear Valued Customer, as a loyal subscriber, we are delighted to offer you our premier One year package. Lock in guaranteed $15/mo savings for the next 12 months plus 100% free Priority Tech Support. Use promo code TELCO-SAVE15-1YR to claim your personalized retention plan.",
+            dispatch_status: "Ready for CRM Dispatch (Simulated Webhook)"
+        };
 
         async function runWhatIfSimulation() {
             const tenureEl = document.getElementById('tenure');
@@ -1506,35 +1515,47 @@
             }
         }
 
-        function openRetentionDispatchModal() {
-            if (!lastWhatIfOutreach) {
-                runWhatIfSimulation();
-            }
+        async function openRetentionDispatchModal() {
             const modal = document.getElementById('retention-dispatch-modal');
             if (!modal) return;
-            if (lastWhatIfOutreach) {
-                document.getElementById('modal-recipient').innerText = lastWhatIfOutreach.recipient || 'customer@telecom.com';
-                document.getElementById('modal-subject').innerText = lastWhatIfOutreach.subject || 'Exclusive Retention Offer';
-                document.getElementById('modal-email-body').innerText = lastWhatIfOutreach.body || '';
-                document.getElementById('modal-voucher').innerText = lastWhatIfOutreach.voucher_code || 'TELCO-RETAIN';
-                document.getElementById('modal-dispatch-status').innerText = lastWhatIfOutreach.dispatch_status || 'Ready';
+
+            if (!lastWhatIfOutreach) {
+                await runWhatIfSimulation();
             }
+
+            const recEl = document.getElementById('modal-recipient');
+            const subEl = document.getElementById('modal-subject');
+            const bodyEl = document.getElementById('modal-email-body');
+            const vouchEl = document.getElementById('modal-voucher');
+            const statEl = document.getElementById('modal-dispatch-status');
+
+            if (recEl) recEl.innerText = lastWhatIfOutreach ? (lastWhatIfOutreach.recipient || 'customer@telecom.com') : 'customer@telecom.com';
+            if (subEl) subEl.innerText = lastWhatIfOutreach ? (lastWhatIfOutreach.subject || 'Exclusive Retention Offer') : 'Exclusive Retention Offer';
+            if (bodyEl) bodyEl.innerText = lastWhatIfOutreach ? (lastWhatIfOutreach.body || '') : '';
+            if (vouchEl) vouchEl.innerText = lastWhatIfOutreach ? (lastWhatIfOutreach.voucher_code || 'TELCO-SAVE15-1YR') : 'TELCO-SAVE15-1YR';
+            if (statEl) statEl.innerText = lastWhatIfOutreach ? (lastWhatIfOutreach.dispatch_status || 'Ready for CRM Webhook') : 'Ready for CRM Webhook';
+
+            // Show modal cleanly with inline style override
+            modal.style.display = 'flex';
             modal.classList.remove('hidden');
             if (window.lucide) lucide.createIcons();
         }
 
         function closeRetentionDispatchModal() {
             const modal = document.getElementById('retention-dispatch-modal');
-            if (modal) modal.classList.add('hidden');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.add('hidden');
+            }
         }
 
         function confirmRetentionDispatch() {
             closeRetentionDispatchModal();
             const toast = document.createElement('div');
-            toast.className = "fixed bottom-5 right-5 z-50 bg-teal-900 text-white px-5 py-3 rounded-xl shadow-2xl border border-teal-500/40 flex items-center space-x-3 text-xs font-semibold animate-bounce";
+            toast.className = "fixed bottom-5 right-5 z-[99999] bg-teal-900 text-white px-5 py-3 rounded-xl shadow-2xl border border-teal-500/40 flex items-center space-x-3 text-xs font-semibold animate-bounce";
             toast.innerHTML = `
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                <span>Retention Package Dispatched to CRM Queue (Code: ${lastWhatIfOutreach ? lastWhatIfOutreach.voucher_code : 'ACTIVE'})! Audit Logged.</span>
+                <span>Retention Package Dispatched to CRM Queue (Code: ${lastWhatIfOutreach ? lastWhatIfOutreach.voucher_code : 'TELCO-SAVE15-1YR'})! Audit Logged.</span>
             `;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 4000);
@@ -2399,7 +2420,7 @@
     </script>
 
     <!-- Retention Dispatch Modal -->
-    <div id="retention-dispatch-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs hidden p-4">
+    <div id="retention-dispatch-modal" class="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 hidden" style="display: none;">
         <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full overflow-hidden animate-scale-up space-y-0">
             <!-- Modal Header -->
             <div class="px-6 py-4 bg-gradient-to-r from-teal-600 to-teal-700 text-white flex items-center justify-between">
