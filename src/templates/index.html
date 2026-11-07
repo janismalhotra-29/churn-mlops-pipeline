@@ -876,7 +876,7 @@
                                 Proactively transition subscriber to One year with guaranteed $15/mo savings and complimentary 24/7 Priority Tech Support.
                             </p>
                         </div>
-                        <button type="button" onclick="openRetentionDispatchModal()" class="px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 active:scale-95 text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center whitespace-nowrap cursor-pointer">
+                        <button type="button" id="dispatch-retention-btn" onclick="openRetentionDispatchModal()" class="px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 active:scale-95 text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center whitespace-nowrap cursor-pointer">
                             <i data-lucide="send" class="w-3.5 h-3.5 mr-1.5"></i>Dispatch Retention Offer
                         </button>
                     </div>
@@ -1416,8 +1416,22 @@
                 btnUsd.className = "px-2.5 py-1 rounded-full text-slate-500 hover:text-slate-800 transition-all";
             }
 
-            
-        // 5.1 Live What-If Counterfactual Simulation & Retention Dispatch Engine
+            updateCalculations();
+            if (typeof runWhatIfSimulation === 'function') {
+                runWhatIfSimulation();
+            }
+            calculateROI();
+
+            // Update KPI Cards
+            const atRiskKpi = document.getElementById('kpi-at-risk-rev');
+            const roiKpi = document.getElementById('kpi-roi-rev');
+            if (atRiskKpi) atRiskKpi.innerText = formatCurrency(1452180);
+            if (roiKpi) roiKpi.innerText = `+${formatCurrency(38740)}`;
+        }
+
+        // =========================================================================
+        // 5.1 LIVE WHAT-IF COUNTERFACTUAL SIMULATION & RETENTION DISPATCH ENGINE
+        // =========================================================================
         let lastWhatIfOutreach = {
             recipient: "customer@telecom.com",
             subject: "Exclusive VIP Upgrade: Save $15/mo on your Telecom Plan!",
@@ -1489,13 +1503,14 @@
                 const cfChargesEl = document.getElementById('whatif-cf-charges');
                 if (cfChargesEl) cfChargesEl.innerText = formatCurrency(data.monthly_charges_simulated) + '/mo';
 
-                // Update Delta
-                const riskDropEl = document.getElementById('whatif-risk-drop');
-                if (riskDropEl) {
-                    riskDropEl.innerText = `-${data.risk_delta_percent.toFixed(1)}% Risk Drop`;
+                // Delta drop
+                const deltaEl = document.getElementById('whatif-delta');
+                if (deltaEl) {
+                    const dropSign = data.risk_reduction_pct >= 0 ? `-${data.risk_reduction_pct.toFixed(1)}%` : `+${Math.abs(data.risk_reduction_pct).toFixed(1)}%`;
+                    deltaEl.innerText = `${dropSign} Drop`;
                 }
 
-                // Update Financials
+                // Financial Tiles
                 const annSavedEl = document.getElementById('whatif-ann-saved');
                 if (annSavedEl) annSavedEl.innerText = '+' + formatCurrency(data.annual_revenue_saved);
                 const annCostEl = document.getElementById('whatif-ann-cost');
@@ -1517,7 +1532,10 @@
 
         async function openRetentionDispatchModal() {
             const modal = document.getElementById('retention-dispatch-modal');
-            if (!modal) return;
+            if (!modal) {
+                console.error("Modal #retention-dispatch-modal not found in DOM");
+                return;
+            }
 
             if (!lastWhatIfOutreach) {
                 await runWhatIfSimulation();
@@ -1535,8 +1553,8 @@
             if (vouchEl) vouchEl.innerText = lastWhatIfOutreach ? (lastWhatIfOutreach.voucher_code || 'TELCO-SAVE15-1YR') : 'TELCO-SAVE15-1YR';
             if (statEl) statEl.innerText = lastWhatIfOutreach ? (lastWhatIfOutreach.dispatch_status || 'Ready for CRM Webhook') : 'Ready for CRM Webhook';
 
-            // Show modal cleanly with inline style override
-            modal.style.display = 'flex';
+            // Show modal cleanly with bulletproof inline style override
+            modal.style.cssText = "display: flex !important; position: fixed; inset: 0; z-index: 999999; align-items: center; justify-content: center; background-color: rgba(15, 23, 42, 0.75); padding: 1rem;";
             modal.classList.remove('hidden');
             if (window.lucide) lucide.createIcons();
         }
@@ -1544,33 +1562,50 @@
         function closeRetentionDispatchModal() {
             const modal = document.getElementById('retention-dispatch-modal');
             if (modal) {
-                modal.style.display = 'none';
+                modal.style.cssText = "display: none !important;";
                 modal.classList.add('hidden');
             }
         }
 
         function confirmRetentionDispatch() {
             closeRetentionDispatchModal();
+
+            // Direct button feedback
+            const btn = document.getElementById('dispatch-retention-btn');
+            if (btn) {
+                const origHtml = btn.innerHTML;
+                btn.innerHTML = `<i data-lucide="check-circle" class="w-3.5 h-3.5 mr-1.5"></i>Dispatched to CRM!`;
+                btn.classList.remove('bg-teal-600', 'hover:bg-teal-700');
+                btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+                if (window.lucide) lucide.createIcons();
+                setTimeout(() => {
+                    btn.innerHTML = origHtml;
+                    btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+                    btn.classList.add('bg-teal-600', 'hover:bg-teal-700');
+                    if (window.lucide) lucide.createIcons();
+                }, 4000);
+            }
+
+            // Floating Toast notification
             const toast = document.createElement('div');
-            toast.className = "fixed bottom-5 right-5 z-[99999] bg-teal-900 text-white px-5 py-3 rounded-xl shadow-2xl border border-teal-500/40 flex items-center space-x-3 text-xs font-semibold animate-bounce";
+            toast.style.cssText = "position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999999;";
+            toast.className = "bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-teal-500/50 flex items-center space-x-3 text-xs font-semibold animate-bounce";
             toast.innerHTML = `
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                <span>Retention Package Dispatched to CRM Queue (Code: ${lastWhatIfOutreach ? lastWhatIfOutreach.voucher_code : 'TELCO-SAVE15-1YR'})! Audit Logged.</span>
+                <span class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
+                <div>
+                    <p class="font-bold text-emerald-300">✓ Retention Offer Dispatched!</p>
+                    <p class="text-[11px] text-slate-300">Voucher <strong>${lastWhatIfOutreach ? lastWhatIfOutreach.voucher_code : 'TELCO-SAVE15-1YR'}</strong> queued for customer outreach & logged to audit table.</p>
+                </div>
             `;
             document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 4000);
+            setTimeout(() => toast.remove(), 5000);
         }
 
-            updateCalculations();
-            runWhatIfSimulation();
-            calculateROI();
-
-            // Update KPI Cards
-            const atRiskKpi = document.getElementById('kpi-at-risk-rev');
-            const roiKpi = document.getElementById('kpi-roi-rev');
-            if (atRiskKpi) atRiskKpi.innerText = formatCurrency(1452180);
-            if (roiKpi) roiKpi.innerText = `+${formatCurrency(38740)}`;
-        }
+        // Explicitly attach to window for 100% global accessibility
+        window.runWhatIfSimulation = runWhatIfSimulation;
+        window.openRetentionDispatchModal = openRetentionDispatchModal;
+        window.closeRetentionDispatchModal = closeRetentionDispatchModal;
+        window.confirmRetentionDispatch = confirmRetentionDispatch;
 
         function formatCurrency(val) {
             if (currentCurrency === 'INR') {
