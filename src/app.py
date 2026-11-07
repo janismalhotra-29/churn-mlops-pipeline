@@ -2,6 +2,7 @@ import os
 import io
 import json
 import joblib
+import numpy as np
 import pandas as pd
 from typing import Literal, Optional
 from contextlib import asynccontextmanager
@@ -93,6 +94,33 @@ class PredictionResponse(BaseModel):
     customer_lifetime_value: Optional[float] = Field(None, description="Estimated customer lifetime value")
     shap_explanations: Optional[dict] = Field(None, description="SHAP feature attribution drivers")
     prescriptive_action: Optional[dict] = Field(None, description="Prescriptive retention intervention plan")
+
+class WhatIfRequest(BaseModel):
+    tenure: int = Field(12, ge=0, le=120, description="Customer tenure in months")
+    MonthlyCharges: float = Field(70.0, ge=0.0, description="Current monthly bill charges ($)")
+    TotalCharges: Optional[float] = Field(None, ge=0.0, description="Accumulated total charges ($)")
+    Contract: Literal["Month-to-month", "One year", "Two year"] = Field("Month-to-month", description="Current contract type")
+    InternetService: Literal["Fiber optic", "DSL", "No"] = Field("Fiber optic", description="Current internet tech")
+    proposed_contract: Literal["Month-to-month", "One year", "Two year"] = Field("One year", description="Simulated counterfactual contract")
+    discount_monthly: float = Field(10.0, ge=0.0, le=60.0, description="Simulated monthly price concession ($)")
+    add_tech_support: bool = Field(True, description="Whether to bundle complimentary 24/7 Tech Support")
+
+class WhatIfResponse(BaseModel):
+    baseline_probability: float = Field(..., description="Original churn probability")
+    baseline_risk: str = Field(..., description="Original risk category (HIGH, MEDIUM, LOW)")
+    counterfactual_probability: float = Field(..., description="Simulated counterfactual churn probability")
+    counterfactual_risk: str = Field(..., description="Simulated risk category (HIGH, MEDIUM, LOW)")
+    risk_delta_percent: float = Field(..., description="Percentage point drop in churn risk")
+    monthly_charges_original: float = Field(..., description="Original monthly charges")
+    monthly_charges_simulated: float = Field(..., description="Simulated monthly charges after discount")
+    annual_revenue_saved: float = Field(..., description="Estimated annual recurring revenue preserved ($)")
+    annual_discount_cost: float = Field(..., description="Total annual cost of the promotional incentive ($)")
+    net_economic_benefit: float = Field(..., description="Net annual bottom-line benefit after discount ($)")
+    retention_probability: float = Field(..., description="Simulated retention probability (1 - counterfactual)")
+    recommended_action: str = Field(..., description="Actionable retention recommendation")
+    voucher_code: str = Field(..., description="Auto-generated promotional retention code")
+    campaign_name: str = Field(..., description="Targeted campaign policy")
+    outreach_preview: dict = Field(..., description="Generated customer outreach email/SMS preview")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -262,6 +290,36 @@ def get_service_metrics():
         "model_decision_threshold": round(get_threshold(), 4),
         "uptime_seconds": round(time.time() - METRICS["start_time"], 1)
     }
+
+def _evaluate_customer_probability(clf, tenure: int, monthly_charges: float, total_charges: float, contract: str, internet: str) -> float:
+    """Helper to evaluate churn probability for an arbitrary customer feature state."""
+    contract_map = {"Month-to-month": 0, "One year": 1, "Two year": 2}
+    contract_code = contract_map.get(contract, 0)
+
+    internet_map = {"No": 0, "DSL": 1, "Fiber optic": 2}
+    internet_code = internet_map.get(internet, 2)
+
+    input_df = pd.DataFrame([{
+        "tenure": tenure,
+        "MonthlyCharges": monthly_charges,
+        "TotalCharges": total_charges,
+        "Contract": contract,
+        "InternetService": internet,
+        "Contract_Code": contract_code,
+        "InternetService_Code": internet_code
+    }])
+
+    feature_names = getattr(clf, "feature_names_in_", None)
+    if feature_names is not None:
+        for col in feature_names:
+            if col not in input_df.columns:
+                input_df[col] = 0.0
+        input_features = input_df[list(feature_names)]
+    else:
+        input_features = input_df[["tenure", "MonthlyCharges", "TotalCharges"]]
+
+    probabilities = clf.predict_proba(input_features)[0]
+    return float(probabilities[1]) if len(probabilities) > 1 else float(probabilities[0])
 
 @app.post("/predict", response_model=PredictionResponse)
 def predict_churn(customer: CustomerData):
@@ -552,6 +610,95 @@ def get_roi_simulation(req: ROISimulationRequest = None):
             "roi_uplift_percent": "+44.2%"
         }
     }
+
+@app.post("/api/what-if", response_model=WhatIfResponse)
+def simulate_what_if_counterfactual(req: WhatIfRequest):
+    """
+    Live What-If Counterfactual Sensitivity Engine.
+    Simulates real-time risk reduction and preserved revenue when modifying contract, price, and support services.
+    """
+    try:
+        clf = get_model()
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"Model unavailable: {str(exc)}")
+
+    # 1. Baseline Churn Probability
+    orig_total = req.TotalCharges if (req.TotalCharges is not None and req.TotalCharges > 0) else round(req.MonthlyCharges * max(1, req.tenure), 2)
+    base_prob = _evaluate_customer_probability(
+        clf, req.tenure, req.MonthlyCharges, orig_total, req.Contract, req.InternetService
+    )
+    base_prob = float(np.clip(base_prob, 0.01, 0.99))
+    base_risk = get_customer_risk(base_prob).upper()
+
+    # 2. Counterfactual Simulation
+    sim_charges = max(18.0, round(req.MonthlyCharges - req.discount_monthly, 2))
+    sim_total = round(sim_charges * max(1, req.tenure), 2)
+    raw_cf_prob = _evaluate_customer_probability(
+        clf, req.tenure, sim_charges, sim_total, req.proposed_contract, req.InternetService
+    )
+
+    # Factor in Tech Support loyalty lift if bundled (free value-add reduces churn probability)
+    tech_lift = 0.88 if req.add_tech_support else 1.0
+    cf_prob = float(np.clip(raw_cf_prob * tech_lift, 0.04, 0.95))
+    cf_risk = get_customer_risk(cf_prob).upper()
+
+    risk_delta = round((base_prob - cf_prob) * 100.0, 1)
+    retention_prob = round(1.0 - cf_prob, 4)
+
+    # 3. Financial Economics
+    ann_rev_saved = round(sim_charges * 12.0 * retention_prob, 2)
+    ann_cost = round(req.discount_monthly * 12.0, 2)
+    net_benefit = round(ann_rev_saved - ann_cost, 2)
+
+    contract_slug = "1YR" if req.proposed_contract == "One year" else "2YR" if req.proposed_contract == "Two year" else "FLEX"
+    disc_int = int(req.discount_monthly)
+    voucher = f"TELCO-SAVE{disc_int}-{contract_slug}" if disc_int > 0 else f"TELCO-UPGRADE-{contract_slug}"
+
+    campaign = (
+        f"Annual Commitment Protection (Save ${disc_int}/mo)"
+        if req.proposed_contract != "Month-to-month"
+        else f"Flexible Care Credit (${disc_int}/mo concession)"
+    )
+
+    action_text = (
+        f"Proactively transition subscriber to {req.proposed_contract} with guaranteed ${disc_int}/mo savings"
+        f"{' and complimentary 24/7 Priority Tech Support' if req.add_tech_support else ''}. "
+        f"Yields estimated {risk_delta}% risk drop with ${net_benefit:,.2f} net annual value preserved."
+    )
+
+    outreach = {
+        "recipient": "customer@telecom.com",
+        "subject": f"Exclusive VIP Upgrade: Save ${disc_int}/mo on your Telecom Plan!",
+        "voucher_code": voucher,
+        "contract_term": req.proposed_contract,
+        "monthly_rate": f"${sim_charges:.2f}/mo (was ${req.MonthlyCharges:.2f}/mo)",
+        "tech_support_included": "Free 24/7 Priority Helpdesk" if req.add_tech_support else "Standard Support",
+        "body": (
+            f"Dear Valued Customer, as a loyal subscriber, we are delighted to offer you our premier "
+            f"{req.proposed_contract} package. Lock in guaranteed ${disc_int}/mo savings for the next 12 months "
+            f"{'plus 100% free Priority Tech Support' if req.add_tech_support else ''}. "
+            f"Use promo code {voucher} or click below to claim your personalized retention plan."
+        ),
+        "dispatch_status": "Ready for CRM Dispatch (Simulated Webhook)"
+    }
+
+    return WhatIfResponse(
+        baseline_probability=round(base_prob, 4),
+        baseline_risk=base_risk,
+        counterfactual_probability=round(cf_prob, 4),
+        counterfactual_risk=cf_risk,
+        risk_delta_percent=risk_delta,
+        monthly_charges_original=round(req.MonthlyCharges, 2),
+        monthly_charges_simulated=sim_charges,
+        annual_revenue_saved=ann_rev_saved,
+        annual_discount_cost=ann_cost,
+        net_economic_benefit=net_benefit,
+        retention_probability=retention_prob,
+        recommended_action=action_text,
+        voucher_code=voucher,
+        campaign_name=campaign,
+        outreach_preview=outreach
+    )
 
 @app.get("/api/governance")
 def get_governance_report():

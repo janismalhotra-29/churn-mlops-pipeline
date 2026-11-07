@@ -166,3 +166,29 @@ def test_api_metrics_endpoint():
 
 
 
+
+
+
+def test_what_if_counterfactual_endpoint():
+    """Test POST /api/what-if correctly computes counterfactual churn probability reduction and economics."""
+    from src.app import simulate_what_if_counterfactual, WhatIfRequest
+    req = WhatIfRequest(
+        tenure=6,
+        MonthlyCharges=85.0,
+        TotalCharges=510.0,
+        Contract="Month-to-month",
+        InternetService="Fiber optic",
+        proposed_contract="One year",
+        discount_monthly=15.0,
+        add_tech_support=True
+    )
+    data = simulate_what_if_counterfactual(req).model_dump()
+    assert "baseline_probability" in data
+    assert "counterfactual_probability" in data
+    assert "risk_delta_percent" in data
+    assert "net_economic_benefit" in data
+    assert "voucher_code" in data
+    assert "outreach_preview" in data
+    assert data["monthly_charges_simulated"] == 70.0
+    assert data["counterfactual_probability"] <= data["baseline_probability"]
+    assert "TELCO-SAVE15-1YR" in data["voucher_code"]
