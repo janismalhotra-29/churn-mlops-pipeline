@@ -1073,16 +1073,26 @@
                             </div>
                         </div>
 
-                        <!-- Value-Add Service Churn Shield Comparison -->
+                        <!-- Value-Add Service Churn Shield Comparison (Interactive Dynamic Chart) -->
                         <div class="saas-card tilt-card-3d p-6 space-y-4">
-                            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                                 <div class="flex items-center space-x-2">
                                     <i data-lucide="shield-check" class="w-5 h-5 text-teal-600"></i>
-                                    <h3 class="text-sm font-bold text-slate-900">Value-Added Service Retention Shield</h3>
+                                    <h3 class="text-sm font-bold text-slate-900 flex items-center">
+                                        Value-Added Service Retention Shield
+                                        <span class="ml-2 w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Dynamic Interactive Model"></span>
+                                    </h3>
                                 </div>
-                                <span class="text-[10px] font-mono text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">XAI Prescriptive Impact</span>
+                                <!-- Interactive Mode Switcher: Rate % vs Headcount -->
+                                <div class="flex items-center space-x-2">
+                                    <div class="flex items-center space-x-1 p-0.5 rounded-lg bg-slate-100 border border-slate-200">
+                                        <button type="button" onclick="setServiceChartMode('percent')" id="svc-mode-pct" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white text-teal-700 shadow-2xs transition-all cursor-pointer">Rate %</button>
+                                        <button type="button" onclick="setServiceChartMode('accounts')" id="svc-mode-acc" class="px-2 py-0.5 rounded text-[10px] font-semibold text-slate-500 hover:text-slate-800 transition-all cursor-pointer">Accounts Count</button>
+                                    </div>
+                                    <span class="text-[10px] font-mono text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">Live Reactive</span>
+                                </div>
                             </div>
-                            <p class="text-[11px] text-slate-500">Comparing churn reduction for subscribers with bundled priority support vs baseline.</p>
+                            <p class="text-[11px] text-slate-500">Dynamically updates when you adjust the left-side ROI sliders (Cohort Size & Retention Success Rate).</p>
                             <div class="h-44">
                                 <canvas id="analyticsServiceImpactChart"></canvas>
                             </div>
@@ -2062,6 +2072,11 @@
                 ];
                 analyticsCohortsChartInstance.update('none');
             }
+
+            // Dynamically update the Value-Added Service Retention Shield bar chart
+            if (typeof updateServiceImpactChart === 'function') {
+                updateServiceImpactChart(cohort, acceptRate);
+            }
         }
 
         // 8. Customer Directory Search & Filter
@@ -2362,6 +2377,57 @@
                 });
             }
         }
+
+                // Dynamic Service Impact Chart Controller (Rate % vs Account Count & Slider Reactivity)
+        let currentServiceChartMode = 'percent';
+
+        function setServiceChartMode(mode) {
+            currentServiceChartMode = mode;
+            const btnPct = document.getElementById('svc-mode-pct');
+            const btnAcc = document.getElementById('svc-mode-acc');
+            if (mode === 'percent') {
+                if (btnPct) btnPct.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-white text-teal-700 shadow-2xs transition-all cursor-pointer";
+                if (btnAcc) btnAcc.className = "px-2 py-0.5 rounded text-[10px] font-semibold text-slate-500 hover:text-slate-800 transition-all cursor-pointer";
+            } else {
+                if (btnAcc) btnAcc.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-white text-teal-700 shadow-2xs transition-all cursor-pointer";
+                if (btnPct) btnPct.className = "px-2 py-0.5 rounded text-[10px] font-semibold text-slate-500 hover:text-slate-800 transition-all cursor-pointer";
+            }
+            const cohort = parseInt(document.getElementById('roi-cust') ? document.getElementById('roi-cust').value : 1000);
+            const acceptRate = parseFloat(document.getElementById('roi-succ') ? document.getElementById('roi-succ').value : 35) / 100;
+            updateServiceImpactChart(cohort, acceptRate);
+        }
+        window.setServiceChartMode = setServiceChartMode;
+
+        function updateServiceImpactChart(cohort, acceptRate) {
+            if (typeof analyticsServiceImpactInstance === 'undefined' || !analyticsServiceImpactInstance) return;
+            const boost = (acceptRate - 0.35) * 16;
+
+            const baseRetainedRates = [84.8, 85.4, 77.5, 70.0];
+            const baseChurnRates = [41.7, 41.8, 39.1, 33.5];
+
+            const dynamicRetainedPct = baseRetainedRates.map(r => Math.min(97.5, Math.max(50.0, +(r + boost * 0.7).toFixed(1))));
+            const dynamicChurnPct = baseChurnRates.map(c => Math.max(12.0, Math.min(65.0, +(c - boost * 0.6).toFixed(1))));
+
+            if (currentServiceChartMode === 'percent') {
+                analyticsServiceImpactInstance.data.datasets[0].label = 'With Service (Retained %)';
+                analyticsServiceImpactInstance.data.datasets[1].label = 'Without Service (Churn %)';
+                analyticsServiceImpactInstance.data.datasets[0].data = dynamicRetainedPct;
+                analyticsServiceImpactInstance.data.datasets[1].data = dynamicChurnPct;
+                if (analyticsServiceImpactInstance.options.scales && analyticsServiceImpactInstance.options.scales.y) {
+                    analyticsServiceImpactInstance.options.scales.y.ticks.callback = v => v + '%';
+                }
+            } else {
+                analyticsServiceImpactInstance.data.datasets[0].label = 'Simulated Retained Accounts';
+                analyticsServiceImpactInstance.data.datasets[1].label = 'Simulated At-Risk Accounts';
+                analyticsServiceImpactInstance.data.datasets[0].data = dynamicRetainedPct.map(pct => Math.round(cohort * (pct / 100)));
+                analyticsServiceImpactInstance.data.datasets[1].data = dynamicChurnPct.map(pct => Math.round(cohort * (pct / 100)));
+                if (analyticsServiceImpactInstance.options.scales && analyticsServiceImpactInstance.options.scales.y) {
+                    analyticsServiceImpactInstance.options.scales.y.ticks.callback = v => Math.round(v).toLocaleString();
+                }
+            }
+            analyticsServiceImpactInstance.update('none');
+        }
+        window.updateServiceImpactChart = updateServiceImpactChart;
 
         let analyticsServiceImpactInstance = null;
 
