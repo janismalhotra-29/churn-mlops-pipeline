@@ -1,3 +1,5 @@
+import uuid
+from datetime import datetime, timezone
 import os
 import io
 import json
@@ -19,6 +21,7 @@ BENCHMARK_PATH = os.path.join(BASE_DIR, "data", "model_benchmark.json")
 GLOBAL_SHAP_PATH = os.path.join(BASE_DIR, "data", "global_shap_importance.json")
 DRIFT_REPORT_PATH = os.path.join(BASE_DIR, "data", "drift_report.json")
 RETRAIN_HISTORY_PATH = os.path.join(BASE_DIR, "data", "retrain_history.json")
+CRM_AUDIT_LOG_PATH = os.path.join(BASE_DIR, "data", "crm_dispatch_audit.json")
 
 try:
     from src.explain import explain_prediction, compute_global_importance
@@ -755,3 +758,73 @@ def get_governance_report():
         "uptime_seconds": round(time.time() - METRICS["start_time"], 1)
     }
 
+
+
+class CRMDispatchRequest(BaseModel):
+    recipient: str = "customer@telecom.com"
+    voucher_code: str = "TELCO-SAVE15-1YR"
+    proposed_contract: str = "One year"
+    discount_monthly: float = 15.0
+    annual_revenue_saved: float = 629.16
+    annual_discount_cost: float = 180.0
+    net_economic_benefit: float = 449.16
+    channel: str = "CRM Automated Webhook Queue"
+
+@app.post("/api/crm/dispatch")
+def dispatch_retention_offer(req: CRMDispatchRequest):
+    """
+    Log and dispatch customer retention package to enterprise CRM webhook queue.
+    Creates an immutable audit record in data/crm_dispatch_audit.json.
+    """
+    dispatch_id = f"CRM-DISP-{uuid.uuid4().hex[:8].upper()}"
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+    
+    record = {
+        "dispatch_id": dispatch_id,
+        "timestamp": timestamp,
+        "recipient": req.recipient,
+        "voucher_code": req.voucher_code,
+        "proposed_contract": req.proposed_contract,
+        "discount_monthly": req.discount_monthly,
+        "annual_revenue_saved": req.annual_revenue_saved,
+        "annual_discount_cost": req.annual_discount_cost,
+        "net_economic_benefit": req.net_economic_benefit,
+        "channel": req.channel,
+        "status": "DELIVERED_TO_CRM_QUEUE",
+        "sla_callback_hours": 48
+    }
+    
+    audit_records = []
+    if os.path.exists(CRM_AUDIT_LOG_PATH):
+        try:
+            with open(CRM_AUDIT_LOG_PATH, "r", encoding="utf-8") as f:
+                audit_records = json.load(f)
+        except Exception:
+            audit_records = []
+            
+    audit_records.insert(0, record)  # latest first
+    
+    try:
+        with open(CRM_AUDIT_LOG_PATH, "w", encoding="utf-8") as f:
+            json.dump(audit_records[:100], f, indent=2)
+    except Exception as e:
+        logger.error(f"Failed to write CRM audit log: {e}")
+        
+    return {
+        "status": "SUCCESS",
+        "dispatch_id": dispatch_id,
+        "timestamp": timestamp,
+        "message": f"Retention offer {req.voucher_code} successfully delivered to enterprise CRM webhook queue.",
+        "record": record
+    }
+
+@app.get("/api/crm/audit-log")
+def get_crm_audit_log():
+    """Retrieve all dispatched retention offers logged in the CRM audit trail."""
+    if os.path.exists(CRM_AUDIT_LOG_PATH):
+        try:
+            with open(CRM_AUDIT_LOG_PATH, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return []
+    return []

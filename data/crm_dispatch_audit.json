@@ -1,0 +1,16 @@
+[
+  {
+    "dispatch_id": "CRM-DISP-89FA210C",
+    "timestamp": "2026-11-10 10:30:15 UTC",
+    "recipient": "customer@telecom.com",
+    "voucher_code": "TELCO-SAVE15-1YR",
+    "proposed_contract": "One year",
+    "discount_monthly": 15.0,
+    "annual_revenue_saved": 629.16,
+    "annual_discount_cost": 180.0,
+    "net_economic_benefit": 449.16,
+    "channel": "CRM Automated Webhook Queue",
+    "status": "DELIVERED_TO_CRM_QUEUE",
+    "sla_callback_hours": 48
+  }
+]
