@@ -12,6 +12,7 @@ mlruns.db
 
 # Model Binary Artifacts
 *.pkl
+!churn_model.pkl
 
 # Pytest Caches
 .pytest_cache/
