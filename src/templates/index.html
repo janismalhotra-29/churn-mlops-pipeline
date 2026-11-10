@@ -2047,6 +2047,21 @@
             document.getElementById('roi-gross-rev').innerText = formatCurrency(grossPreserved);
             document.getElementById('roi-campaign-cost').innerText = formatCurrency(campaignCost);
             document.getElementById('roi-net-profit').innerText = `+${formatCurrency(netProfit)}`;
+
+            // Dynamically update the Subscriber Survival Curve based on simulated retention success
+            if (typeof analyticsCohortsChartInstance !== 'undefined' && analyticsCohortsChartInstance) {
+                const boost = (acceptRate - 0.35) * 18;
+                analyticsCohortsChartInstance.data.datasets[0].data = [
+                    100,
+                    Math.min(99, Math.round(82 + boost * 0.6)),
+                    Math.min(98, Math.round(74 + boost * 0.8)),
+                    Math.min(95, Math.round(68 + boost * 0.9)),
+                    Math.min(93, Math.round(64 + boost * 1.0)),
+                    Math.min(90, Math.round(61 + boost * 1.1)),
+                    Math.min(88, Math.round(58 + boost * 1.2))
+                ];
+                analyticsCohortsChartInstance.update('none');
+            }
         }
 
         // 8. Customer Directory Search & Filter
