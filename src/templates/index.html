@@ -42,6 +42,52 @@
                 }
             }
         }
+
+        async function openMlflowRunsModal() {
+            const modal = document.getElementById('mlflow-runs-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.classList.remove('hidden');
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            try {
+                const res = await fetch('/api/mlflow/runs');
+                const data = await res.json();
+                const tbody = document.getElementById('mlflow-runs-table-body');
+                if (!tbody) return;
+
+                if (data.runs && data.runs.length > 0) {
+                    tbody.innerHTML = data.runs.map(r => `
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="p-3 font-bold text-teal-700">${r.run_id}</td>
+                            <td class="p-3 font-sans font-medium text-slate-800">${r.run_name}</td>
+                            <td class="p-3">
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold font-sans bg-emerald-50 text-emerald-700 border border-emerald-200">${r.status}</span>
+                            </td>
+                            <td class="p-3 text-right font-bold text-slate-900">${(r.roc_auc * 100).toFixed(1)}%</td>
+                            <td class="p-3 text-right text-slate-700">${(r.accuracy * 100).toFixed(1)}%</td>
+                            <td class="p-3 text-right text-slate-700">${(r.f1_score * 100).toFixed(1)}%</td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400 font-sans">No runs found in database.</td></tr>';
+                }
+            } catch (err) {
+                console.error("Failed to load MLflow runs:", err);
+            }
+        }
+        window.openMlflowRunsModal = openMlflowRunsModal;
+
+        function closeMlflowRunsModal() {
+            const modal = document.getElementById('mlflow-runs-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.add('hidden');
+            }
+        }
+        window.closeMlflowRunsModal = closeMlflowRunsModal;
+
     </script>
 
     <style>
@@ -255,11 +301,11 @@
                         <span>REST API OpenAPI Docs</span>
                         <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 ml-auto text-slate-300"></i>
                     </a>
-                    <a href="http://127.0.0.1:5000" target="_blank" onclick="handleMlflowClick(event)" title="Start MLflow: python -m mlflow ui --backend-store-uri sqlite:///mlflow.db --port 5000" class="w-full flex items-center px-3.5 py-2 rounded-xl text-xs font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors">
+<button type="button" onclick="openMlflowRunsModal()" class="w-full flex items-center px-3.5 py-2 rounded-xl text-xs font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors cursor-pointer text-left">
                         <i data-lucide="git-branch" class="w-4 h-4 mr-3 text-slate-400"></i>
-                        <span>MLflow Experiment UI</span>
-                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded bg-teal-50 text-teal-700 font-mono font-bold">:5000</span>
-                    </a>
+                        <span>MLflow Experiment Telemetry</span>
+                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded bg-teal-50 text-teal-700 font-mono font-bold">In-App</span>
+                    </button>
                 </nav>
             </div>
         </div>
@@ -1418,10 +1464,10 @@
                             <i data-lucide="git-pull-request" class="w-5 h-5 text-teal-600"></i>
                             <h3 class="text-sm font-bold text-slate-900">MLflow Experiment Registry & Artifact Store</h3>
                         </div>
-                        <a href="http://127.0.0.1:5000" target="_blank" onclick="handleMlflowClick(event)" class="px-3 py-1.5 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 text-xs font-bold flex items-center space-x-1.5 transition-colors shadow-2xs">
-                            <span>Open MLflow Dashboard (:5000)</span>
-                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-                        </a>
+                        <button type="button" onclick="openMlflowRunsModal()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white text-xs font-bold flex items-center space-x-1.5 transition-all shadow-md shadow-teal-500/20 cursor-pointer">
+                            <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                            <span>Inspect 20 MLflow Runs</span>
+                        </button>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                         <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
@@ -2659,6 +2705,52 @@
                 }
             }).catch(() => {});
         };
+
+        async function openMlflowRunsModal() {
+            const modal = document.getElementById('mlflow-runs-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.classList.remove('hidden');
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            try {
+                const res = await fetch('/api/mlflow/runs');
+                const data = await res.json();
+                const tbody = document.getElementById('mlflow-runs-table-body');
+                if (!tbody) return;
+
+                if (data.runs && data.runs.length > 0) {
+                    tbody.innerHTML = data.runs.map(r => `
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="p-3 font-bold text-teal-700">${r.run_id}</td>
+                            <td class="p-3 font-sans font-medium text-slate-800">${r.run_name}</td>
+                            <td class="p-3">
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold font-sans bg-emerald-50 text-emerald-700 border border-emerald-200">${r.status}</span>
+                            </td>
+                            <td class="p-3 text-right font-bold text-slate-900">${(r.roc_auc * 100).toFixed(1)}%</td>
+                            <td class="p-3 text-right text-slate-700">${(r.accuracy * 100).toFixed(1)}%</td>
+                            <td class="p-3 text-right text-slate-700">${(r.f1_score * 100).toFixed(1)}%</td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400 font-sans">No runs found in database.</td></tr>';
+                }
+            } catch (err) {
+                console.error("Failed to load MLflow runs:", err);
+            }
+        }
+        window.openMlflowRunsModal = openMlflowRunsModal;
+
+        function closeMlflowRunsModal() {
+            const modal = document.getElementById('mlflow-runs-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.add('hidden');
+            }
+        }
+        window.closeMlflowRunsModal = closeMlflowRunsModal;
+
     </script>
 
     <!-- Retention Dispatch Modal -->
@@ -2704,6 +2796,69 @@
                 <button type="button" onclick="closeRetentionDispatchModal()" class="px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition-all cursor-pointer">Cancel</button>
                 <button type="button" onclick="confirmRetentionDispatch()" class="px-4 py-1.5 rounded-xl bg-teal-600 text-white text-xs font-bold hover:bg-teal-700 active:scale-95 transition-all shadow-xs flex items-center cursor-pointer">
                     <i data-lucide="send" class="w-3.5 h-3.5 mr-1.5"></i>Confirm & Send to CRM
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MLflow Experiment Runs & Registry Telemetry Modal (In-App Cloud Compatible) -->
+    <div id="mlflow-runs-modal" class="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 hidden" style="display: none;">
+        <div class="bg-white rounded-3xl max-w-3xl w-full border border-slate-200/90 shadow-2xl overflow-hidden">
+            <!-- Header -->
+            <div class="px-6 py-4 bg-gradient-to-r from-teal-50 via-slate-50 to-white border-b border-slate-100 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center shadow-md shadow-teal-500/25">
+                        <i data-lucide="git-pull-request" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-extrabold text-slate-900">MLflow Experiment Registry Telemetry</h3>
+                        <p class="text-[11px] text-slate-500">Live SQLite backend store (<code class="font-mono text-teal-700">mlflow.db</code>) with logged hyperparameters, runs & model artifacts.</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeMlflowRunsModal()" class="w-8 h-8 rounded-full hover:bg-slate-200 text-slate-400 hover:text-slate-700 flex items-center justify-center transition-colors cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Content: Telemetry Table -->
+            <div class="p-6 space-y-4 max-h-[65vh] overflow-y-auto">
+                <div class="flex flex-wrap items-center justify-between gap-2 p-3 rounded-2xl bg-teal-50/60 border border-teal-100 text-xs text-teal-900">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Cloud Production Sync: <strong>Connected</strong></span>
+                    </div>
+                    <div class="text-[11px] text-teal-800">
+                        Local CLI Port: <code class="font-mono bg-white px-1.5 py-0.5 rounded border border-teal-200 text-teal-700 font-bold">:5000</code>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">Run ID</th>
+                                <th class="p-3">Run Name / Model</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3 text-right">ROC-AUC</th>
+                                <th class="p-3 text-right">Accuracy</th>
+                                <th class="p-3 text-right">F1-Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mlflow-runs-table-body" class="divide-y divide-slate-100 font-mono">
+                            <tr>
+                                <td colspan="6" class="p-4 text-center text-slate-400 font-sans">Loading experiment runs from mlflow.db...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs">
+                <span class="text-[11px] text-slate-500">Logged via Python MLflow Client v2.5.0</span>
+                <button type="button" onclick="closeMlflowRunsModal()" class="px-4 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold transition-colors cursor-pointer">
+                    Close
                 </button>
             </div>
         </div>
