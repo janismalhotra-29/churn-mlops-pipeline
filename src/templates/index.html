@@ -247,10 +247,10 @@
                     <i data-lucide="bar-chart-3" class="w-5 h-5 text-slate-950 stroke-[2.5]"></i>
                 </div>
                 <div>
-                    <span class="text-base font-black text-white tracking-tight block leading-tight">Quantro</span>
+                    <span class="text-base font-black text-white tracking-tight block leading-tight">TelcoPulse AI</span>
                     <span class="text-[10px] font-bold text-amber-500 tracking-wider uppercase flex items-center">
                         <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1 animate-pulse"></span>
-                        TelcoPulse MLOps
+                        Enterprise Retention Hub
                     </span>
                 </div>
             </div>
@@ -265,7 +265,7 @@
             <nav class="space-y-1">
                 <button onclick="navigateToPage('overview')" id="nav-overview" class="sidebar-dark-link active w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
                     <i data-lucide="layout-dashboard" class="w-4 h-4 mr-3"></i>
-                    <span>Dashboard</span>
+                    <span>Overview Dashboard</span>
                 </button>
                 <button onclick="navigateToPage('prediction')" id="nav-prediction" class="sidebar-dark-link w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
                     <i data-lucide="scan" class="w-4 h-4 mr-3"></i>
@@ -345,7 +345,7 @@
                 <!-- Quantro Global Search Bar -->
                 <div class="relative hidden sm:block w-72 lg:w-96">
                     <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                    <input type="text" id="global-search-input" placeholder="Search for products, orders, customers..." class="w-full pl-9 pr-10 py-1.5 rounded-xl bg-slate-100/90 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all">
+                    <input type="text" id="global-search-input" placeholder="Search customer ID, contract, cohort..." class="w-full pl-9 pr-10 py-1.5 rounded-xl bg-slate-100/90 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all">
                     <kbd class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-mono text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200">⌘K</kbd>
                 </div>
             </div>
@@ -381,14 +381,14 @@
                     <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
                 </button>
 
-                <!-- User Avatar: Alex Carter (Admin) matching Quantro -->
+                <!-- User Avatar: JM (Janis Malhotra) -->
                 <div class="flex items-center space-x-2 pl-1 border-l border-slate-200 cursor-pointer">
                     <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-orange-500 text-slate-950 font-black text-xs flex items-center justify-center shadow-xs">
-                        AC
+                        JM
                     </div>
                     <div class="hidden md:block text-left leading-tight">
-                        <span class="text-xs font-bold text-slate-800 block">Alex Carter</span>
-                        <span class="text-[10px] text-slate-400 block font-medium">Admin</span>
+                        <span class="text-xs font-bold text-slate-800 block">Janis Malhotra</span>
+                        <span class="text-[10px] text-slate-400 block font-medium">Lead ML Engineer</span>
                     </div>
                 </div>
             </div>
@@ -402,38 +402,37 @@
             <!-- ========================================================================= -->
             <div id="page-overview" class="page-view active-page space-y-6">
                 
-                <!-- Quantro Dashboard Header -->
+                <!-- Dashboard Header (Real Project Data + Quantro Aesthetics) -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                        <h1 class="text-2xl font-black text-slate-900 tracking-tight">Sales Dashboard</h1>
-                        <p class="text-xs text-slate-500 mt-0.5">Track your business performance and growth in real time.</p>
+                        <h1 class="text-2xl font-black text-slate-900 tracking-tight">Executive Retention & Churn Intelligence</h1>
+                        <p class="text-xs text-slate-500 mt-0.5">Real-time subscriber churn monitoring, multi-model evaluation and portfolio exposure.</p>
                     </div>
                     <button onclick="navigateToPage('prediction')" class="inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#111216] hover:bg-slate-800 text-white text-xs font-bold shadow-md hover:scale-[1.02] transition-all cursor-pointer">
-                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                        <span>+ Create Report</span>
+                        <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+                        <span>Run Churn Diagnostic</span>
                     </button>
                 </div>
 
-                <!-- 4 Top KPI Cards (Quantro Exact Match: 1 Hero Dark Card + 3 White Cards with Sparklines) -->
+                <!-- 4 Top KPI Cards (Real Project Data: 1 Hero Dark Card + 3 White Cards with Sparklines) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     
-                    <!-- KPI Card 1: Total Revenue (Hero Dark Card with Sparkline) -->
+                    <!-- KPI Card 1: Annual Revenue at Risk (Hero Dark Card with Sparkline) -->
                     <div class="quantro-hero-card p-5 space-y-3 relative overflow-hidden">
                         <div class="flex items-center justify-between">
                             <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
-                                <i data-lucide="bar-chart-2" class="w-4 h-4 stroke-[2.5]"></i>
+                                <i data-lucide="alert-triangle" class="w-4 h-4 stroke-[2.5]"></i>
                             </div>
                             <span class="text-slate-500 hover:text-slate-300 cursor-pointer text-sm font-bold">•••</span>
                         </div>
                         <div>
-                            <span class="text-[11px] font-semibold text-slate-400 block">Total Revenue</span>
-                            <span id="kpi-at-risk-rev" class="text-2xl sm:text-3xl font-black text-white font-mono tracking-tight">$84,320</span>
+                            <span class="text-[11px] font-semibold text-slate-400 block">Annual Revenue at Risk</span>
+                            <span id="kpi-at-risk-rev" class="text-2xl sm:text-3xl font-black text-white font-mono tracking-tight">$1,452,180</span>
                         </div>
                         <div class="flex items-center justify-between pt-1">
-                            <div class="flex items-center text-xs font-bold text-emerald-400">
-                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 mr-0.5"></i>
-                                <span>+12.8%</span>
-                                <span class="text-[10px] text-slate-400 font-normal ml-1">from last month</span>
+                            <div class="flex items-center text-xs font-bold text-amber-400">
+                                <i data-lucide="alert-circle" class="w-3.5 h-3.5 mr-0.5"></i>
+                                <span>High loss exposure</span>
                             </div>
                             <div class="w-20 h-7">
                                 <canvas id="sparklineHero"></canvas>
@@ -441,23 +440,22 @@
                         </div>
                     </div>
 
-                    <!-- KPI Card 2: Total Orders / At-Risk Subscribers (White Card with Sparkline) -->
+                    <!-- KPI Card 2: Monitored Subscribers (White Card with Sparkline) -->
                     <div class="quantro-card p-5 space-y-3 relative overflow-hidden">
                         <div class="flex items-center justify-between">
                             <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-                                <i data-lucide="shopping-cart" class="w-4 h-4 stroke-[2.5]"></i>
+                                <i data-lucide="users" class="w-4 h-4 stroke-[2.5]"></i>
                             </div>
                             <span class="text-slate-400 hover:text-slate-700 cursor-pointer text-sm font-bold">•••</span>
                         </div>
                         <div>
-                            <span class="text-[11px] font-semibold text-slate-400 block">Total Orders</span>
-                            <span id="counter-subscribers" class="text-2xl sm:text-3xl font-black text-slate-900 font-mono tracking-tight">2,568</span>
+                            <span class="text-[11px] font-semibold text-slate-400 block">Monitored Subscribers</span>
+                            <span id="counter-subscribers" class="text-2xl sm:text-3xl font-black text-slate-900 font-mono tracking-tight">7,043</span>
                         </div>
                         <div class="flex items-center justify-between pt-1">
                             <div class="flex items-center text-xs font-bold text-emerald-600">
-                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 mr-0.5"></i>
-                                <span>+8.4%</span>
-                                <span class="text-[10px] text-slate-400 font-normal ml-1">from last month</span>
+                                <i data-lucide="check-circle" class="w-3.5 h-3.5 mr-0.5"></i>
+                                <span>Active Telco Portfolio</span>
                             </div>
                             <div class="w-20 h-7">
                                 <canvas id="sparklineCard2"></canvas>
@@ -465,23 +463,22 @@
                         </div>
                     </div>
 
-                    <!-- KPI Card 3: New Customers / Preserved Accounts (White Card with Sparkline) -->
+                    <!-- KPI Card 3: Preserved Revenue / ROI (White Card with Sparkline) -->
                     <div class="quantro-card p-5 space-y-3 relative overflow-hidden">
                         <div class="flex items-center justify-between">
                             <div class="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center">
-                                <i data-lucide="users" class="w-4 h-4 stroke-[2.5]"></i>
+                                <i data-lucide="dollar-sign" class="w-4 h-4 stroke-[2.5]"></i>
                             </div>
                             <span class="text-slate-400 hover:text-slate-700 cursor-pointer text-sm font-bold">•••</span>
                         </div>
                         <div>
-                            <span class="text-[11px] font-semibold text-slate-400 block">New Customers</span>
-                            <span id="kpi-roi-rev" class="text-2xl sm:text-3xl font-black text-slate-900 font-mono tracking-tight">1,245</span>
+                            <span class="text-[11px] font-semibold text-slate-400 block">Preserved Revenue (ROI)</span>
+                            <span id="kpi-roi-rev" class="text-2xl sm:text-3xl font-black text-emerald-600 font-mono tracking-tight">+$38,740</span>
                         </div>
                         <div class="flex items-center justify-between pt-1">
                             <div class="flex items-center text-xs font-bold text-emerald-600">
-                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 mr-0.5"></i>
-                                <span>+16.2%</span>
-                                <span class="text-[10px] text-slate-400 font-normal ml-1">from last month</span>
+                                <i data-lucide="trending-up" class="w-3.5 h-3.5 mr-0.5"></i>
+                                <span>+44.2% ROI (0.23 Cutoff)</span>
                             </div>
                             <div class="w-20 h-7">
                                 <canvas id="sparklineCard3"></canvas>
@@ -489,23 +486,21 @@
                         </div>
                     </div>
 
-                    <!-- KPI Card 4: Conversion Rate / Retention Success (White Card with Sparkline) -->
+                    <!-- KPI Card 4: Baseline Churn Rate (White Card with Sparkline) -->
                     <div class="quantro-card p-5 space-y-3 relative overflow-hidden">
                         <div class="flex items-center justify-between">
                             <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-                                <i data-lucide="mouse-pointer" class="w-4 h-4 stroke-[2.5]"></i>
+                                <i data-lucide="activity" class="w-4 h-4 stroke-[2.5]"></i>
                             </div>
                             <span class="text-slate-400 hover:text-slate-700 cursor-pointer text-sm font-bold">•••</span>
                         </div>
                         <div>
-                            <span class="text-[11px] font-semibold text-slate-400 block">Conversion Rate</span>
-                            <span id="counter-churnrate" class="text-2xl sm:text-3xl font-black text-slate-900 font-mono tracking-tight">3.6%</span>
+                            <span class="text-[11px] font-semibold text-slate-400 block">Baseline Churn Rate</span>
+                            <span id="counter-churnrate" class="text-2xl sm:text-3xl font-black text-slate-900 font-mono tracking-tight">26.54%</span>
                         </div>
                         <div class="flex items-center justify-between pt-1">
-                            <div class="flex items-center text-xs font-bold text-rose-500">
-                                <i data-lucide="arrow-down-right" class="w-3.5 h-3.5 mr-0.5"></i>
-                                <span>-0.8%</span>
-                                <span class="text-[10px] text-slate-400 font-normal ml-1">from last month</span>
+                            <div class="flex items-center text-xs font-bold text-slate-500">
+                                <span>Industry benchmark: ~25%</span>
                             </div>
                             <div class="w-20 h-7">
                                 <canvas id="sparklineCard4"></canvas>
@@ -514,10 +509,10 @@
                     </div>
                 </div>
 
-                <!-- Middle Visuals Row: Revenue Overview Spline (Left 8 cols) + Sales by Category Donut (Right 4 cols) -->
+                <!-- Middle Visuals Row: Churn & Revenue Dynamics Spline (Left 8 cols) + Risk Segments Donut (Right 4 cols) -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
                     
-                    <!-- Left: Revenue Overview (Large Amber Spline Area Chart) -->
+                    <!-- Left: Churn & Revenue Dynamics Spline Area Chart -->
                     <div class="lg:col-span-8 quantro-card p-6 space-y-4">
                         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2.5">
@@ -525,18 +520,18 @@
                                     <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
                                 </div>
                                 <div>
-                                    <h3 class="text-sm font-black text-slate-900">Revenue Overview</h3>
-                                    <p class="text-[11px] text-slate-400">Total revenue and orders from 01 Dec - 31 Dec 2023</p>
+                                    <h3 class="text-sm font-black text-slate-900">Churn Trend & Protected Revenue Dynamics</h3>
+                                    <p class="text-[11px] text-slate-400">Monthly churn rate fluctuation and revenue safeguarded by prescriptive intervention</p>
                                 </div>
                             </div>
-                            <!-- Controls: Toggle Revenue / Orders & Dropdown -->
+                            <!-- Controls: Toggle Churn Rate / Protected Revenue & Dropdown -->
                             <div class="flex items-center space-x-2">
                                 <div class="flex items-center p-0.5 rounded-lg bg-slate-100 border border-slate-200">
-                                    <button type="button" onclick="setOverviewTrendMode('revenue')" id="trend-mode-rev" class="px-3 py-1 rounded text-[11px] font-bold bg-[#111216] text-white shadow-xs cursor-pointer transition-all">Revenue</button>
-                                    <button type="button" onclick="setOverviewTrendMode('orders')" id="trend-mode-ord" class="px-3 py-1 rounded text-[11px] font-semibold text-slate-500 hover:text-slate-800 cursor-pointer transition-all">Orders</button>
+                                    <button type="button" onclick="setOverviewTrendMode('churn')" id="trend-mode-churn" class="px-3 py-1 rounded text-[11px] font-bold bg-[#111216] text-white shadow-xs cursor-pointer transition-all">Churn %</button>
+                                    <button type="button" onclick="setOverviewTrendMode('revenue')" id="trend-mode-rev" class="px-3 py-1 rounded text-[11px] font-semibold text-slate-500 hover:text-slate-800 cursor-pointer transition-all">Protected ARR</button>
                                 </div>
                                 <div class="hidden sm:flex items-center text-xs text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">
-                                    <span>This month</span>
+                                    <span>Active Cohort</span>
                                     <i data-lucide="chevron-down" class="w-3 h-3 ml-1 text-slate-400"></i>
                                 </div>
                             </div>
@@ -548,71 +543,64 @@
                         </div>
                     </div>
 
-                    <!-- Right: Sales by Category Donut Chart -->
+                    <!-- Right: Customer Risk Segments Donut Chart (Real Data + Quantro Colors) -->
                     <div class="lg:col-span-4 quantro-card p-6 space-y-4 flex flex-col justify-between">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="clock" class="w-4 h-4 text-amber-600"></i>
-                                <h3 class="text-sm font-black text-slate-900">Sales by Category</h3>
+                                <i data-lucide="pie-chart" class="w-4 h-4 text-amber-600"></i>
+                                <h3 class="text-sm font-black text-slate-900">Customer Risk Segments</h3>
                             </div>
-                            <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">This month</span>
+                            <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">7,043 Records</span>
                         </div>
 
                         <!-- Donut Chart with Bold Center Metric -->
                         <div class="relative w-44 h-44 mx-auto my-1 flex items-center justify-center">
                             <canvas id="overviewRiskChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                <span class="text-xl font-black text-slate-900 font-mono leading-none">$84.3K</span>
-                                <span class="text-[10px] text-slate-400 font-medium mt-0.5">Total Sales</span>
+                                <span class="text-xl font-black text-slate-900 font-mono leading-none">7,043</span>
+                                <span class="text-[10px] text-slate-400 font-medium mt-0.5">Subscribers</span>
                             </div>
                         </div>
 
-                        <!-- Quantro Category Legend matching screenshot -->
-                        <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-xs pt-1">
+                        <!-- Real Risk Segments Legend with Quantro Colors -->
+                        <div class="space-y-2 text-xs pt-1 border-t border-slate-100">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-1.5 min-w-0">
                                     <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
-                                    <span class="text-slate-600 font-medium truncate">Electronics</span>
+                                    <span class="text-slate-700 font-medium truncate">High Risk (At-Risk)</span>
                                 </div>
-                                <span class="font-bold text-slate-900 font-mono text-[11px]">38%</span>
+                                <span class="font-bold text-slate-900 font-mono text-[11px]">26.5% <span class="text-slate-400 font-normal">(1,869)</span></span>
                             </div>
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-1.5 min-w-0">
                                     <span class="w-2.5 h-2.5 rounded-full bg-yellow-400 shrink-0"></span>
-                                    <span class="text-slate-600 font-medium truncate">Fashion</span>
+                                    <span class="text-slate-700 font-medium truncate">Medium Risk (Vulnerable)</span>
                                 </div>
-                                <span class="font-bold text-slate-900 font-mono text-[11px]">24%</span>
+                                <span class="font-bold text-slate-900 font-mono text-[11px]">18.7% <span class="text-slate-400 font-normal">(1,318)</span></span>
                             </div>
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-1.5 min-w-0">
                                     <span class="w-2.5 h-2.5 rounded-full bg-slate-900 shrink-0"></span>
-                                    <span class="text-slate-600 font-medium truncate">Home & Living</span>
+                                    <span class="text-slate-700 font-medium truncate">Low Risk (Loyal / Safe)</span>
                                 </div>
-                                <span class="font-bold text-slate-900 font-mono text-[11px]">18%</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-1.5 min-w-0">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-slate-400 shrink-0"></span>
-                                    <span class="text-slate-600 font-medium truncate">Beauty</span>
-                                </div>
-                                <span class="font-bold text-slate-900 font-mono text-[11px]">12%</span>
+                                <span class="font-bold text-slate-900 font-mono text-[11px]">54.8% <span class="text-slate-400 font-normal">(3,856)</span></span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Bottom Row: 3 Quantro Columns (Top Selling Products, Recent Orders, Customers by Location) -->
+                <!-- Bottom Row: 3 Project Columns (High-Risk Subscribers, Recent CRM Dispatches, Value-Added Service Shield) -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
                     
-                    <!-- Col 1: Top Selling Products (High-Risk Subscriber Targets) -->
+                    <!-- Col 1: High-Risk Subscriber Targets (Real Telco Accounts) -->
                     <div class="lg:col-span-5 quantro-card p-5 space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="shopping-bag" class="w-4 h-4 text-amber-600"></i>
-                                <h3 class="text-sm font-black text-slate-900">Top Selling Products</h3>
+                                <i data-lucide="alert-octagon" class="w-4 h-4 text-amber-600"></i>
+                                <h3 class="text-sm font-black text-slate-900">High-Risk Subscriber Targets</h3>
                             </div>
                             <button onclick="navigateToPage('dataset')" class="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center cursor-pointer">
-                                <span>View All</span>
+                                <span>Directory</span>
                                 <i data-lucide="arrow-right" class="w-3.5 h-3.5 ml-1"></i>
                             </button>
                         </div>
@@ -620,168 +608,179 @@
                             <table class="w-full text-left text-xs">
                                 <thead>
                                     <tr class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-100">
-                                        <th class="pb-2">Product</th>
-                                        <th class="pb-2 text-right">Orders</th>
-                                        <th class="pb-2 text-right">Revenue</th>
-                                        <th class="pb-2 text-right">Growth</th>
+                                        <th class="pb-2">Subscriber ID</th>
+                                        <th class="pb-2">Contract</th>
+                                        <th class="pb-2 text-right">Charges</th>
+                                        <th class="pb-2 text-right">Churn Risk</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-50 font-medium">
                                     <tr class="hover:bg-slate-50/70 transition-colors">
                                         <td class="py-2.5 flex items-center space-x-2">
-                                            <div class="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700">
-                                                <i data-lucide="headphones" class="w-3.5 h-3.5"></i>
+                                            <div class="w-6 h-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-mono text-[10px] font-bold">
+                                                ID
                                             </div>
-                                            <span class="font-bold text-slate-800">Wireless Headphones</span>
+                                            <span class="font-mono font-bold text-slate-800">7590-VHVEG</span>
                                         </td>
-                                        <td class="py-2.5 text-right font-mono text-slate-600">1,245</td>
-                                        <td class="py-2.5 text-right font-mono font-bold text-slate-900">$24,900</td>
-                                        <td class="py-2.5 text-right text-emerald-600 font-bold">+12%</td>
+                                        <td class="py-2.5 text-slate-600">Month-to-month</td>
+                                        <td class="py-2.5 text-right font-mono font-bold text-slate-900">$29.85/mo</td>
+                                        <td class="py-2.5 text-right">
+                                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-600 border border-rose-200">84.2% Risk</span>
+                                        </td>
                                     </tr>
                                     <tr class="hover:bg-slate-50/70 transition-colors">
                                         <td class="py-2.5 flex items-center space-x-2">
-                                            <div class="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700">
-                                                <i data-lucide="watch" class="w-3.5 h-3.5"></i>
+                                            <div class="w-6 h-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-mono text-[10px] font-bold">
+                                                ID
                                             </div>
-                                            <span class="font-bold text-slate-800">Smart Watch</span>
+                                            <span class="font-mono font-bold text-slate-800">3668-QPYBK</span>
                                         </td>
-                                        <td class="py-2.5 text-right font-mono text-slate-600">980</td>
-                                        <td class="py-2.5 text-right font-mono font-bold text-slate-900">$19,600</td>
-                                        <td class="py-2.5 text-right text-emerald-600 font-bold">+8%</td>
+                                        <td class="py-2.5 text-slate-600">Month-to-month</td>
+                                        <td class="py-2.5 text-right font-mono font-bold text-slate-900">$53.85/mo</td>
+                                        <td class="py-2.5 text-right">
+                                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-600 border border-rose-200">78.4% Risk</span>
+                                        </td>
                                     </tr>
                                     <tr class="hover:bg-slate-50/70 transition-colors">
                                         <td class="py-2.5 flex items-center space-x-2">
-                                            <div class="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700">
-                                                <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+                                            <div class="w-6 h-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-mono text-[10px] font-bold">
+                                                ID
                                             </div>
-                                            <span class="font-bold text-slate-800">Running Shoes</span>
+                                            <span class="font-mono font-bold text-slate-800">5575-GNVDE</span>
                                         </td>
-                                        <td class="py-2.5 text-right font-mono text-slate-600">764</td>
-                                        <td class="py-2.5 text-right font-mono font-bold text-slate-900">$15,280</td>
-                                        <td class="py-2.5 text-right text-emerald-600 font-bold">+5%</td>
+                                        <td class="py-2.5 text-slate-600">One year</td>
+                                        <td class="py-2.5 text-right font-mono font-bold text-slate-900">$56.95/mo</td>
+                                        <td class="py-2.5 text-right">
+                                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-600 border border-amber-200">62.5% Risk</span>
+                                        </td>
                                     </tr>
                                     <tr class="hover:bg-slate-50/70 transition-colors">
                                         <td class="py-2.5 flex items-center space-x-2">
-                                            <div class="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700">
-                                                <i data-lucide="sun" class="w-3.5 h-3.5"></i>
+                                            <div class="w-6 h-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-mono text-[10px] font-bold">
+                                                ID
                                             </div>
-                                            <span class="font-bold text-slate-800">Sunglasses</span>
+                                            <span class="font-mono font-bold text-slate-800">7795-CFOCW</span>
                                         </td>
-                                        <td class="py-2.5 text-right font-mono text-slate-600">620</td>
-                                        <td class="py-2.5 text-right font-mono font-bold text-slate-900">$12,400</td>
-                                        <td class="py-2.5 text-right text-emerald-600 font-bold">+3%</td>
+                                        <td class="py-2.5 text-slate-600">One year</td>
+                                        <td class="py-2.5 text-right font-mono font-bold text-slate-900">$42.30/mo</td>
+                                        <td class="py-2.5 text-right">
+                                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">24.1% Safe</span>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <!-- Col 2: Recent Orders (Recent CRM Outreach Dispatches) -->
+                    <!-- Col 2: Recent CRM Outreach Dispatches (Real Retention Webhook Activity) -->
                     <div class="lg:col-span-4 quantro-card p-5 space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="file-text" class="w-4 h-4 text-amber-600"></i>
-                                <h3 class="text-sm font-black text-slate-900">Recent Orders</h3>
+                                <i data-lucide="send" class="w-4 h-4 text-amber-600"></i>
+                                <h3 class="text-sm font-black text-slate-900">Recent CRM Outreach</h3>
                             </div>
                             <button onclick="navigateToPage('prediction')" class="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center cursor-pointer">
-                                <span>View All</span>
+                                <span>Dispatch</span>
                                 <i data-lucide="arrow-right" class="w-3.5 h-3.5 ml-1"></i>
                             </button>
                         </div>
                         <div class="space-y-3">
                             <div class="flex items-center justify-between text-xs hover:bg-slate-50/80 p-1.5 rounded-xl transition-colors">
                                 <div class="flex items-center space-x-2.5">
-                                    <div class="w-7 h-7 rounded-full bg-purple-100 text-purple-700 font-bold text-[10px] flex items-center justify-center">JD</div>
+                                    <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-700 font-bold text-[10px] flex items-center justify-center">75</div>
                                     <div>
-                                        <span class="font-bold text-slate-800 block">John Doe</span>
-                                        <span class="text-[10px] text-slate-400 font-mono">#10243</span>
+                                        <span class="font-bold text-slate-800 block">7590-VHVEG</span>
+                                        <span class="text-[10px] text-slate-400 font-mono">TELCO-SAVE15-1YR</span>
                                     </div>
                                 </div>
-                                <span class="font-bold text-slate-900 font-mono">$120.50</span>
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">Completed</span>
+                                <span class="font-bold text-slate-900 font-mono">-$15/mo</span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">48h Triggered</span>
                             </div>
                             <div class="flex items-center justify-between text-xs hover:bg-slate-50/80 p-1.5 rounded-xl transition-colors">
                                 <div class="flex items-center space-x-2.5">
-                                    <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold text-[10px] flex items-center justify-center">SM</div>
+                                    <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold text-[10px] flex items-center justify-center">36</div>
                                     <div>
-                                        <span class="font-bold text-slate-800 block">Sarah Miller</span>
-                                        <span class="text-[10px] text-slate-400 font-mono">#10244</span>
+                                        <span class="font-bold text-slate-800 block">3668-QPYBK</span>
+                                        <span class="text-[10px] text-slate-400 font-mono">TELCO-TECH-FREE</span>
                                     </div>
                                 </div>
-                                <span class="font-bold text-slate-900 font-mono">$89.00</span>
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-600 border border-blue-200">Processing</span>
+                                <span class="font-bold text-slate-900 font-mono">Free Tech</span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-600 border border-blue-200">Dispatched</span>
                             </div>
                             <div class="flex items-center justify-between text-xs hover:bg-slate-50/80 p-1.5 rounded-xl transition-colors">
                                 <div class="flex items-center space-x-2.5">
-                                    <div class="w-7 h-7 rounded-full bg-rose-100 text-rose-700 font-bold text-[10px] flex items-center justify-center">RL</div>
+                                    <div class="w-7 h-7 rounded-full bg-purple-100 text-purple-700 font-bold text-[10px] flex items-center justify-center">92</div>
                                     <div>
-                                        <span class="font-bold text-slate-800 block">Robert Lee</span>
-                                        <span class="text-[10px] text-slate-400 font-mono">#10245</span>
+                                        <span class="font-bold text-slate-800 block">9237-HQITU</span>
+                                        <span class="text-[10px] text-slate-400 font-mono">TELCO-SAVE10-FBR</span>
                                     </div>
                                 </div>
-                                <span class="font-bold text-slate-900 font-mono">$210.00</span>
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">Completed</span>
+                                <span class="font-bold text-slate-900 font-mono">-$10/mo</span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-600 border border-blue-200">Dispatched</span>
                             </div>
                             <div class="flex items-center justify-between text-xs hover:bg-slate-50/80 p-1.5 rounded-xl transition-colors">
                                 <div class="flex items-center space-x-2.5">
-                                    <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-700 font-bold text-[10px] flex items-center justify-center">EP</div>
+                                    <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-700 font-bold text-[10px] flex items-center justify-center">93</div>
                                     <div>
-                                        <span class="font-bold text-slate-800 block">Emma Parker</span>
-                                        <span class="text-[10px] text-slate-400 font-mono">#10246</span>
+                                        <span class="font-bold text-slate-800 block">9305-CDSKC</span>
+                                        <span class="text-[10px] text-slate-400 font-mono">TELCO-DEV-PROT</span>
                                     </div>
                                 </div>
-                                <span class="font-bold text-slate-900 font-mono">$45.80</span>
+                                <span class="font-bold text-slate-900 font-mono">Device Prot</span>
                                 <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-600 border border-amber-200">Pending</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Col 3: Customers by Location (Quantro World Map / Location Breakdown) -->
+                    <!-- Col 3: Retention Shield Lift (Value-Added Services) -->
                     <div class="lg:col-span-3 quantro-card p-5 space-y-4 flex flex-col justify-between">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="map-pin" class="w-4 h-4 text-amber-600"></i>
-                                <h3 class="text-sm font-black text-slate-900">Customers by Location</h3>
+                                <i data-lucide="shield-check" class="w-4 h-4 text-amber-600"></i>
+                                <h3 class="text-sm font-black text-slate-900">Retention Shield Lift</h3>
                             </div>
-                            <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">This month</span>
+                            <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">XAI Impact</span>
                         </div>
                         
-                        <!-- Map Vector Silhouette matching Quantro -->
-                        <div class="relative py-2 flex items-center justify-center">
-                            <svg viewBox="0 0 280 130" class="w-full h-auto opacity-75">
-                                <path d="M20,30 Q35,20 60,35 Q75,50 65,70 Q50,85 30,75 Z" fill="#e2e8f0"/>
-                                <path d="M80,25 Q120,15 140,40 Q130,65 110,60 Q90,55 80,25 Z" fill="#e2e8f0"/>
-                                <path d="M150,30 Q190,20 220,35 Q230,60 210,80 Q170,85 150,60 Z" fill="#cbd5e1"/>
-                                <path d="M110,75 Q135,70 145,95 Q135,120 120,115 Z" fill="#e2e8f0"/>
-                                <path d="M190,80 Q215,75 235,90 Q225,115 200,110 Z" fill="#e2e8f0"/>
-                                <!-- Highlighted Country Marker: United States (1,245 Customers) -->
-                                <circle cx="45" cy="45" r="5" fill="#f59e0b" class="animate-ping"/>
-                                <circle cx="45" cy="45" r="4" fill="#ea580c"/>
-                                <circle cx="175" cy="50" r="3.5" fill="#f59e0b"/>
-                                <circle cx="120" cy="85" r="3.5" fill="#f59e0b"/>
-                            </svg>
-                            <!-- Quantro Tooltip: United States 1,245 customers -->
-                            <div class="absolute top-6 left-12 bg-slate-900 text-white px-2 py-1 rounded-lg text-[9px] font-mono shadow-md border border-slate-700 pointer-events-none">
-                                <span class="font-bold block">United States</span>
-                                <span class="text-slate-400">1,245 customers</span>
-                            </div>
-                        </div>
+                        <p class="text-[11px] text-slate-500">Churn reduction observed when bundling key value-added services:</p>
 
-                        <!-- Location Distribution Bars -->
-                        <div class="space-y-2 text-xs pt-1 border-t border-slate-100">
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-600 font-medium">United States</span>
-                                <span class="font-bold font-mono text-slate-900">48.5%</span>
+                        <!-- Retention Lift Progress Bars with Amber Styling -->
+                        <div class="space-y-3 text-xs pt-1">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-slate-700 font-medium">Priority Tech Support</span>
+                                    <span class="font-bold font-mono text-emerald-600">+43.1% Lift</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-amber-500 h-full rounded-full" style="width: 84.8%;"></div>
+                                </div>
                             </div>
-                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                <div class="bg-amber-500 h-full rounded-full" style="width: 48.5%;"></div>
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-slate-700 font-medium">Online Security Shield</span>
+                                    <span class="font-bold font-mono text-emerald-600">+43.6% Lift</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-amber-500 h-full rounded-full" style="width: 85.4%;"></div>
+                                </div>
                             </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-600 font-medium">Europe & UK</span>
-                                <span class="font-bold font-mono text-slate-900">32.1%</span>
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-slate-700 font-medium">Device Protection Plan</span>
+                                    <span class="font-bold font-mono text-emerald-600">+38.4% Lift</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-amber-400 h-full rounded-full" style="width: 77.5%;"></div>
+                                </div>
                             </div>
-                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                <div class="bg-amber-400 h-full rounded-full" style="width: 32.1%;"></div>
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-slate-700 font-medium">Streaming Bundle</span>
+                                    <span class="font-bold font-mono text-emerald-600">+36.5% Lift</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-amber-400 h-full rounded-full" style="width: 70.0%;"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2353,30 +2352,36 @@
         let analyticsRiskPieInstance = null;
         let analyticsCohortsChartInstance = null;
 
-        let currentTrendMode = 'revenue';
+        let currentTrendMode = 'churn';
         function setOverviewTrendMode(mode) {
             currentTrendMode = mode;
+            const btnChurn = document.getElementById('trend-mode-churn');
             const btnRev = document.getElementById('trend-mode-rev');
-            const btnOrd = document.getElementById('trend-mode-ord');
-            if (mode === 'revenue') {
-                if (btnRev) btnRev.className = "px-3 py-1 rounded text-[11px] font-bold bg-[#111216] text-white shadow-xs cursor-pointer transition-all";
-                if (btnOrd) btnOrd.className = "px-3 py-1 rounded text-[11px] font-semibold text-slate-500 hover:text-slate-800 cursor-pointer transition-all";
+            if (mode === 'churn') {
+                if (btnChurn) btnChurn.className = "px-3 py-1 rounded text-[11px] font-bold bg-[#111216] text-white shadow-xs cursor-pointer transition-all";
+                if (btnRev) btnRev.className = "px-3 py-1 rounded text-[11px] font-semibold text-slate-500 hover:text-slate-800 cursor-pointer transition-all";
                 if (overviewTrendChartInstance) {
-                    overviewTrendChartInstance.data.datasets[0].label = 'Revenue ($)';
-                    overviewTrendChartInstance.data.datasets[0].data = [5200, 8400, 7100, 11200, 14220, 10800, 13500];
+                    overviewTrendChartInstance.data.labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+                    overviewTrendChartInstance.data.datasets[0].label = 'Churn Rate %';
+                    overviewTrendChartInstance.data.datasets[0].data = [31.2, 28.4, 27.9, 26.8, 28.1, 26.54];
                     if (overviewTrendChartInstance.options.scales.y) {
-                        overviewTrendChartInstance.options.scales.y.ticks.callback = v => '$' + (v >= 1000 ? (v/1000).toFixed(0) + 'K' : v);
+                        overviewTrendChartInstance.options.scales.y.min = 20;
+                        overviewTrendChartInstance.options.scales.y.max = 35;
+                        overviewTrendChartInstance.options.scales.y.ticks.callback = v => v + '%';
                     }
                     overviewTrendChartInstance.update();
                 }
             } else {
-                if (btnOrd) btnOrd.className = "px-3 py-1 rounded text-[11px] font-bold bg-[#111216] text-white shadow-xs cursor-pointer transition-all";
-                if (btnRev) btnRev.className = "px-3 py-1 rounded text-[11px] font-semibold text-slate-500 hover:text-slate-800 cursor-pointer transition-all";
+                if (btnRev) btnRev.className = "px-3 py-1 rounded text-[11px] font-bold bg-[#111216] text-white shadow-xs cursor-pointer transition-all";
+                if (btnChurn) btnChurn.className = "px-3 py-1 rounded text-[11px] font-semibold text-slate-500 hover:text-slate-800 cursor-pointer transition-all";
                 if (overviewTrendChartInstance) {
-                    overviewTrendChartInstance.data.datasets[0].label = 'Orders';
-                    overviewTrendChartInstance.data.datasets[0].data = [180, 240, 210, 310, 420, 360, 390];
+                    overviewTrendChartInstance.data.labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+                    overviewTrendChartInstance.data.datasets[0].label = 'Protected ARR ($)';
+                    overviewTrendChartInstance.data.datasets[0].data = [1120000, 1250000, 1340000, 1410000, 1452180, 1485000];
                     if (overviewTrendChartInstance.options.scales.y) {
-                        overviewTrendChartInstance.options.scales.y.ticks.callback = v => v;
+                        overviewTrendChartInstance.options.scales.y.min = 1000000;
+                        overviewTrendChartInstance.options.scales.y.max = 1600000;
+                        overviewTrendChartInstance.options.scales.y.ticks.callback = v => '$' + (v >= 1000000 ? (v/1000000).toFixed(2) + 'M' : (v/1000).toFixed(0) + 'K');
                     }
                     overviewTrendChartInstance.update();
                 }
@@ -2410,16 +2415,16 @@
         }
 
         function renderOverviewCharts() {
-            // 1. Quantro Donut: Sales by Category
+            // 1. TelcoPulse Risk Segments Donut with Quantro Colors
             const ctxRisk = document.getElementById('overviewRiskChart');
             if (ctxRisk && !overviewRiskChartInstance) {
                 overviewRiskChartInstance = new Chart(ctxRisk, {
                     type: 'doughnut',
                     data: {
-                        labels: ['Electronics', 'Fashion', 'Home & Living', 'Beauty'],
+                        labels: ['High Risk', 'Medium Risk', 'Low Risk'],
                         datasets: [{
-                            data: [38, 24, 18, 12],
-                            backgroundColor: ['#f59e0b', '#fbbf24', '#1e293b', '#94a3b8'],
+                            data: [1869, 1318, 3856],
+                            backgroundColor: ['#f59e0b', '#fbbf24', '#1e293b'],
                             borderWidth: 3,
                             borderColor: '#ffffff',
                             hoverOffset: 4,
@@ -2435,7 +2440,7 @@
                 });
             }
 
-            // 2. Quantro Large Area Spline: Revenue Overview
+            // 2. Quantro Amber Spline Area Chart with Real Churn Trend Data
             const ctxTrend = document.getElementById('overviewTrendChart');
             if (ctxTrend && !overviewTrendChartInstance) {
                 const tCtx = ctxTrend.getContext('2d');
@@ -2447,10 +2452,10 @@
                 overviewTrendChartInstance = new Chart(ctxTrend, {
                     type: 'line',
                     data: {
-                        labels: ['Dec 01', 'Dec 05', 'Dec 10', 'Dec 15', 'Dec 20', 'Dec 25', 'Dec 31'],
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                         datasets: [{
-                            label: 'Revenue ($)',
-                            data: [5200, 8400, 7100, 11200, 14220, 10800, 13500],
+                            label: 'Churn Rate %',
+                            data: [31.2, 28.4, 27.9, 26.8, 28.1, 26.54],
                             borderColor: '#f59e0b',
                             borderWidth: 3,
                             backgroundColor: grad,
@@ -2459,7 +2464,7 @@
                             pointBackgroundColor: '#ffffff',
                             pointBorderColor: '#ea580c',
                             pointBorderWidth: 2.5,
-                            pointRadius: [3, 3, 3, 3, 6, 3, 4],
+                            pointRadius: [3, 3, 3, 3, 3, 6],
                             pointHoverRadius: 8
                         }]
                     },
@@ -2476,20 +2481,20 @@
                                 padding: 8,
                                 displayColors: false,
                                 callbacks: {
-                                    label: ctx => '$' + ctx.parsed.y.toLocaleString()
+                                    label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y + (currentTrendMode === 'churn' ? '%' : '')
                                 }
                             }
                         },
                         scales: {
                             y: {
-                                min: 0,
-                                max: 20000,
+                                min: 20,
+                                max: 35,
                                 grid: { color: '#f1f5f9' },
                                 ticks: {
                                     color: '#94a3b8',
                                     font: { size: 10, family: 'JetBrains Mono' },
-                                    stepSize: 5000,
-                                    callback: v => '$' + (v === 0 ? '0' : (v/1000) + 'k')
+                                    stepSize: 5,
+                                    callback: v => v + '%'
                                 }
                             },
                             x: {
