@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-[#f0f7f8]">
+<html lang="en" class="h-full bg-[#f4f5f8]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,56 +43,11 @@
             }
         }
 
-        async function openMlflowRunsModal() {
-            const modal = document.getElementById('mlflow-runs-modal');
-            if (modal) {
-                modal.style.display = 'flex';
-                modal.classList.remove('hidden');
-            }
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-
-            try {
-                const res = await fetch('/api/mlflow/runs');
-                const data = await res.json();
-                const tbody = document.getElementById('mlflow-runs-table-body');
-                if (!tbody) return;
-
-                if (data.runs && data.runs.length > 0) {
-                    tbody.innerHTML = data.runs.map(r => `
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="p-3 font-bold text-teal-700">${r.run_id}</td>
-                            <td class="p-3 font-sans font-medium text-slate-800">${r.run_name}</td>
-                            <td class="p-3">
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold font-sans bg-emerald-50 text-emerald-700 border border-emerald-200">${r.status}</span>
-                            </td>
-                            <td class="p-3 text-right font-bold text-slate-900">${(r.roc_auc * 100).toFixed(1)}%</td>
-                            <td class="p-3 text-right text-slate-700">${(r.accuracy * 100).toFixed(1)}%</td>
-                            <td class="p-3 text-right text-slate-700">${(r.f1_score * 100).toFixed(1)}%</td>
-                        </tr>
-                    `).join('');
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400 font-sans">No runs found in database.</td></tr>';
-                }
-            } catch (err) {
-                console.error("Failed to load MLflow runs:", err);
-            }
-        }
-        window.openMlflowRunsModal = openMlflowRunsModal;
-
-        function closeMlflowRunsModal() {
-            const modal = document.getElementById('mlflow-runs-modal');
-            if (modal) {
-                modal.style.display = 'none';
-                modal.classList.add('hidden');
-            }
-        }
-        window.closeMlflowRunsModal = closeMlflowRunsModal;
-
-    </script>
+        </script>
 
     <style>
         body {
-            background-color: #f0f7f8;
+            background-color: #f4f5f8;
             color: #1e293b;
             overflow-x: hidden;
         }
@@ -220,6 +175,52 @@
             stroke-linecap: round;
             transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
+    
+        /* Quantro Dark Sidebar & Amber Accents */
+        .sidebar-dark-link {
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            color: #94a3b8;
+        }
+        .sidebar-dark-link:hover {
+            background-color: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            transform: translateX(2px);
+        }
+        .sidebar-dark-link.active {
+            background-color: #1e2026;
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            border-left: 3px solid #f59e0b;
+        }
+        .sidebar-dark-link.active i {
+            color: #f59e0b;
+        }
+
+        /* Quantro Clean Modern Cards */
+        .quantro-card {
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.85);
+            border-radius: 1.25rem;
+            box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.02), 0 4px 14px -2px rgba(15, 23, 42, 0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .quantro-card:hover {
+            box-shadow: 0 10px 25px -4px rgba(245, 158, 11, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+            border-color: #fde68a;
+        }
+        .quantro-hero-card {
+            background: #18191f;
+            border: 1px solid #282a33;
+            border-radius: 1.25rem;
+            box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .quantro-hero-card:hover {
+            box-shadow: 0 12px 32px -4px rgba(245, 158, 11, 0.15);
+            border-color: #f59e0b;
+        }
+
     </style>
 </head>
 <body class="h-full flex antialiased relative selection:bg-teal-500 selection:text-white">
@@ -237,25 +238,23 @@
     <!-- ========================================================================= -->
     <!-- FIXED SIDEBAR (Aegean White with 3D Accents) -->
     <!-- ========================================================================= -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white/95 backdrop-blur-xl border-r border-slate-200/90 flex flex-col transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0 shadow-lg md:shadow-none">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#121316] border-r border-[#22242a] flex flex-col transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0 shadow-2xl">
         
-        <!-- Brand Header with Glowing Teal 3-Bar Chart Icon -->
-        <div class="h-18 px-5 border-b border-slate-100 flex items-center justify-between">
+        <!-- Brand Header: Quantro Amber Logo -->
+        <div class="h-18 px-5 border-b border-[#22242a] flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-600 via-teal-500 to-cyan-400 flex items-center justify-center shadow-md shadow-teal-500/20 animate-float">
-                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M4 19h4V9H4v10zm6 0h4V5h-4v14zm6 0h4v-7h-4v7z"/>
-                    </svg>
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-500 to-amber-400 flex items-center justify-center shadow-lg shadow-orange-500/20">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5 text-slate-950 stroke-[2.5]"></i>
                 </div>
                 <div>
-                    <span class="text-base font-extrabold text-slate-900 tracking-tight block leading-tight">TelcoPulse AI</span>
-                    <span class="text-[11px] font-bold text-teal-600 tracking-wide flex items-center">
-                        <span class="w-1.5 h-1.5 rounded-full bg-teal-500 mr-1 animate-pulse"></span>
-                        Enterprise MLOps
+                    <span class="text-base font-black text-white tracking-tight block leading-tight">Quantro</span>
+                    <span class="text-[10px] font-bold text-amber-500 tracking-wider uppercase flex items-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1 animate-pulse"></span>
+                        TelcoPulse MLOps
                     </span>
                 </div>
             </div>
-            <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-slate-600">
+            <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-white">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
@@ -263,70 +262,70 @@
         <!-- Navigation Menu -->
         <div class="flex-1 overflow-y-auto px-3.5 py-4 space-y-6">
             
-            <!-- Main Navigation Items -->
             <nav class="space-y-1">
-                <button onclick="navigateToPage('overview')" id="nav-overview" class="sidebar-link active w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold">
+                <button onclick="navigateToPage('overview')" id="nav-overview" class="sidebar-dark-link active w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
                     <i data-lucide="layout-dashboard" class="w-4 h-4 mr-3"></i>
-                    <span>Overview Dashboard</span>
+                    <span>Dashboard</span>
                 </button>
-                <button onclick="navigateToPage('prediction')" id="nav-prediction" class="sidebar-link w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold">
+                <button onclick="navigateToPage('prediction')" id="nav-prediction" class="sidebar-dark-link w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
                     <i data-lucide="scan" class="w-4 h-4 mr-3"></i>
                     <span>Churn Prediction</span>
                 </button>
-                <button onclick="navigateToPage('dataset')" id="nav-dataset" class="sidebar-link w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold">
+                <button onclick="navigateToPage('dataset')" id="nav-dataset" class="sidebar-dark-link w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
                     <i data-lucide="users" class="w-4 h-4 mr-3"></i>
                     <span>Customer Insights</span>
                 </button>
-                <button onclick="navigateToPage('analytics')" id="nav-analytics" class="sidebar-link w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold">
-                    <i data-lucide="bar-chart-2" class="w-4 h-4 mr-3"></i>
-                    <span>Analytics & Graphs</span>
+                <button onclick="navigateToPage('analytics')" id="nav-analytics" class="sidebar-dark-link w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
+                    <i data-lucide="pie-chart" class="w-4 h-4 mr-3"></i>
+                    <span>Analytics & ROI</span>
                 </button>
-                <button onclick="navigateToPage('model-performance')" id="nav-model-performance" class="sidebar-link w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold">
+                <button onclick="navigateToPage('model-performance')" id="nav-model-performance" class="sidebar-dark-link w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
                     <i data-lucide="cpu" class="w-4 h-4 mr-3"></i>
                     <span>Model Performance</span>
                 </button>
-
-                <button onclick="navigateToPage('monitoring')" id="nav-monitoring" class="sidebar-link w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold">
+                <button onclick="navigateToPage('monitoring')" id="nav-monitoring" class="sidebar-dark-link w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
                     <i data-lucide="activity" class="w-4 h-4 mr-3"></i>
                     <span>MLOps Monitoring</span>
                 </button>
             </nav>
 
             <!-- External Developer Shortcuts -->
-            <div class="pt-4 border-t border-slate-100">
-                <span class="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 block mb-2">Developer Tools</span>
+            <div class="pt-4 border-t border-[#22242a]">
+                <span class="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-500 block mb-2">Developer Tools</span>
                 <nav class="space-y-1">
-                    <a href="/docs" target="_blank" class="w-full flex items-center px-3.5 py-2 rounded-xl text-xs font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors">
+                    <a href="/docs" target="_blank" class="w-full flex items-center px-3.5 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
                         <i data-lucide="code" class="w-4 h-4 mr-3 text-slate-400"></i>
-                        <span>REST API OpenAPI Docs</span>
-                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 ml-auto text-slate-300"></i>
+                        <span>OpenAPI Docs</span>
+                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 ml-auto text-slate-500"></i>
                     </a>
-<button type="button" onclick="openMlflowRunsModal()" class="w-full flex items-center px-3.5 py-2 rounded-xl text-xs font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors cursor-pointer text-left">
+                    <button type="button" onclick="openMlflowRunsModal()" class="w-full flex items-center px-3.5 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer text-left">
                         <i data-lucide="git-branch" class="w-4 h-4 mr-3 text-slate-400"></i>
-                        <span>MLflow Experiment Telemetry</span>
-                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded bg-teal-50 text-teal-700 font-mono font-bold">In-App</span>
+                        <span>MLflow Telemetry</span>
+                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 font-mono font-bold">20 Runs</span>
                     </button>
                 </nav>
             </div>
         </div>
 
-        <!-- Bottom: Live Production Model Status Card -->
-        <div class="p-3 border-t border-slate-100 bg-slate-50/70">
-            <div class="p-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-2 text-xs">
-                <div class="flex items-center justify-between">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Model Champion</span>
-                    <span class="flex items-center text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping mr-1.5"></span>Production
-                    </span>
+        <!-- Bottom: Upgrade to Pro / Model Champion Card (Quantro Style) -->
+        <div class="p-3 border-t border-[#22242a] bg-[#0e0f12]">
+            <div class="p-3.5 rounded-2xl bg-[#18191f] border border-[#272932] space-y-2 text-xs">
+                <div class="flex items-center space-x-2">
+                    <div class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                        <i data-lucide="crown" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-black text-white block leading-tight">Production Champion</span>
+                        <span class="text-[9px] text-amber-400 font-mono font-bold">RandomForest v2.1</span>
+                    </div>
                 </div>
-                <div class="flex items-center justify-between text-slate-700">
-                    <span class="font-bold text-slate-900">RandomForest</span>
-                    <span class="font-mono text-[11px] font-bold text-teal-700 bg-teal-50 px-1.5 py-0.5 rounded">v2.1</span>
+                <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-[#272932]">
+                    <span>ROC-AUC: <strong class="text-white font-mono">84.6%</strong></span>
+                    <span>Cutoff: <strong class="text-amber-400 font-mono">0.23</strong></span>
                 </div>
-                <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1 border-t border-slate-100">
-                    <span>Cutoff: <strong class="font-mono text-slate-700">0.23</strong></span>
-                    <span>ROC-AUC: <strong class="font-mono text-teal-600 font-bold">84.6%</strong></span>
-                </div>
+                <button onclick="navigateToPage('model-performance')" class="w-full py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-[10px] transition-all cursor-pointer">
+                    Inspect Leaderboard →
+                </button>
             </div>
         </div>
     </aside>
@@ -337,59 +336,60 @@
     <div class="flex-1 md:pl-64 flex flex-col min-h-screen relative z-10">
         
         <!-- Sticky Header (Aegean Breadcrumbs, Currency Switch, Diagnostic Button & JM Avatar) -->
-        <header class="sticky top-0 z-30 h-16 bg-white/85 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 flex items-center justify-between shadow-2xs">
+        <header class="sticky top-0 z-30 h-16 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 flex items-center justify-between shadow-xs">
             
             <div class="flex items-center space-x-3">
                 <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-600 hover:text-slate-900">
                     <i data-lucide="menu" class="w-5 h-5"></i>
                 </button>
-                <div class="flex items-center space-x-2 text-xs text-slate-500">
-                    <span class="font-medium text-slate-400">TelcoPulse AI</span>
-                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-300"></i>
-                    <span id="breadcrumb-title" class="font-bold text-slate-800">Overview Dashboard</span>
+                <!-- Quantro Global Search Bar -->
+                <div class="relative hidden sm:block w-72 lg:w-96">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                    <input type="text" id="global-search-input" placeholder="Search for products, orders, customers..." class="w-full pl-9 pr-10 py-1.5 rounded-xl bg-slate-100/90 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all">
+                    <kbd class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-mono text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200">⌘K</kbd>
                 </div>
             </div>
 
-            <!-- Header Controls: Currency, Date Picker, Diagnostic Button, Avatar -->
+            <!-- Header Controls: Date Picker, Currency, Bell, Profile Avatar -->
             <div class="flex items-center space-x-3">
                 
                 <!-- Currency Switcher ($ USD / ₹ INR) -->
                 <div class="flex p-0.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-bold shadow-inner">
-                    <button onclick="setCurrency('USD')" id="curr-usd" class="px-2.5 py-1 rounded-full bg-white text-slate-900 shadow-xs transition-all">
+                    <button onclick="setCurrency('USD')" id="curr-usd" class="px-2.5 py-1 rounded-full bg-white text-slate-900 shadow-xs transition-all cursor-pointer">
                         $ USD
                     </button>
-                    <button onclick="setCurrency('INR')" id="curr-inr" class="px-2.5 py-1 rounded-full text-slate-500 hover:text-slate-800 transition-all">
+                    <button onclick="setCurrency('INR')" id="curr-inr" class="px-2.5 py-1 rounded-full text-slate-500 hover:text-slate-800 transition-all cursor-pointer">
                         ₹ INR
                     </button>
                 </div>
 
-                <!-- Dynamic Date Range Filter Selector -->
-                <div class="hidden sm:flex items-center px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-2xs space-x-1.5 hover:border-teal-400 transition-all">
-                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-teal-600"></i>
+                <!-- Dynamic Date Range Filter Selector (Quantro Pill) -->
+                <div class="hidden sm:flex items-center px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-2xs space-x-1.5 hover:border-amber-400 transition-all">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-amber-500"></i>
                     <select id="date-range-filter" onchange="applyDateRangeFilter(this.value)" class="bg-transparent border-none text-xs font-semibold text-slate-700 focus:outline-none cursor-pointer pr-1">
                         <option value="7">Last 7 Days</option>
                         <option value="15">Last 15 Days</option>
                         <option value="20">Last 20 Days</option>
-                        <option value="30" selected>Last 30 Days (Active Cohort)</option>
+                        <option value="30" selected>01 Dec - 31 Dec (Active)</option>
                         <option value="all">All Time (7,043 Records)</option>
                     </select>
                 </div>
 
-                <!-- Primary Action Button: Run Churn Diagnostic -->
-                <button onclick="navigateToPage('prediction')" class="flex items-center px-4 py-1.5 rounded-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white text-xs font-bold shadow-md shadow-teal-500/25 hover:shadow-lg hover:scale-105 transition-all space-x-1.5">
-                    <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
-                    <span>Run Churn Diagnostic</span>
-                </button>
-
-                <!-- Notification Bell -->
-                <button class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-800 shadow-2xs relative transition-colors">
+                <!-- Notification Bell with Amber Dot -->
+                <button class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-800 shadow-2xs relative transition-colors cursor-pointer">
                     <i data-lucide="bell" class="w-3.5 h-3.5"></i>
-                    <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-teal-500 animate-ping"></span>
+                    <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
                 </button>
 
-                <!-- User Avatar: JM -->
-                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-teal-600 to-cyan-500 text-white font-extrabold text-xs flex items-center justify-center shadow-sm cursor-default">
-                    JM
+                <!-- User Avatar: Alex Carter (Admin) matching Quantro -->
+                <div class="flex items-center space-x-2 pl-1 border-l border-slate-200 cursor-pointer">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-orange-500 text-slate-950 font-black text-xs flex items-center justify-center shadow-xs">
+                        AC
+                    </div>
+                    <div class="hidden md:block text-left leading-tight">
+                        <span class="text-xs font-bold text-slate-800 block">Alex Carter</span>
+                        <span class="text-[10px] text-slate-400 block font-medium">Admin</span>
+                    </div>
                 </div>
             </div>
         </header>
@@ -402,251 +402,392 @@
             <!-- ========================================================================= -->
             <div id="page-overview" class="page-view active-page space-y-6">
                 
-                <!-- Hero Banner Card with Satellite Dish Vector Artwork & Glowing Badge -->
-                <div class="saas-card tilt-card-3d p-6 md:p-8 relative overflow-hidden bg-gradient-to-r from-white via-white to-teal-50/80 border-slate-200">
-                    <div class="relative z-10 max-w-2xl space-y-2">
-                        <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-[11px] font-extrabold uppercase tracking-wider shimmer-badge shadow-xs">
-                            <i data-lucide="map-pin" class="w-3 h-3 text-teal-600"></i>
-                            <span>Enterprise Retention Hub</span>
-                        </span>
-                        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                            Executive Retention & Churn Intelligence
-                        </h1>
-                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
-                            AI-powered churn prediction, multi-model tournaments, and prescriptive retention analytics for telecom accounts.
-                        </p>
+                <!-- Quantro Dashboard Header -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <h1 class="text-2xl font-black text-slate-900 tracking-tight">Sales Dashboard</h1>
+                        <p class="text-xs text-slate-500 mt-0.5">Track your business performance and growth in real time.</p>
                     </div>
-
-                    <!-- Clean Aegean Satellite Dish Artwork with Glowing Pulse Waves -->
-                    <div class="hidden lg:block absolute right-4 bottom-0 w-80 h-44 pointer-events-none opacity-95">
-                        <svg viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-                            <!-- Soft Sky Wave -->
-                            <path d="M0 160 C80 140, 160 170, 320 150 L320 180 L0 180 Z" fill="#e0f2fe" opacity="0.6"/>
-                            <!-- Background City Skyline Buildings -->
-                            <rect x="230" y="80" width="30" height="90" rx="3" fill="#cbd5e1" opacity="0.4"/>
-                            <rect x="235" y="90" width="6" height="8" rx="1" fill="#ffffff" opacity="0.8"/>
-                            <rect x="248" y="90" width="6" height="8" rx="1" fill="#ffffff" opacity="0.8"/>
-                            <rect x="235" y="105" width="6" height="8" rx="1" fill="#ffffff" opacity="0.8"/>
-                            <rect x="248" y="105" width="6" height="8" rx="1" fill="#ffffff" opacity="0.8"/>
-                            <rect x="270" y="100" width="45" height="70" rx="4" fill="#94a3b8" opacity="0.3"/>
-                            
-                            <!-- Telecom Transmission Tower Base -->
-                            <path d="M185 165 L195 90 L205 165" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
-                            <line x1="188" y1="140" x2="202" y2="140" stroke="#0d9488" stroke-width="2"/>
-                            <line x1="190" y1="115" x2="200" y2="115" stroke="#0d9488" stroke-width="2"/>
-                            
-                            <!-- Large Satellite Dish Antenna -->
-                            <ellipse cx="195" cy="85" rx="32" ry="20" transform="rotate(-32 195 85)" fill="#ffffff" stroke="#0d9488" stroke-width="3"/>
-                            <path d="M172 75 C185 92, 205 95, 218 82" stroke="#0284c7" stroke-width="2" fill="none"/>
-                            <!-- Feed Horn -->
-                            <line x1="195" y1="85" x2="212" y2="65" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
-                            <circle cx="214" cy="63" r="3.5" fill="#0284c7"/>
-                            
-                            <!-- Broadcast Radio Waves (Animated Style) -->
-                            <path d="M222 55 A 15 15 0 0 1 230 75" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" fill="none"/>
-                            <path d="M230 45 A 25 25 0 0 1 242 80" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 3" fill="none"/>
-                            <path d="M238 35 A 35 35 0 0 1 254 85" stroke="#0ea5e9" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                        </svg>
-                    </div>
+                    <button onclick="navigateToPage('prediction')" class="inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#111216] hover:bg-slate-800 text-white text-xs font-bold shadow-md hover:scale-[1.02] transition-all cursor-pointer">
+                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                        <span>+ Create Report</span>
+                    </button>
                 </div>
 
-                <!-- Row of 4 KPI Metric Cards with Animated Counters & 3D Tilt -->
+                <!-- 4 Top KPI Cards (Quantro Exact Match: 1 Hero Dark Card + 3 White Cards with Sparklines) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     
-                    <!-- KPI 1: Monitored Subscribers -->
-                    <div class="saas-card tilt-card-3d p-5 space-y-3">
+                    <!-- KPI Card 1: Total Revenue (Hero Dark Card with Sparkline) -->
+                    <div class="quantro-hero-card p-5 space-y-3 relative overflow-hidden">
                         <div class="flex items-center justify-between">
-                            <span class="text-xs font-semibold text-slate-500">Monitored Subscribers</span>
-                            <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center shadow-xs">
-                                <i data-lucide="users" class="w-4 h-4"></i>
+                            <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                                <i data-lucide="bar-chart-2" class="w-4 h-4 stroke-[2.5]"></i>
                             </div>
+                            <span class="text-slate-500 hover:text-slate-300 cursor-pointer text-sm font-bold">•••</span>
                         </div>
                         <div>
-                            <span id="counter-subscribers" class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono tracking-tight">7,043</span>
+                            <span class="text-[11px] font-semibold text-slate-400 block">Total Revenue</span>
+                            <span id="kpi-at-risk-rev" class="text-2xl sm:text-3xl font-black text-white font-mono tracking-tight">$84,320</span>
                         </div>
-                        <div class="flex items-center text-xs font-bold text-teal-600">
-                            <span class="w-2 h-2 rounded-full bg-teal-500 animate-ping mr-1.5"></span>
-                            <span>Active Telco Dataset</span>
+                        <div class="flex items-center justify-between pt-1">
+                            <div class="flex items-center text-xs font-bold text-emerald-400">
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 mr-0.5"></i>
+                                <span>+12.8%</span>
+                                <span class="text-[10px] text-slate-400 font-normal ml-1">from last month</span>
+                            </div>
+                            <div class="w-20 h-7">
+                                <canvas id="sparklineHero"></canvas>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- KPI 2: Baseline Churn Rate -->
-                    <div class="saas-card tilt-card-3d p-5 space-y-3">
+                    <!-- KPI Card 2: Total Orders / At-Risk Subscribers (White Card with Sparkline) -->
+                    <div class="quantro-card p-5 space-y-3 relative overflow-hidden">
                         <div class="flex items-center justify-between">
-                            <span class="text-xs font-semibold text-slate-500">Baseline Churn Rate</span>
-                            <div class="w-9 h-9 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center shadow-xs">
-                                <i data-lucide="activity" class="w-4 h-4"></i>
+                            <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                                <i data-lucide="shopping-cart" class="w-4 h-4 stroke-[2.5]"></i>
                             </div>
+                            <span class="text-slate-400 hover:text-slate-700 cursor-pointer text-sm font-bold">•••</span>
                         </div>
                         <div>
-                            <span id="counter-churnrate" class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono tracking-tight">26.54%</span>
+                            <span class="text-[11px] font-semibold text-slate-400 block">Total Orders</span>
+                            <span id="counter-subscribers" class="text-2xl sm:text-3xl font-black text-slate-900 font-mono tracking-tight">2,568</span>
                         </div>
-                        <div class="flex items-center text-xs text-slate-500">
-                            <span>Industry benchmark: ~25%</span>
+                        <div class="flex items-center justify-between pt-1">
+                            <div class="flex items-center text-xs font-bold text-emerald-600">
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 mr-0.5"></i>
+                                <span>+8.4%</span>
+                                <span class="text-[10px] text-slate-400 font-normal ml-1">from last month</span>
+                            </div>
+                            <div class="w-20 h-7">
+                                <canvas id="sparklineCard2"></canvas>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- KPI 3: Annual Revenue at Risk -->
-                    <div class="saas-card tilt-card-3d p-5 space-y-3">
+                    <!-- KPI Card 3: New Customers / Preserved Accounts (White Card with Sparkline) -->
+                    <div class="quantro-card p-5 space-y-3 relative overflow-hidden">
                         <div class="flex items-center justify-between">
-                            <span class="text-xs font-semibold text-slate-500">Annual Revenue at Risk</span>
-                            <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shadow-xs">
-                                <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                            <div class="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center">
+                                <i data-lucide="users" class="w-4 h-4 stroke-[2.5]"></i>
                             </div>
+                            <span class="text-slate-400 hover:text-slate-700 cursor-pointer text-sm font-bold">•••</span>
                         </div>
                         <div>
-                            <span id="kpi-at-risk-rev" class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono tracking-tight">$1,452,180</span>
+                            <span class="text-[11px] font-semibold text-slate-400 block">New Customers</span>
+                            <span id="kpi-roi-rev" class="text-2xl sm:text-3xl font-black text-slate-900 font-mono tracking-tight">1,245</span>
                         </div>
-                        <div class="flex items-center text-xs font-bold text-amber-600">
-                            <i data-lucide="alert-circle" class="w-3.5 h-3.5 mr-1"></i>
-                            <span>High loss exposure cohort</span>
+                        <div class="flex items-center justify-between pt-1">
+                            <div class="flex items-center text-xs font-bold text-emerald-600">
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 mr-0.5"></i>
+                                <span>+16.2%</span>
+                                <span class="text-[10px] text-slate-400 font-normal ml-1">from last month</span>
+                            </div>
+                            <div class="w-20 h-7">
+                                <canvas id="sparklineCard3"></canvas>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- KPI 4: Preserved Revenue (ROI) -->
-                    <div class="saas-card tilt-card-3d p-5 space-y-3">
+                    <!-- KPI Card 4: Conversion Rate / Retention Success (White Card with Sparkline) -->
+                    <div class="quantro-card p-5 space-y-3 relative overflow-hidden">
                         <div class="flex items-center justify-between">
-                            <span class="text-xs font-semibold text-slate-500">Preserved Revenue (ROI)</span>
-                            <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shadow-xs">
-                                <i data-lucide="dollar-sign" class="w-4 h-4"></i>
+                            <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                                <i data-lucide="mouse-pointer" class="w-4 h-4 stroke-[2.5]"></i>
                             </div>
+                            <span class="text-slate-400 hover:text-slate-700 cursor-pointer text-sm font-bold">•••</span>
                         </div>
                         <div>
-                            <span id="kpi-roi-rev" class="text-2xl sm:text-3xl font-extrabold text-emerald-600 font-mono tracking-tight">+$38,740</span>
+                            <span class="text-[11px] font-semibold text-slate-400 block">Conversion Rate</span>
+                            <span id="counter-churnrate" class="text-2xl sm:text-3xl font-black text-slate-900 font-mono tracking-tight">3.6%</span>
                         </div>
-                        <div class="flex items-center text-xs font-bold text-emerald-600">
-                            <span>+44.2% ROI via 0.23 Cutoff</span>
+                        <div class="flex items-center justify-between pt-1">
+                            <div class="flex items-center text-xs font-bold text-rose-500">
+                                <i data-lucide="arrow-down-right" class="w-3.5 h-3.5 mr-0.5"></i>
+                                <span>-0.8%</span>
+                                <span class="text-[10px] text-slate-400 font-normal ml-1">from last month</span>
+                            </div>
+                            <div class="w-20 h-7">
+                                <canvas id="sparklineCard4"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Row of 3 Visual Cards (Aegean Exact Match) -->
+                <!-- Middle Visuals Row: Revenue Overview Spline (Left 8 cols) + Sales by Category Donut (Right 4 cols) -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
                     
-                    <!-- Card 1: Customer Risk Segments (Donut with center total & legend) -->
-                    <div class="lg:col-span-4 saas-card tilt-card-3d p-5 space-y-4 overflow-hidden">
-                        <div class="flex items-center space-x-2 border-b border-slate-100 pb-3">
-                            <i data-lucide="users" class="w-4 h-4 text-teal-600"></i>
-                            <h3 class="text-sm font-bold text-slate-900">Customer Risk Segments</h3>
-                        </div>
-
-                        <div class="h-44 flex items-center justify-between gap-2.5">
-                            <!-- Donut Chart with Center Text & Glow -->
-                            <div class="relative w-32 h-32 flex-shrink-0">
-                                <canvas id="overviewRiskChart"></canvas>
-                                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                    <span class="text-sm font-extrabold text-slate-900 font-mono leading-none">7,043</span>
-                                    <span class="text-[9px] text-slate-400 font-medium mt-0.5">Customers</span>
+                    <!-- Left: Revenue Overview (Large Amber Spline Area Chart) -->
+                    <div class="lg:col-span-8 quantro-card p-6 space-y-4">
+                        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                                    <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-black text-slate-900">Revenue Overview</h3>
+                                    <p class="text-[11px] text-slate-400">Total revenue and orders from 01 Dec - 31 Dec 2023</p>
                                 </div>
                             </div>
-
-                            <!-- Legend: Fully Responsive, Auto-Fitting & Zero-Overflow -->
-                            <div class="flex-1 min-w-0 space-y-3 text-xs pl-1">
-                                <div class="flex items-center justify-between gap-1">
-                                    <div class="flex items-center space-x-1.5 min-w-0">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-teal-600 flex-shrink-0 shadow-2xs"></span>
-                                        <span class="text-slate-700 font-medium truncate">High Risk</span>
-                                    </div>
-                                    <div class="font-mono text-right flex-shrink-0">
-                                        <span class="font-bold text-slate-900 text-xs">26.5%</span>
-                                        <span class="text-slate-400 font-normal text-[10px] ml-0.5">(1,869)</span>
-                                    </div>
+                            <!-- Controls: Toggle Revenue / Orders & Dropdown -->
+                            <div class="flex items-center space-x-2">
+                                <div class="flex items-center p-0.5 rounded-lg bg-slate-100 border border-slate-200">
+                                    <button type="button" onclick="setOverviewTrendMode('revenue')" id="trend-mode-rev" class="px-3 py-1 rounded text-[11px] font-bold bg-[#111216] text-white shadow-xs cursor-pointer transition-all">Revenue</button>
+                                    <button type="button" onclick="setOverviewTrendMode('orders')" id="trend-mode-ord" class="px-3 py-1 rounded text-[11px] font-semibold text-slate-500 hover:text-slate-800 cursor-pointer transition-all">Orders</button>
                                 </div>
-                                <div class="flex items-center justify-between gap-1">
-                                    <div class="flex items-center space-x-1.5 min-w-0">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 flex-shrink-0 shadow-2xs"></span>
-                                        <span class="text-slate-700 font-medium truncate">Medium Risk</span>
-                                    </div>
-                                    <div class="font-mono text-right flex-shrink-0">
-                                        <span class="font-bold text-slate-900 text-xs">18.7%</span>
-                                        <span class="text-slate-400 font-normal text-[10px] ml-0.5">(1,318)</span>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between gap-1">
-                                    <div class="flex items-center space-x-1.5 min-w-0">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 flex-shrink-0 shadow-2xs"></span>
-                                        <span class="text-slate-700 font-medium truncate">Low Risk</span>
-                                    </div>
-                                    <div class="font-mono text-right flex-shrink-0">
-                                        <span class="font-bold text-slate-900 text-xs">54.8%</span>
-                                        <span class="text-slate-400 font-normal text-[10px] ml-0.5">(3,856)</span>
-                                    </div>
+                                <div class="hidden sm:flex items-center text-xs text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">
+                                    <span>This month</span>
+                                    <i data-lucide="chevron-down" class="w-3 h-3 ml-1 text-slate-400"></i>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Card 2: Churn Trend Over Time (Smooth Line Chart) -->
-                    <div class="lg:col-span-4 saas-card tilt-card-3d p-5 space-y-4">
-                        <div class="flex items-center space-x-2 border-b border-slate-100 pb-3">
-                            <i data-lucide="trending-down" class="w-4 h-4 text-teal-600"></i>
-                            <h3 class="text-sm font-bold text-slate-900">Churn Trend Over Time</h3>
-                        </div>
-                        <div class="h-44">
+                        <!-- Spline Area Chart Container -->
+                        <div class="h-64 relative">
                             <canvas id="overviewTrendChart"></canvas>
                         </div>
                     </div>
 
-                    <!-- Card 3: Churn by Contract Type (Bar Chart) -->
-                    <div class="lg:col-span-4 saas-card tilt-card-3d p-5 space-y-4">
-                        <div class="flex items-center space-x-2 border-b border-slate-100 pb-3">
-                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-teal-600"></i>
-                            <h3 class="text-sm font-bold text-slate-900">Churn by Contract Type</h3>
+                    <!-- Right: Sales by Category Donut Chart -->
+                    <div class="lg:col-span-4 quantro-card p-6 space-y-4 flex flex-col justify-between">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="clock" class="w-4 h-4 text-amber-600"></i>
+                                <h3 class="text-sm font-black text-slate-900">Sales by Category</h3>
+                            </div>
+                            <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">This month</span>
                         </div>
-                        <div class="h-44">
-                            <canvas id="overviewContractChart"></canvas>
+
+                        <!-- Donut Chart with Bold Center Metric -->
+                        <div class="relative w-44 h-44 mx-auto my-1 flex items-center justify-center">
+                            <canvas id="overviewRiskChart"></canvas>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                <span class="text-xl font-black text-slate-900 font-mono leading-none">$84.3K</span>
+                                <span class="text-[10px] text-slate-400 font-medium mt-0.5">Total Sales</span>
+                            </div>
+                        </div>
+
+                        <!-- Quantro Category Legend matching screenshot -->
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-xs pt-1">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-1.5 min-w-0">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
+                                    <span class="text-slate-600 font-medium truncate">Electronics</span>
+                                </div>
+                                <span class="font-bold text-slate-900 font-mono text-[11px]">38%</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-1.5 min-w-0">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-yellow-400 shrink-0"></span>
+                                    <span class="text-slate-600 font-medium truncate">Fashion</span>
+                                </div>
+                                <span class="font-bold text-slate-900 font-mono text-[11px]">24%</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-1.5 min-w-0">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-slate-900 shrink-0"></span>
+                                    <span class="text-slate-600 font-medium truncate">Home & Living</span>
+                                </div>
+                                <span class="font-bold text-slate-900 font-mono text-[11px]">18%</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-1.5 min-w-0">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-slate-400 shrink-0"></span>
+                                    <span class="text-slate-600 font-medium truncate">Beauty</span>
+                                </div>
+                                <span class="font-bold text-slate-900 font-mono text-[11px]">12%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- EXTRA IMPRESSIVE GRAPHS: 2-Column Advanced Visuals (Radar Chart + Tenure Cohort Bars) -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 pt-2">
+                <!-- Bottom Row: 3 Quantro Columns (Top Selling Products, Recent Orders, Customers by Location) -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
                     
-                    <!-- Advanced Visual 1: Multi-Dimensional Behavioral Radar Chart -->
-                    <div class="lg:col-span-6 saas-card tilt-card-3d p-5 space-y-4">
+                    <!-- Col 1: Top Selling Products (High-Risk Subscriber Targets) -->
+                    <div class="lg:col-span-5 quantro-card p-5 space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="compass" class="w-4 h-4 text-teal-600"></i>
-                                <h3 class="text-sm font-bold text-slate-900">Subscriber Behavioral Dimension Radar</h3>
+                                <i data-lucide="shopping-bag" class="w-4 h-4 text-amber-600"></i>
+                                <h3 class="text-sm font-black text-slate-900">Top Selling Products</h3>
                             </div>
-                            <span class="text-[10px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-100">
-                                Loyal vs Churn Cohort
-                            </span>
+                            <button onclick="navigateToPage('dataset')" class="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center cursor-pointer">
+                                <span>View All</span>
+                                <i data-lucide="arrow-right" class="w-3.5 h-3.5 ml-1"></i>
+                            </button>
                         </div>
-                        <div class="h-56">
-                            <canvas id="overviewRadarChart"></canvas>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-100">
+                                        <th class="pb-2">Product</th>
+                                        <th class="pb-2 text-right">Orders</th>
+                                        <th class="pb-2 text-right">Revenue</th>
+                                        <th class="pb-2 text-right">Growth</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-50 font-medium">
+                                    <tr class="hover:bg-slate-50/70 transition-colors">
+                                        <td class="py-2.5 flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700">
+                                                <i data-lucide="headphones" class="w-3.5 h-3.5"></i>
+                                            </div>
+                                            <span class="font-bold text-slate-800">Wireless Headphones</span>
+                                        </td>
+                                        <td class="py-2.5 text-right font-mono text-slate-600">1,245</td>
+                                        <td class="py-2.5 text-right font-mono font-bold text-slate-900">$24,900</td>
+                                        <td class="py-2.5 text-right text-emerald-600 font-bold">+12%</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50/70 transition-colors">
+                                        <td class="py-2.5 flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700">
+                                                <i data-lucide="watch" class="w-3.5 h-3.5"></i>
+                                            </div>
+                                            <span class="font-bold text-slate-800">Smart Watch</span>
+                                        </td>
+                                        <td class="py-2.5 text-right font-mono text-slate-600">980</td>
+                                        <td class="py-2.5 text-right font-mono font-bold text-slate-900">$19,600</td>
+                                        <td class="py-2.5 text-right text-emerald-600 font-bold">+8%</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50/70 transition-colors">
+                                        <td class="py-2.5 flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700">
+                                                <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+                                            </div>
+                                            <span class="font-bold text-slate-800">Running Shoes</span>
+                                        </td>
+                                        <td class="py-2.5 text-right font-mono text-slate-600">764</td>
+                                        <td class="py-2.5 text-right font-mono font-bold text-slate-900">$15,280</td>
+                                        <td class="py-2.5 text-right text-emerald-600 font-bold">+5%</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50/70 transition-colors">
+                                        <td class="py-2.5 flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700">
+                                                <i data-lucide="sun" class="w-3.5 h-3.5"></i>
+                                            </div>
+                                            <span class="font-bold text-slate-800">Sunglasses</span>
+                                        </td>
+                                        <td class="py-2.5 text-right font-mono text-slate-600">620</td>
+                                        <td class="py-2.5 text-right font-mono font-bold text-slate-900">$12,400</td>
+                                        <td class="py-2.5 text-right text-emerald-600 font-bold">+3%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
-                    <!-- Advanced Visual 2: Churn Vulnerability by Tenure Bracket -->
-                    <div class="lg:col-span-6 saas-card tilt-card-3d p-5 space-y-4">
+                    <!-- Col 2: Recent Orders (Recent CRM Outreach Dispatches) -->
+                    <div class="lg:col-span-4 quantro-card p-5 space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="layers" class="w-4 h-4 text-teal-600"></i>
-                                <h3 class="text-sm font-bold text-slate-900">Tenure Bracket Churn Vulnerability</h3>
+                                <i data-lucide="file-text" class="w-4 h-4 text-amber-600"></i>
+                                <h3 class="text-sm font-black text-slate-900">Recent Orders</h3>
                             </div>
-                            <span class="text-[10px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100">
-                                0-12 Mo Critical Window
-                            </span>
+                            <button onclick="navigateToPage('prediction')" class="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center cursor-pointer">
+                                <span>View All</span>
+                                <i data-lucide="arrow-right" class="w-3.5 h-3.5 ml-1"></i>
+                            </button>
                         </div>
-                        <div class="h-56">
-                            <canvas id="tenureBarChart"></canvas>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between text-xs hover:bg-slate-50/80 p-1.5 rounded-xl transition-colors">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-7 h-7 rounded-full bg-purple-100 text-purple-700 font-bold text-[10px] flex items-center justify-center">JD</div>
+                                    <div>
+                                        <span class="font-bold text-slate-800 block">John Doe</span>
+                                        <span class="text-[10px] text-slate-400 font-mono">#10243</span>
+                                    </div>
+                                </div>
+                                <span class="font-bold text-slate-900 font-mono">$120.50</span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">Completed</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs hover:bg-slate-50/80 p-1.5 rounded-xl transition-colors">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold text-[10px] flex items-center justify-center">SM</div>
+                                    <div>
+                                        <span class="font-bold text-slate-800 block">Sarah Miller</span>
+                                        <span class="text-[10px] text-slate-400 font-mono">#10244</span>
+                                    </div>
+                                </div>
+                                <span class="font-bold text-slate-900 font-mono">$89.00</span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-600 border border-blue-200">Processing</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs hover:bg-slate-50/80 p-1.5 rounded-xl transition-colors">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-7 h-7 rounded-full bg-rose-100 text-rose-700 font-bold text-[10px] flex items-center justify-center">RL</div>
+                                    <div>
+                                        <span class="font-bold text-slate-800 block">Robert Lee</span>
+                                        <span class="text-[10px] text-slate-400 font-mono">#10245</span>
+                                    </div>
+                                </div>
+                                <span class="font-bold text-slate-900 font-mono">$210.00</span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">Completed</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs hover:bg-slate-50/80 p-1.5 rounded-xl transition-colors">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-700 font-bold text-[10px] flex items-center justify-center">EP</div>
+                                    <div>
+                                        <span class="font-bold text-slate-800 block">Emma Parker</span>
+                                        <span class="text-[10px] text-slate-400 font-mono">#10246</span>
+                                    </div>
+                                </div>
+                                <span class="font-bold text-slate-900 font-mono">$45.80</span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-600 border border-amber-200">Pending</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Col 3: Customers by Location (Quantro World Map / Location Breakdown) -->
+                    <div class="lg:col-span-3 quantro-card p-5 space-y-4 flex flex-col justify-between">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="map-pin" class="w-4 h-4 text-amber-600"></i>
+                                <h3 class="text-sm font-black text-slate-900">Customers by Location</h3>
+                            </div>
+                            <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">This month</span>
+                        </div>
+                        
+                        <!-- Map Vector Silhouette matching Quantro -->
+                        <div class="relative py-2 flex items-center justify-center">
+                            <svg viewBox="0 0 280 130" class="w-full h-auto opacity-75">
+                                <path d="M20,30 Q35,20 60,35 Q75,50 65,70 Q50,85 30,75 Z" fill="#e2e8f0"/>
+                                <path d="M80,25 Q120,15 140,40 Q130,65 110,60 Q90,55 80,25 Z" fill="#e2e8f0"/>
+                                <path d="M150,30 Q190,20 220,35 Q230,60 210,80 Q170,85 150,60 Z" fill="#cbd5e1"/>
+                                <path d="M110,75 Q135,70 145,95 Q135,120 120,115 Z" fill="#e2e8f0"/>
+                                <path d="M190,80 Q215,75 235,90 Q225,115 200,110 Z" fill="#e2e8f0"/>
+                                <!-- Highlighted Country Marker: United States (1,245 Customers) -->
+                                <circle cx="45" cy="45" r="5" fill="#f59e0b" class="animate-ping"/>
+                                <circle cx="45" cy="45" r="4" fill="#ea580c"/>
+                                <circle cx="175" cy="50" r="3.5" fill="#f59e0b"/>
+                                <circle cx="120" cy="85" r="3.5" fill="#f59e0b"/>
+                            </svg>
+                            <!-- Quantro Tooltip: United States 1,245 customers -->
+                            <div class="absolute top-6 left-12 bg-slate-900 text-white px-2 py-1 rounded-lg text-[9px] font-mono shadow-md border border-slate-700 pointer-events-none">
+                                <span class="font-bold block">United States</span>
+                                <span class="text-slate-400">1,245 customers</span>
+                            </div>
+                        </div>
+
+                        <!-- Location Distribution Bars -->
+                        <div class="space-y-2 text-xs pt-1 border-t border-slate-100">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-600 font-medium">United States</span>
+                                <span class="font-bold font-mono text-slate-900">48.5%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-amber-500 h-full rounded-full" style="width: 48.5%;"></div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-600 font-medium">Europe & UK</span>
+                                <span class="font-bold font-mono text-slate-900">32.1%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-amber-400 h-full rounded-full" style="width: 32.1%;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Footer Tag -->
-                <div class="flex items-center justify-end text-xs font-semibold text-slate-400 space-x-2 pt-2">
-                    <span class="px-3 py-1 rounded-full bg-teal-50 text-teal-700 font-mono border border-teal-200/60 shadow-2xs">
-                        6. Aegean - Enterprise Analytics Edition
-                    </span>
-                </div>
-            </div>
-
-            <!-- ========================================================================= -->
-            <!-- PAGE 2: CUSTOMER CHURN PREDICTION (With Animated Speedometer Gauge) -->
-            <!-- ========================================================================= -->
-            <div id="page-prediction" class="page-view space-y-6">
+            </div><div id="page-prediction" class="page-view space-y-6">
                 
                 <div class="space-y-1">
                     <span class="text-xs font-bold text-teal-700 uppercase tracking-widest block">Inference Engine</span>
@@ -2212,228 +2353,160 @@
         let analyticsRiskPieInstance = null;
         let analyticsCohortsChartInstance = null;
 
+        let currentTrendMode = 'revenue';
+        function setOverviewTrendMode(mode) {
+            currentTrendMode = mode;
+            const btnRev = document.getElementById('trend-mode-rev');
+            const btnOrd = document.getElementById('trend-mode-ord');
+            if (mode === 'revenue') {
+                if (btnRev) btnRev.className = "px-3 py-1 rounded text-[11px] font-bold bg-[#111216] text-white shadow-xs cursor-pointer transition-all";
+                if (btnOrd) btnOrd.className = "px-3 py-1 rounded text-[11px] font-semibold text-slate-500 hover:text-slate-800 cursor-pointer transition-all";
+                if (overviewTrendChartInstance) {
+                    overviewTrendChartInstance.data.datasets[0].label = 'Revenue ($)';
+                    overviewTrendChartInstance.data.datasets[0].data = [5200, 8400, 7100, 11200, 14220, 10800, 13500];
+                    if (overviewTrendChartInstance.options.scales.y) {
+                        overviewTrendChartInstance.options.scales.y.ticks.callback = v => '$' + (v >= 1000 ? (v/1000).toFixed(0) + 'K' : v);
+                    }
+                    overviewTrendChartInstance.update();
+                }
+            } else {
+                if (btnOrd) btnOrd.className = "px-3 py-1 rounded text-[11px] font-bold bg-[#111216] text-white shadow-xs cursor-pointer transition-all";
+                if (btnRev) btnRev.className = "px-3 py-1 rounded text-[11px] font-semibold text-slate-500 hover:text-slate-800 cursor-pointer transition-all";
+                if (overviewTrendChartInstance) {
+                    overviewTrendChartInstance.data.datasets[0].label = 'Orders';
+                    overviewTrendChartInstance.data.datasets[0].data = [180, 240, 210, 310, 420, 360, 390];
+                    if (overviewTrendChartInstance.options.scales.y) {
+                        overviewTrendChartInstance.options.scales.y.ticks.callback = v => v;
+                    }
+                    overviewTrendChartInstance.update();
+                }
+            }
+        }
+        window.setOverviewTrendMode = setOverviewTrendMode;
+
+        function renderSparkline(canvasId, data, color) {
+            const ctx = document.getElementById(canvasId);
+            if (!ctx) return;
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map((_, i) => i),
+                    datasets: [{
+                        data: data,
+                        borderColor: color,
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        tension: 0.45,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                    scales: { x: { display: false }, y: { display: false } }
+                }
+            });
+        }
+
         function renderOverviewCharts() {
-            // Card 1: Customer Risk Segments (Donut Chart)
+            // 1. Quantro Donut: Sales by Category
             const ctxRisk = document.getElementById('overviewRiskChart');
             if (ctxRisk && !overviewRiskChartInstance) {
-                const rCtx = ctxRisk.getContext('2d');
-                const g1 = rCtx.createLinearGradient(0, 0, 0, 140);
-                g1.addColorStop(0, '#0d9488');
-                g1.addColorStop(1, '#14b8a6');
-
-                const g2 = rCtx.createLinearGradient(0, 0, 0, 140);
-                g2.addColorStop(0, '#06b6d4');
-                g2.addColorStop(1, '#38bdf8');
-
-                const g3 = rCtx.createLinearGradient(0, 0, 0, 140);
-                g3.addColorStop(0, '#5eead4');
-                g3.addColorStop(1, '#99f6e4');
-
                 overviewRiskChartInstance = new Chart(ctxRisk, {
                     type: 'doughnut',
                     data: {
-                        labels: ['High Risk', 'Medium Risk', 'Low Risk'],
+                        labels: ['Electronics', 'Fashion', 'Home & Living', 'Beauty'],
                         datasets: [{
-                            data: [1869, 1318, 3856],
-                            backgroundColor: [g1, g2, g3],
-                            borderWidth: 2,
+                            data: [38, 24, 18, 12],
+                            backgroundColor: ['#f59e0b', '#fbbf24', '#1e293b', '#94a3b8'],
+                            borderWidth: 3,
                             borderColor: '#ffffff',
-                            hoverOffset: 6,
-                            cutout: '72%'
+                            hoverOffset: 4,
+                            cutout: '74%'
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        animation: { animateScale: true, animateRotate: true, duration: 1200 },
+                        animation: { animateScale: true, animateRotate: true, duration: 1000 },
                         plugins: { legend: { display: false } }
                     }
                 });
             }
 
-            // Card 2: Churn Trend Over Time (Smooth Line Chart with Area Gradient)
+            // 2. Quantro Large Area Spline: Revenue Overview
             const ctxTrend = document.getElementById('overviewTrendChart');
             if (ctxTrend && !overviewTrendChartInstance) {
                 const tCtx = ctxTrend.getContext('2d');
-                const trendGrad = tCtx.createLinearGradient(0, 0, 0, 160);
-                trendGrad.addColorStop(0, 'rgba(13, 148, 136, 0.35)');
-                trendGrad.addColorStop(1, 'rgba(13, 148, 136, 0.02)');
+                const grad = tCtx.createLinearGradient(0, 0, 0, 240);
+                grad.addColorStop(0, 'rgba(245, 158, 11, 0.40)');
+                grad.addColorStop(0.5, 'rgba(251, 191, 36, 0.15)');
+                grad.addColorStop(1, 'rgba(245, 158, 11, 0.0)');
 
                 overviewTrendChartInstance = new Chart(ctxTrend, {
                     type: 'line',
                     data: {
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        labels: ['Dec 01', 'Dec 05', 'Dec 10', 'Dec 15', 'Dec 20', 'Dec 25', 'Dec 31'],
                         datasets: [{
-                            label: 'Churn Rate %',
-                            data: [31.2, 28.4, 27.9, 26.8, 28.1, 26.54],
-                            borderColor: '#0d9488',
+                            label: 'Revenue ($)',
+                            data: [5200, 8400, 7100, 11200, 14220, 10800, 13500],
+                            borderColor: '#f59e0b',
                             borderWidth: 3,
-                            backgroundColor: trendGrad,
-                            pointBackgroundColor: '#0d9488',
-                            pointBorderColor: '#ffffff',
-                            pointBorderWidth: 2,
-                            pointRadius: 5,
-                            pointHoverRadius: 7,
+                            backgroundColor: grad,
                             fill: true,
-                            tension: 0.38
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        animation: { duration: 1400 },
-                        plugins: { legend: { display: false } },
-                        scales: {
-                            y: {
-                                min: 20,
-                                max: 35,
-                                grid: { color: '#f1f5f9' },
-                                ticks: { color: '#64748b', font: { size: 10 }, callback: v => v + '%' }
-                            },
-                            x: {
-                                grid: { display: false },
-                                ticks: { color: '#64748b', font: { size: 10 } }
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Card 3: Churn by Contract Type (Bar Chart with Gradients)
-            const ctxContract = document.getElementById('overviewContractChart');
-            if (ctxContract && !overviewContractChartInstance) {
-                const cCtx = ctxContract.getContext('2d');
-                const barGrad1 = cCtx.createLinearGradient(0, 0, 0, 160);
-                barGrad1.addColorStop(0, '#f43f5e');
-                barGrad1.addColorStop(1, '#fb7185');
-
-                const barGrad2 = cCtx.createLinearGradient(0, 0, 0, 160);
-                barGrad2.addColorStop(0, '#f59e0b');
-                barGrad2.addColorStop(1, '#fbbf24');
-
-                const barGrad3 = cCtx.createLinearGradient(0, 0, 0, 160);
-                barGrad3.addColorStop(0, '#10b981');
-                barGrad3.addColorStop(1, '#34d399');
-
-                overviewContractChartInstance = new Chart(ctxContract, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Month-to-Month', 'One-Year', 'Two-Year'],
-                        datasets: [{
-                            label: 'Churn %',
-                            data: [42.4, 11.8, 7.4],
-                            backgroundColor: [barGrad1, barGrad2, barGrad3],
-                            borderRadius: 8,
-                            barThickness: 28
+                            tension: 0.45,
+                            pointBackgroundColor: '#ffffff',
+                            pointBorderColor: '#ea580c',
+                            pointBorderWidth: 2.5,
+                            pointRadius: [3, 3, 3, 3, 6, 3, 4],
+                            pointHoverRadius: 8
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         animation: { duration: 1200 },
-                        plugins: { legend: { display: false } },
-                        scales: {
-                            y: {
-                                max: 50,
-                                grid: { color: '#f1f5f9' },
-                                ticks: { color: '#64748b', font: { size: 10 }, callback: v => v + '%' }
-                            },
-                            x: {
-                                grid: { display: false },
-                                ticks: { color: '#64748b', font: { size: 10, weight: 'bold' } }
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Advanced Visual 1: Multi-Dimensional Behavioral Radar Chart
-            const ctxRadar = document.getElementById('overviewRadarChart');
-            if (ctxRadar && !overviewRadarChartInstance) {
-                overviewRadarChartInstance = new Chart(ctxRadar, {
-                    type: 'radar',
-                    data: {
-                        labels: ['Tenure Loyalty', 'Monthly Bill ($)', 'Tech Support', 'Contract Lock-in', 'Security Addons'],
-                        datasets: [
-                            {
-                                label: 'Loyal Subscribers',
-                                data: [88, 45, 82, 85, 78],
-                                borderColor: '#0d9488',
-                                backgroundColor: 'rgba(13, 148, 136, 0.22)',
-                                pointBackgroundColor: '#0d9488',
-                                pointBorderColor: '#ffffff',
-                                pointRadius: 4,
-                                borderWidth: 2
-                            },
-                            {
-                                label: 'Churn Cohort',
-                                data: [22, 92, 28, 18, 30],
-                                borderColor: '#f43f5e',
-                                backgroundColor: 'rgba(244, 63, 94, 0.22)',
-                                pointBackgroundColor: '#f43f5e',
-                                pointBorderColor: '#ffffff',
-                                pointRadius: 4,
-                                borderWidth: 2
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        animation: { duration: 1500 },
                         plugins: {
-                            legend: { position: 'bottom', labels: { color: '#64748b', font: { size: 10, weight: 'bold' } } }
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#111216',
+                                titleFont: { size: 11, weight: 'bold' },
+                                bodyFont: { size: 12, family: 'JetBrains Mono' },
+                                padding: 8,
+                                displayColors: false,
+                                callbacks: {
+                                    label: ctx => '$' + ctx.parsed.y.toLocaleString()
+                                }
+                            }
                         },
                         scales: {
-                            r: {
-                                angleLines: { color: '#e2e8f0' },
-                                grid: { color: '#f1f5f9' },
-                                pointLabels: { color: '#475569', font: { size: 10, weight: 'bold' } },
-                                ticks: { display: false, max: 100 }
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Advanced Visual 2: Tenure Bracket Churn Vulnerability Bar Chart
-            const ctxTenure = document.getElementById('tenureBarChart');
-            if (ctxTenure && !tenureBarChartInstance) {
-                tenureBarChartInstance = new Chart(ctxTenure, {
-                    type: 'bar',
-                    data: {
-                        labels: ['0-12 Mos', '13-24 Mos', '25-48 Mos', '49+ Mos'],
-                        datasets: [{
-                            label: 'Churn Vulnerability %',
-                            data: [47.5, 29.4, 20.1, 8.9],
-                            backgroundColor: ['#ff4b2b', '#ff7e5f', '#00c6ff', '#0072ff'],
-                            borderRadius: 8,
-                            barThickness: 32
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        animation: { duration: 1400 },
-                        plugins: { legend: { display: false } },
-                        scales: {
                             y: {
-                                max: 60,
+                                min: 0,
+                                max: 20000,
                                 grid: { color: '#f1f5f9' },
-                                ticks: { color: '#64748b', font: { size: 10 }, callback: v => v + '%' }
+                                ticks: {
+                                    color: '#94a3b8',
+                                    font: { size: 10, family: 'JetBrains Mono' },
+                                    stepSize: 5000,
+                                    callback: v => '$' + (v === 0 ? '0' : (v/1000) + 'k')
+                                }
                             },
                             x: {
                                 grid: { display: false },
-                                ticks: { color: '#64748b', font: { size: 10, weight: 'bold' } }
+                                ticks: { color: '#94a3b8', font: { size: 10 } }
                             }
                         }
                     }
                 });
             }
-        }
 
-                // Dynamic Service Impact Chart Controller (Rate % vs Account Count & Slider Reactivity)
-        let currentServiceChartMode = 'percent';
+            // 3. Render 4 Mini Sparklines for Top KPI Cards
+            renderSparkline('sparklineHero', [12, 14, 18, 16, 22, 28, 35], '#f59e0b');
+            renderSparkline('sparklineCard2', [10, 15, 12, 19, 18, 24, 28], '#f59e0b');
+            renderSparkline('sparklineCard3', [8, 11, 15, 14, 20, 22, 29], '#ea580c');
+            renderSparkline('sparklineCard4', [25, 22, 20, 18, 16, 14, 12], '#f97316');
+        }
 
         function setServiceChartMode(mode) {
             currentServiceChartMode = mode;
@@ -2706,52 +2779,7 @@
             }).catch(() => {});
         };
 
-        async function openMlflowRunsModal() {
-            const modal = document.getElementById('mlflow-runs-modal');
-            if (modal) {
-                modal.style.display = 'flex';
-                modal.classList.remove('hidden');
-            }
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-
-            try {
-                const res = await fetch('/api/mlflow/runs');
-                const data = await res.json();
-                const tbody = document.getElementById('mlflow-runs-table-body');
-                if (!tbody) return;
-
-                if (data.runs && data.runs.length > 0) {
-                    tbody.innerHTML = data.runs.map(r => `
-                        <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="p-3 font-bold text-teal-700">${r.run_id}</td>
-                            <td class="p-3 font-sans font-medium text-slate-800">${r.run_name}</td>
-                            <td class="p-3">
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold font-sans bg-emerald-50 text-emerald-700 border border-emerald-200">${r.status}</span>
-                            </td>
-                            <td class="p-3 text-right font-bold text-slate-900">${(r.roc_auc * 100).toFixed(1)}%</td>
-                            <td class="p-3 text-right text-slate-700">${(r.accuracy * 100).toFixed(1)}%</td>
-                            <td class="p-3 text-right text-slate-700">${(r.f1_score * 100).toFixed(1)}%</td>
-                        </tr>
-                    `).join('');
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400 font-sans">No runs found in database.</td></tr>';
-                }
-            } catch (err) {
-                console.error("Failed to load MLflow runs:", err);
-            }
-        }
-        window.openMlflowRunsModal = openMlflowRunsModal;
-
-        function closeMlflowRunsModal() {
-            const modal = document.getElementById('mlflow-runs-modal');
-            if (modal) {
-                modal.style.display = 'none';
-                modal.classList.add('hidden');
-            }
-        }
-        window.closeMlflowRunsModal = closeMlflowRunsModal;
-
-    </script>
+        </script>
 
     <!-- Retention Dispatch Modal -->
     <div id="retention-dispatch-modal" class="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 hidden" style="display: none;">
