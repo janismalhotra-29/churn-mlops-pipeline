@@ -149,6 +149,9 @@ app = FastAPI(
 @app.get("/model-performance", response_class=HTMLResponse)
 @app.get("/dataset", response_class=HTMLResponse)
 @app.get("/monitoring", response_class=HTMLResponse)
+@app.get("/crm", response_class=HTMLResponse)
+@app.get("/reports", response_class=HTMLResponse)
+@app.get("/settings", response_class=HTMLResponse)
 def read_dashboard():
     """Serve the enterprise multi-page dashboard UI."""
     if os.path.exists(TEMPLATE_PATH):
