@@ -436,19 +436,50 @@ def predict_bulk_csv(file: UploadFile = File(...)):
     try:
         contents = file.file.read()
         filename = (file.filename or "").lower()
-        if filename.endswith(".xlsx") or filename.endswith(".xls"):
-            df = pd.read_excel(io.BytesIO(contents))
-        else:
+        df = None
+
+        # 1. Check if file is Excel (.xlsx / .xls or binary PK header)
+        is_excel = (
+            filename.endswith(".xlsx") or filename.endswith(".xls") or 
+            contents.startswith(b"PK\x03\x04") or contents.startswith(b"\xd0\xcf\x11\xe0")
+        )
+        if is_excel:
             try:
-                df = pd.read_csv(io.BytesIO(contents), sep=None, engine='python')
+                df = pd.read_excel(io.BytesIO(contents))
             except Exception:
+                df = None
+
+        # 2. Try parsing as CSV across multiple encodings (UTF-8, Latin-1, CP1252, etc.)
+        if df is None:
+            encodings = ["utf-8-sig", "utf-8", "latin1", "cp1252", "iso-8859-1"]
+            for enc in encodings:
                 try:
-                    df = pd.read_csv(io.BytesIO(contents), encoding="latin1")
+                    df = pd.read_csv(io.BytesIO(contents), encoding=enc, sep=None, engine='python')
+                    break
                 except Exception:
-                    df = pd.read_csv(io.BytesIO(contents))
+                    try:
+                        df = pd.read_csv(io.BytesIO(contents), encoding=enc)
+                        break
+                    except Exception:
+                        continue
+
+        # 3. Bulletproof fallback: decode with errors='replace' to guarantee zero UnicodeDecodeError
+        if df is None:
+            for enc in ["latin1", "utf-8"]:
+                try:
+                    text = contents.decode(enc, errors="replace")
+                    df = pd.read_csv(io.StringIO(text), sep=None, engine="python")
+                    break
+                except Exception:
+                    try:
+                        text = contents.decode(enc, errors="replace")
+                        df = pd.read_csv(io.StringIO(text))
+                        break
+                    except Exception:
+                        continue
 
         if df is None or len(df) == 0:
-            raise HTTPException(status_code=400, detail="Uploaded file is empty. Please provide a CSV or Excel file with data rows.")
+            raise HTTPException(status_code=400, detail="Uploaded file is empty or could not be parsed. Please provide a valid CSV or Excel file.")
 
         # Clean column names
         df.columns = [str(c).strip() for c in df.columns]
