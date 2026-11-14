@@ -1183,6 +1183,15 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <!-- Performance & Sample Note -->
+                        <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1">
+                            <span class="flex items-center space-x-1.5 text-slate-500">
+                                <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-500"></i>
+                                <span>Showing top 50 records preview to keep browser ultra-fast without lag. Full cohort ready via <strong>Export Enriched CSV</strong>.</span>
+                            </span>
+                            <span class="font-mono text-slate-400 text-[10px]">Optimized DOM</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2302,6 +2311,23 @@
                     const annualImpact = r.Annual_Revenue_Risk !== undefined ? r.Annual_Revenue_Risk : (r.financial_impact_annual || 0);
                     const riskColor = risk === 'HIGH' ? 'text-rose-600 bg-rose-50 border border-rose-200' : (risk === 'MEDIUM' ? 'text-amber-600 bg-amber-50 border border-amber-200' : 'text-emerald-600 bg-emerald-50 border border-emerald-200');
                     
+                    let actionHtml = '';
+                    if (risk === 'HIGH') {
+                        actionHtml = `
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span>Dispatched
+                            </span>
+                        `;
+                    } else if (risk === 'MEDIUM') {
+                        actionHtml = `
+                            <button onclick="dispatchBulkCustomer('${r.Contract || 'Month-to-month'}', ${r.tenure || 1}, ${r.MonthlyCharges || 50}, '${r.customerID || ('CUST-' + (idx+1))}')" class="px-2 py-0.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 text-[10px] font-bold transition-all shadow-2xs hover:scale-105 cursor-pointer">
+                                Dispatch
+                            </button>
+                        `;
+                    } else {
+                        actionHtml = `<span class="text-[10px] font-medium text-slate-400">Safe (Retained)</span>`;
+                    }
+
                     tr.className = "hover:bg-amber-50/30 transition-colors";
                     tr.innerHTML = `
                         <td class="p-2.5 font-bold font-mono text-slate-500">#${idx + 1}</td>
@@ -2311,11 +2337,7 @@
                         <td class="p-2.5 font-bold font-mono text-slate-900">${(prob * 100).toFixed(1)}%</td>
                         <td class="p-2.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${riskColor}">${risk}</span></td>
                         <td class="p-2.5 font-bold font-mono text-amber-700">${formatCurrency(annualImpact)}</td>
-                        <td class="p-2.5 text-right">
-                            <button onclick="dispatchBulkCustomer('${r.Contract || 'Month-to-month'}', ${r.tenure || 1}, ${r.MonthlyCharges || 50}, '${r.customerID || ('CUST-' + (idx+1))}')" class="px-2 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 text-[10px] font-bold transition-all shadow-2xs hover:scale-105 cursor-pointer">
-                                Dispatch
-                            </button>
-                        </td>
+                        <td class="p-2.5 text-right">${actionHtml}</td>
                     `;
                     tbody.appendChild(tr);
                 });
