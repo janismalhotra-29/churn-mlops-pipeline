@@ -1164,6 +1164,7 @@
                                         <th class="p-2.5">Churn Prob</th>
                                         <th class="p-2.5">Risk Level</th>
                                         <th class="p-2.5">At Risk Annual</th>
+                                        <th class="p-2.5 text-right">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="bulk-preview-body" class="divide-y divide-slate-100 bg-white text-slate-700 text-[11px]">
@@ -2285,6 +2286,11 @@
                         <td class="p-2.5 font-bold font-mono text-slate-900">${(prob * 100).toFixed(1)}%</td>
                         <td class="p-2.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${riskColor}">${risk}</span></td>
                         <td class="p-2.5 font-bold font-mono text-amber-700">${formatCurrency(annualImpact)}</td>
+                        <td class="p-2.5 text-right">
+                            <button onclick="dispatchBulkCustomer('${r.Contract || 'Month-to-month'}', ${r.tenure || 1}, ${r.MonthlyCharges || 50}, '${r.customerID || ('CUST-' + (idx+1))}')" class="px-2 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 text-[10px] font-bold transition-all shadow-2xs hover:scale-105 cursor-pointer">
+                                Dispatch
+                            </button>
+                        </td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -2343,9 +2349,40 @@
             a.click();
         }
 
+        function dispatchBulkCustomer(contract, tenure, monthly, custId) {
+            const contractEl = document.getElementById('contract');
+            const tenureEl = document.getElementById('tenure');
+            const chargesEl = document.getElementById('charges');
+            if (contractEl) contractEl.value = contract;
+            if (tenureEl) tenureEl.value = tenure;
+            if (chargesEl) chargesEl.value = monthly;
+
+            updateCalculations();
+
+            const cleanId = String(custId).replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+            const recipient = `${String(custId).toLowerCase()}@telecom.com`;
+            const disc = 15.0;
+            const voucher = `TELCO-${cleanId.slice(-6) || 'VIP'}-1YR`;
+            const propContract = contract === 'Two year' ? 'Two year VIP' : 'One year';
+
+            lastWhatIfOutreach = {
+                recipient: recipient,
+                subject: `Exclusive Retention Offer for ${custId}: Save $${disc}/mo!`,
+                voucher_code: voucher,
+                contract_term: propContract,
+                monthly_rate: `$${Math.max(10, monthly - disc).toFixed(2)}/mo (was $${monthly.toFixed(2)}/mo)`,
+                tech_support_included: "Free 24/7 Priority Helpdesk",
+                body: `Dear Valued Subscriber (${custId}), we are delighted to offer you our premier ${propContract} package. Lock in guaranteed $${disc}/mo savings for the next 12 months plus free Priority Tech Support. Use voucher code ${voucher} to claim your personalized retention plan.`,
+                dispatch_status: "Ready for CRM Dispatch (Webhook Queue)"
+            };
+
+            openRetentionDispatchModal();
+        }
+
         window.uploadBulkFile = uploadBulkFile;
         window.exportBulkResultsCSV = exportBulkResultsCSV;
         window.exportBulkResultsJSON = exportBulkResultsJSON;
+        window.dispatchBulkCustomer = dispatchBulkCustomer;
 
         // 7. Financial ROI Simulation
         function calculateROI() {
