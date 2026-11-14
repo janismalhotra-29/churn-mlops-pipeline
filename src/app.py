@@ -10,7 +10,7 @@ import pandas as pd
 from typing import Literal, Optional
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Response, UploadFile, File
-from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi.responses import HTMLResponse, StreamingResponse, FileResponse
 from pydantic import BaseModel, Field
 
 # Resolve path relative to project root
@@ -900,3 +900,10 @@ def get_crm_audit_log():
         except Exception:
             return []
     return []
+
+@app.get("/api/crm/audit-log/download")
+def download_crm_audit_log():
+    """Directly download the persistent JSON file containing all dispatched CRM retention offers."""
+    if os.path.exists(CRM_AUDIT_LOG_PATH):
+        return FileResponse(CRM_AUDIT_LOG_PATH, media_type="application/json", filename="crm_dispatch_audit.json")
+    return {"status": "NO_RECORDS", "records": []}
