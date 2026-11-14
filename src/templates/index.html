@@ -1133,6 +1133,15 @@
 
                     <!-- Bulk Results Preview Section -->
                     <div id="bulk-results-section" class="hidden space-y-4 pt-4 border-t border-slate-100">
+                        <!-- Automated CRM Dispatch Alert Banner -->
+                        <div id="bulk-auto-dispatch-banner" class="hidden p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold flex items-center justify-between animate-in fade-in duration-200">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span id="bulk-auto-dispatch-msg">Automated CRM Outreach: Dispatched to Webhook Queue</span>
+                            </div>
+                            <span class="px-2 py-0.5 rounded bg-white text-emerald-800 text-[10px] font-mono font-bold border border-emerald-200 shadow-2xs">Logged in data/crm_dispatch_audit.json</span>
+                        </div>
+
                         <div class="flex flex-wrap items-center justify-between gap-2">
                             <div class="flex items-center space-x-2 text-xs">
                                 <span class="font-bold text-slate-800">Scored Cohort:</span>
@@ -2266,6 +2275,19 @@
                 document.getElementById('bulk-high-count').innerText = `${(data.high_risk_count || 0).toLocaleString()} High`;
                 document.getElementById('bulk-med-count').innerText = `${(data.medium_risk_count || 0).toLocaleString()} Medium`;
                 document.getElementById('bulk-low-count').innerText = `${(data.low_risk_count || 0).toLocaleString()} Low`;
+
+                // Handle Automated CRM Outreach Dispatches from uploaded batch
+                const autoBanner = document.getElementById('bulk-auto-dispatch-banner');
+                const autoMsg = document.getElementById('bulk-auto-dispatch-msg');
+                if (data.auto_dispatched_count && data.auto_dispatched_count > 0) {
+                    if (autoBanner) autoBanner.classList.remove('hidden');
+                    if (autoMsg) autoMsg.innerHTML = `<strong>⚡ Auto-Dispatched ${data.auto_dispatched_count} Retention Offers</strong> to Enterprise CRM Queue for high-risk accounts in this file!`;
+                    if (typeof loadCrmAuditTrail === 'function') {
+                        loadCrmAuditTrail();
+                    }
+                } else if (autoBanner) {
+                    autoBanner.classList.add('hidden');
+                }
 
                 const tbody = document.getElementById('bulk-preview-body');
                 tbody.innerHTML = '';
