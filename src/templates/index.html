@@ -381,14 +381,13 @@
                     <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
                 </button>
 
-                <!-- User Avatar: JM (Janis Malhotra) -->
+                <!-- User Profile: Admin -->
                 <div class="flex items-center space-x-2 pl-1 border-l border-slate-200 cursor-pointer">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-orange-500 text-slate-950 font-black text-xs flex items-center justify-center shadow-xs">
-                        JM
+                    <div class="w-8 h-8 rounded-full bg-slate-900 text-amber-400 font-bold text-xs flex items-center justify-center shadow-xs border border-slate-800">
+                        <i data-lucide="user" class="w-4 h-4"></i>
                     </div>
                     <div class="hidden md:block text-left leading-tight">
-                        <span class="text-xs font-bold text-slate-800 block">Janis Malhotra</span>
-                        <span class="text-[10px] text-slate-400 block font-medium">Lead ML Engineer</span>
+                        <span class="text-xs font-bold text-slate-800 block">Admin</span>
                     </div>
                 </div>
             </div>
@@ -1833,6 +1832,68 @@
             }
         }
 
+        async function openMlflowRunsModal() {
+            const modal = document.getElementById('mlflow-runs-modal');
+            if (!modal) {
+                console.error("Modal #mlflow-runs-modal not found in DOM");
+                return;
+            }
+
+            modal.style.cssText = "display: flex !important; position: fixed; inset: 0; z-index: 999999; align-items: center; justify-content: center; background-color: rgba(15, 23, 42, 0.75); padding: 1rem;";
+            modal.classList.remove('hidden');
+            if (window.lucide) lucide.createIcons();
+
+            const tbody = document.getElementById('mlflow-runs-table-body');
+            if (tbody) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-500 font-sans"><i data-lucide="loader" class="w-5 h-5 animate-spin inline-block mr-2 text-amber-500"></i>Loading experiment runs from MLflow tracking store...</td></tr>`;
+                if (window.lucide) lucide.createIcons();
+            }
+
+            try {
+                const res = await fetch('/api/mlflow/runs');
+                const data = await res.json();
+                if (tbody && data.runs && data.runs.length > 0) {
+                    tbody.innerHTML = data.runs.map((r, i) => `
+                        <tr class="hover:bg-amber-50/30 transition-colors">
+                            <td class="p-3 text-amber-600 font-bold font-mono text-[11px]">${r.run_id}</td>
+                            <td class="p-3 text-slate-800 font-semibold font-sans">
+                                <div class="flex items-center space-x-1.5">
+                                    <span class="w-2 h-2 rounded-full ${i === 0 ? 'bg-emerald-500 ring-2 ring-emerald-200' : 'bg-slate-300'}"></span>
+                                    <span>${r.run_name || 'Champion Model'}</span>
+                                    ${i === 0 ? '<span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded font-sans ml-1">Champion</span>' : ''}
+                                </div>
+                            </td>
+                            <td class="p-3">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold font-sans bg-emerald-100 text-emerald-700">FINISHED</span>
+                            </td>
+                            <td class="p-3 text-right font-mono font-bold text-slate-900">${(r.roc_auc * 100).toFixed(1)}%</td>
+                            <td class="p-3 text-right font-mono text-slate-600">${(r.accuracy * 100).toFixed(1)}%</td>
+                            <td class="p-3 text-right font-mono text-slate-600">${(r.f1_score * 100).toFixed(1)}%</td>
+                        </tr>
+                    `).join('');
+                } else if (tbody) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 font-sans">No runs found in mlflow.db.</td></tr>`;
+                }
+            } catch (err) {
+                console.error("Failed to fetch MLflow runs:", err);
+                if (tbody) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-red-500 font-sans">Failed to load telemetry runs.</td></tr>`;
+                }
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function closeMlflowRunsModal() {
+            const modal = document.getElementById('mlflow-runs-modal');
+            if (modal) {
+                modal.style.cssText = "display: none !important;";
+                modal.classList.add('hidden');
+            }
+        }
+
+        window.openMlflowRunsModal = openMlflowRunsModal;
+        window.closeMlflowRunsModal = closeMlflowRunsModal;
+
         async function confirmRetentionDispatch() {
             closeRetentionDispatchModal();
 
@@ -2836,8 +2897,8 @@
 
 
     <!-- MLflow Experiment Runs & Registry Telemetry Modal (In-App Cloud Compatible) -->
-    <div id="mlflow-runs-modal" class="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 hidden" style="display: none;">
-        <div class="bg-white rounded-3xl max-w-3xl w-full border border-slate-200/90 shadow-2xl overflow-hidden">
+    <div id="mlflow-runs-modal" class="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 hidden" style="display: none;" onclick="if(event.target === this) closeMlflowRunsModal()">
+        <div class="bg-white rounded-3xl max-w-3xl w-full border border-slate-200/90 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
             <!-- Header -->
             <div class="px-6 py-4 bg-gradient-to-r from-amber-50 via-slate-50 to-white border-b border-slate-100 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
@@ -2862,7 +2923,7 @@
                         <span>Cloud Production Sync: <strong>Connected</strong></span>
                     </div>
                     <div class="text-[11px] text-amber-800">
-                        Local CLI Port: <code class="font-mono bg-white px-1.5 py-0.5 rounded border border-amber-200 text-amber-700 font-bold">:5000</code>
+                        Tracking Store: <code class="font-mono bg-white px-1.5 py-0.5 rounded border border-amber-200 text-amber-700 font-bold">mlflow.db (SQLite)</code>
                     </div>
                 </div>
 
@@ -2889,7 +2950,9 @@
 
             <!-- Footer -->
             <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span class="text-[11px] text-slate-500">Logged via Python MLflow Client v2.5.0</span>
+                <button type="button" onclick="closeMlflowRunsModal(); showPage('monitoring');" class="text-xs font-semibold text-amber-600 hover:text-amber-700 flex items-center space-x-1 cursor-pointer">
+                    <span>Inspect Full MLOps Telemetry & Drift &rarr;</span>
+                </button>
                 <button type="button" onclick="closeMlflowRunsModal()" class="px-4 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold transition-colors cursor-pointer">
                     Close
                 </button>
