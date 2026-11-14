@@ -1471,6 +1471,7 @@
                         <div class="flex items-center space-x-2">
                             <i data-lucide="database" class="w-5 h-5 text-amber-600"></i>
                             <h3 class="text-sm font-bold text-slate-900">Customer Directory</h3>
+                            <span class="text-[10px] font-mono text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Interactive Sample Explorer &bull; 7,043 Total Portfolio</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <input type="text" id="dir-search" placeholder="Search by Customer ID..." oninput="filterDirectory()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-amber-500 focus:bg-white w-48 sm:w-64 font-mono">
@@ -1483,9 +1484,9 @@
                     </div>
 
                     <!-- Directory Table -->
-                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <div class="overflow-x-auto rounded-xl border border-slate-200 max-h-[480px] overflow-y-auto">
                         <table class="w-full text-left text-xs font-mono">
-                            <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 text-[10px] uppercase">
+                            <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 text-[10px] uppercase sticky top-0 z-10">
                                 <tr>
                                     <th class="p-3">Customer ID</th>
                                     <th class="p-3">Contract</th>
@@ -2401,7 +2402,7 @@
             }
         }
 
-        // 8. Customer Directory Search & Filter
+        // 8. Customer Directory Search & Filter (Interactive 25-Customer Sample from 7,043 Cohort)
         const mockDirectory = [
             { id: "7590-VHVEG", contract: "Month-to-month", tenure: 1, monthly: 29.85, status: "Churned" },
             { id: "5575-GNVDE", contract: "One year", tenure: 34, monthly: 56.95, status: "Retained" },
@@ -2410,7 +2411,24 @@
             { id: "9237-HQITU", contract: "Month-to-month", tenure: 2, monthly: 70.70, status: "Churned" },
             { id: "9305-CDSKC", contract: "Month-to-month", tenure: 8, monthly: 99.65, status: "Churned" },
             { id: "1452-KIOVK", contract: "Month-to-month", tenure: 22, monthly: 89.10, status: "Retained" },
-            { id: "6713-OKOMC", contract: "Two year", tenure: 65, monthly: 56.15, status: "Retained" }
+            { id: "6713-OKOMC", contract: "Two year", tenure: 65, monthly: 56.15, status: "Retained" },
+            { id: "7892-POOKP", contract: "Month-to-month", tenure: 28, monthly: 104.80, status: "Churned" },
+            { id: "6388-TABGU", contract: "One year", tenure: 62, monthly: 56.15, status: "Retained" },
+            { id: "9763-GRSKD", contract: "Month-to-month", tenure: 13, monthly: 49.95, status: "Retained" },
+            { id: "7469-LKBCI", contract: "Two year", tenure: 16, monthly: 18.95, status: "Retained" },
+            { id: "8091-TTVAX", contract: "One year", tenure: 58, monthly: 100.35, status: "Churned" },
+            { id: "0280-XJGEX", contract: "Month-to-month", tenure: 49, monthly: 103.70, status: "Churned" },
+            { id: "5129-JFDNV", contract: "Two year", tenure: 25, monthly: 49.85, status: "Retained" },
+            { id: "8107-YNIZI", contract: "One year", tenure: 52, monthly: 58.80, status: "Retained" },
+            { id: "3655-SNQYZ", contract: "Two year", tenure: 69, monthly: 113.25, status: "Retained" },
+            { id: "9959-WOFSC", contract: "Two year", tenure: 71, monthly: 20.25, status: "Retained" },
+            { id: "4183-MYFRB", contract: "Month-to-month", tenure: 21, monthly: 90.05, status: "Retained" },
+            { id: "1024-GUALZ", contract: "Month-to-month", tenure: 1, monthly: 34.30, status: "Churned" },
+            { id: "6865-JVOEK", contract: "One year", tenure: 12, monthly: 74.40, status: "Retained" },
+            { id: "4598-XLKNJ", contract: "Month-to-month", tenure: 5, monthly: 84.85, status: "Churned" },
+            { id: "2894-HNFNT", contract: "Month-to-month", tenure: 51, monthly: 95.50, status: "Churned" },
+            { id: "8879-ZKJTK", contract: "Two year", tenure: 72, monthly: 118.75, status: "Retained" },
+            { id: "5248-YGIJN", contract: "Two year", tenure: 72, monthly: 25.25, status: "Retained" }
         ];
 
         let activeDirFilter = 'all';
