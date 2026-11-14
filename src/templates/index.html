@@ -363,17 +363,6 @@
                     </button>
                 </div>
 
-                <!-- Dynamic Date Range Filter Selector (Quantro Pill) -->
-                <div class="hidden sm:flex items-center px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-2xs space-x-1.5 hover:border-amber-400 transition-all">
-                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-amber-500"></i>
-                    <select id="date-range-filter" onchange="applyDateRangeFilter(this.value)" class="bg-transparent border-none text-xs font-semibold text-slate-700 focus:outline-none cursor-pointer pr-1">
-                        <option value="7">Last 7 Days</option>
-                        <option value="15">Last 15 Days</option>
-                        <option value="20">Last 20 Days</option>
-                        <option value="30" selected>01 Dec - 31 Dec (Active)</option>
-                        <option value="all">All Time (7,043 Records)</option>
-                    </select>
-                </div>
 
                 <!-- Notification Bell with Amber Dot -->
                 <button class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-800 shadow-2xs relative transition-colors cursor-pointer">
@@ -1117,7 +1106,12 @@
                         <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Endpoint: /predict/bulk</span>
                     </div>
 
-                    <div id="bulk-dropzone" onclick="document.getElementById('bulk-file-input').click()" class="border-2 border-dashed border-slate-200 hover:border-amber-400 hover:bg-amber-50/30 rounded-2xl p-8 text-center cursor-pointer transition-all space-y-2">
+                    <div id="bulk-dropzone" 
+                         onclick="document.getElementById('bulk-file-input').click()" 
+                         ondragover="event.preventDefault(); this.classList.add('border-amber-500', 'bg-amber-50/50');"
+                         ondragleave="this.classList.remove('border-amber-500', 'bg-amber-50/50');"
+                         ondrop="event.preventDefault(); this.classList.remove('border-amber-500', 'bg-amber-50/50'); if (event.dataTransfer.files.length) uploadBulkFile(event.dataTransfer.files[0]);"
+                         class="border-2 border-dashed border-slate-200 hover:border-amber-400 hover:bg-amber-50/30 rounded-2xl p-8 text-center cursor-pointer transition-all space-y-2">
                         <input type="file" id="bulk-file-input" accept=".csv, .xlsx, .xls" class="hidden" onchange="uploadBulkFile(this.files[0])">
                         <div class="w-12 h-12 rounded-full bg-amber-50 text-amber-600 mx-auto flex items-center justify-center shadow-xs">
                             <i data-lucide="upload-cloud" class="w-6 h-6"></i>
@@ -2073,6 +2067,7 @@
                 renderOverviewCharts();
             } else if (pageId === 'analytics') {
                 renderAnalyticsCharts();
+                calculateROI();
             }
 
             init3DTiltCards();
@@ -2220,6 +2215,18 @@
             const formData = new FormData();
             formData.append('file', file);
 
+            const dropzone = document.getElementById('bulk-dropzone');
+            if (dropzone) {
+                dropzone.innerHTML = `
+                    <div class="py-4 space-y-2">
+                        <i data-lucide="loader" class="w-8 h-8 animate-spin mx-auto text-amber-500"></i>
+                        <p class="text-xs font-bold text-slate-800">Scoring dataset with Random Forest Champion Model...</p>
+                        <p class="text-[11px] text-slate-400">Processing ${file.name} through MLOps inference pipeline</p>
+                    </div>
+                `;
+                if (window.lucide) lucide.createIcons();
+            }
+
             try {
                 const res = await fetch('/predict/bulk', {
                     method: 'POST',
@@ -2228,26 +2235,46 @@
                 const data = await res.json();
                 currentBulkData = data;
 
+                if (dropzone) {
+                    dropzone.innerHTML = `
+                        <input type="file" id="bulk-file-input" accept=".csv, .xlsx, .xls" class="hidden" onchange="uploadBulkFile(this.files[0])">
+                        <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 mx-auto flex items-center justify-center shadow-xs">
+                            <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-slate-800 block">${file.name} Scored Successfully!</span>
+                            <span class="text-[11px] text-amber-600 font-semibold cursor-pointer underline" onclick="document.getElementById('bulk-file-input').click()">Click to upload another batch</span>
+                        </div>
+                    `;
+                    if (window.lucide) lucide.createIcons();
+                }
+
                 document.getElementById('bulk-results-section').classList.remove('hidden');
-                document.getElementById('bulk-total-count').innerText = `${data.total_customers || 0} Accounts`;
-                document.getElementById('bulk-high-count').innerText = `${data.high_risk_count || 0} High`;
-                document.getElementById('bulk-med-count').innerText = `${data.medium_risk_count || 0} Medium`;
-                document.getElementById('bulk-low-count').innerText = `${data.low_risk_count || 0} Low`;
+                const totalCount = data.total_customers || data.total_records_processed || 0;
+                document.getElementById('bulk-total-count').innerText = `${totalCount.toLocaleString()} Accounts`;
+                document.getElementById('bulk-high-count').innerText = `${(data.high_risk_count || 0).toLocaleString()} High`;
+                document.getElementById('bulk-med-count').innerText = `${(data.medium_risk_count || 0).toLocaleString()} Medium`;
+                document.getElementById('bulk-low-count').innerText = `${(data.low_risk_count || 0).toLocaleString()} Low`;
 
                 const tbody = document.getElementById('bulk-preview-body');
                 tbody.innerHTML = '';
-                const records = data.scored_records || [];
-                records.slice(0, 10).forEach((r, idx) => {
+                const records = data.scored_records || data.sample_results || [];
+                records.slice(0, 50).forEach((r, idx) => {
                     const tr = document.createElement('tr');
-                    const riskColor = r.risk_level === 'HIGH' ? 'text-rose-600 bg-rose-50' : (r.risk_level === 'MEDIUM' ? 'text-amber-600 bg-amber-50' : 'text-emerald-600 bg-emerald-50');
+                    const prob = r.Churn_Probability !== undefined ? r.Churn_Probability : (r.probability || 0);
+                    const risk = (r.Risk_Level || r.risk_level || 'LOW').toUpperCase();
+                    const annualImpact = r.Annual_Revenue_Risk !== undefined ? r.Annual_Revenue_Risk : (r.financial_impact_annual || 0);
+                    const riskColor = risk === 'HIGH' ? 'text-rose-600 bg-rose-50 border border-rose-200' : (risk === 'MEDIUM' ? 'text-amber-600 bg-amber-50 border border-amber-200' : 'text-emerald-600 bg-emerald-50 border border-emerald-200');
+                    
+                    tr.className = "hover:bg-amber-50/30 transition-colors";
                     tr.innerHTML = `
-                        <td class="p-2.5 font-bold">#${idx + 1}</td>
-                        <td class="p-2.5">${r.Contract || 'Month-to-month'}</td>
-                        <td class="p-2.5">${r.tenure || 0} mo</td>
-                        <td class="p-2.5">${formatCurrency(r.MonthlyCharges || 0)}</td>
-                        <td class="p-2.5 font-bold text-slate-800">${((r.probability || 0) * 100).toFixed(1)}%</td>
-                        <td class="p-2.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${riskColor}">${r.risk_level}</span></td>
-                        <td class="p-2.5 font-bold">${formatCurrency(r.financial_impact_annual || 0)}</td>
+                        <td class="p-2.5 font-bold font-mono text-slate-500">#${idx + 1}</td>
+                        <td class="p-2.5 font-sans font-medium text-slate-800">${r.Contract || 'Month-to-month'}</td>
+                        <td class="p-2.5 font-mono">${r.tenure || 0} mo</td>
+                        <td class="p-2.5 font-mono font-semibold">${formatCurrency(r.MonthlyCharges || 0)}</td>
+                        <td class="p-2.5 font-bold font-mono text-slate-900">${(prob * 100).toFixed(1)}%</td>
+                        <td class="p-2.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${riskColor}">${risk}</span></td>
+                        <td class="p-2.5 font-bold font-mono text-amber-700">${formatCurrency(annualImpact)}</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -2259,16 +2286,34 @@
                 if (window.lucide) lucide.createIcons();
             } catch (err) {
                 console.error("Bulk upload failed:", err);
+                if (dropzone) {
+                    dropzone.innerHTML = `
+                        <input type="file" id="bulk-file-input" accept=".csv, .xlsx, .xls" class="hidden" onchange="uploadBulkFile(this.files[0])">
+                        <div class="w-12 h-12 rounded-full bg-rose-50 text-rose-600 mx-auto flex items-center justify-center shadow-xs">
+                            <i data-lucide="alert-circle" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-rose-600 block">Upload failed: ${err.message || 'Check dataset format'}</span>
+                            <span class="text-[11px] text-slate-400">Click to retry with valid Telco CSV or Excel file</span>
+                        </div>
+                    `;
+                    if (window.lucide) lucide.createIcons();
+                }
             }
         }
 
         function exportBulkResultsCSV() {
-            if (!currentBulkData || !currentBulkData.scored_records) return;
-            const records = currentBulkData.scored_records;
-            const headers = ["Index", "Contract", "Tenure", "MonthlyCharges", "Probability", "RiskLevel", "AnnualImpact"];
+            if (!currentBulkData) return;
+            const records = currentBulkData.scored_records || currentBulkData.sample_results || [];
+            if (!records.length) return;
+            const headers = ["Index", "CustomerID", "Contract", "Tenure", "MonthlyCharges", "Probability", "RiskLevel", "AnnualRevenueRisk", "RetentionStrategy"];
             let csv = headers.join(",") + "\n";
             records.forEach((r, i) => {
-                csv += `${i+1},"${r.Contract || ''}",${r.tenure || 0},${r.MonthlyCharges || 0},${r.probability || 0},"${r.risk_level || ''}",${r.financial_impact_annual || 0}\n`;
+                const prob = r.Churn_Probability !== undefined ? r.Churn_Probability : (r.probability || 0);
+                const risk = (r.Risk_Level || r.risk_level || 'LOW').toUpperCase();
+                const impact = r.Annual_Revenue_Risk !== undefined ? r.Annual_Revenue_Risk : (r.financial_impact_annual || 0);
+                const strat = (r.Retention_Strategy || '').replace(/"/g, '""');
+                csv += `${i+1},"${r.customerID || ''}","${r.Contract || ''}",${r.tenure || 0},${r.MonthlyCharges || 0},${prob},"${risk}",${impact},"${strat}"\n`;
             });
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
@@ -2287,6 +2332,10 @@
             a.download = `telcopulse_churn_scores_${Date.now()}.json`;
             a.click();
         }
+
+        window.uploadBulkFile = uploadBulkFile;
+        window.exportBulkResultsCSV = exportBulkResultsCSV;
+        window.exportBulkResultsJSON = exportBulkResultsJSON;
 
         // 7. Financial ROI Simulation
         function calculateROI() {
@@ -2315,17 +2364,18 @@
 
             // Dynamically update the Subscriber Survival Curve based on simulated retention success
             if (typeof analyticsCohortsChartInstance !== 'undefined' && analyticsCohortsChartInstance) {
-                const boost = (acceptRate - 0.35) * 18;
+                const cohortFactor = (cohort - 10000) / 40000;
+                const boost = (acceptRate - 0.35) * 22 + (cohortFactor * 6);
                 analyticsCohortsChartInstance.data.datasets[0].data = [
                     100,
-                    Math.min(99, Math.round(82 + boost * 0.6)),
-                    Math.min(98, Math.round(74 + boost * 0.8)),
-                    Math.min(95, Math.round(68 + boost * 0.9)),
-                    Math.min(93, Math.round(64 + boost * 1.0)),
-                    Math.min(90, Math.round(61 + boost * 1.1)),
-                    Math.min(88, Math.round(58 + boost * 1.2))
+                    Math.min(99, Math.max(55, Math.round(82 + boost * 0.6))),
+                    Math.min(98, Math.max(48, Math.round(74 + boost * 0.85))),
+                    Math.min(95, Math.max(42, Math.round(68 + boost * 1.05))),
+                    Math.min(93, Math.max(38, Math.round(64 + boost * 1.2))),
+                    Math.min(90, Math.max(34, Math.round(61 + boost * 1.35))),
+                    Math.min(88, Math.max(30, Math.round(58 + boost * 1.45)))
                 ];
-                analyticsCohortsChartInstance.update('none');
+                analyticsCohortsChartInstance.update();
             }
 
             // Dynamically update the Value-Added Service Retention Shield bar chart
@@ -2574,6 +2624,10 @@
             renderSparkline('sparklineCard4', [25, 22, 20, 18, 16, 14, 12], '#f97316');
         }
 
+        let currentServiceChartMode = 'percent';
+        let analyticsServiceImpactInstance = null;
+        let analyticsCohortsChartInstance = null;
+
         function setServiceChartMode(mode) {
             currentServiceChartMode = mode;
             const btnPct = document.getElementById('svc-mode-pct');
@@ -2585,7 +2639,7 @@
                 if (btnAcc) btnAcc.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-white text-amber-700 shadow-2xs transition-all cursor-pointer";
                 if (btnPct) btnPct.className = "px-2 py-0.5 rounded text-[10px] font-semibold text-slate-500 hover:text-slate-800 transition-all cursor-pointer";
             }
-            const cohort = parseInt(document.getElementById('roi-cust') ? document.getElementById('roi-cust').value : 1000);
+            const cohort = parseInt(document.getElementById('roi-cust') ? document.getElementById('roi-cust').value : 10000);
             const acceptRate = parseFloat(document.getElementById('roi-succ') ? document.getElementById('roi-succ').value : 35) / 100;
             updateServiceImpactChart(cohort, acceptRate);
         }
@@ -2593,13 +2647,17 @@
 
         function updateServiceImpactChart(cohort, acceptRate) {
             if (typeof analyticsServiceImpactInstance === 'undefined' || !analyticsServiceImpactInstance) return;
-            const boost = (acceptRate - 0.35) * 16;
+
+            // Normalized factors for dynamic responsiveness across cohort size and offer acceptance rate
+            const cohortFactor = (cohort - 10000) / 40000; // -0.225 to 1.0
+            const acceptFactor = (acceptRate - 0.35) / 0.45; // -0.55 to 1.0
+            const programBoost = (acceptFactor * 16.0) + (cohortFactor * 7.5);
 
             const baseRetainedRates = [84.8, 85.4, 77.5, 70.0];
             const baseChurnRates = [41.7, 41.8, 39.1, 33.5];
 
-            const dynamicRetainedPct = baseRetainedRates.map(r => Math.min(97.5, Math.max(50.0, +(r + boost * 0.7).toFixed(1))));
-            const dynamicChurnPct = baseChurnRates.map(c => Math.max(12.0, Math.min(65.0, +(c - boost * 0.6).toFixed(1))));
+            const dynamicRetainedPct = baseRetainedRates.map(r => Math.min(98.5, Math.max(45.0, +(r + programBoost).toFixed(1))));
+            const dynamicChurnPct = baseChurnRates.map(c => Math.max(8.0, Math.min(68.0, +(c - programBoost * 0.75).toFixed(1))));
 
             if (currentServiceChartMode === 'percent') {
                 analyticsServiceImpactInstance.data.datasets[0].label = 'With Service (Retained %)';
@@ -2607,7 +2665,12 @@
                 analyticsServiceImpactInstance.data.datasets[0].data = dynamicRetainedPct;
                 analyticsServiceImpactInstance.data.datasets[1].data = dynamicChurnPct;
                 if (analyticsServiceImpactInstance.options.scales && analyticsServiceImpactInstance.options.scales.y) {
+                    analyticsServiceImpactInstance.options.scales.y.min = 0;
+                    analyticsServiceImpactInstance.options.scales.y.max = 100;
                     analyticsServiceImpactInstance.options.scales.y.ticks.callback = v => v + '%';
+                }
+                if (analyticsServiceImpactInstance.options.plugins && analyticsServiceImpactInstance.options.plugins.tooltip) {
+                    analyticsServiceImpactInstance.options.plugins.tooltip.callbacks.label = (ctx) => `${ctx.dataset.label}: ${ctx.raw}%`;
                 }
             } else {
                 analyticsServiceImpactInstance.data.datasets[0].label = 'Simulated Retained Accounts';
@@ -2615,14 +2678,17 @@
                 analyticsServiceImpactInstance.data.datasets[0].data = dynamicRetainedPct.map(pct => Math.round(cohort * (pct / 100)));
                 analyticsServiceImpactInstance.data.datasets[1].data = dynamicChurnPct.map(pct => Math.round(cohort * (pct / 100)));
                 if (analyticsServiceImpactInstance.options.scales && analyticsServiceImpactInstance.options.scales.y) {
+                    delete analyticsServiceImpactInstance.options.scales.y.min;
+                    delete analyticsServiceImpactInstance.options.scales.y.max;
                     analyticsServiceImpactInstance.options.scales.y.ticks.callback = v => Math.round(v).toLocaleString();
                 }
+                if (analyticsServiceImpactInstance.options.plugins && analyticsServiceImpactInstance.options.plugins.tooltip) {
+                    analyticsServiceImpactInstance.options.plugins.tooltip.callbacks.label = (ctx) => `${ctx.dataset.label}: ${Math.round(ctx.raw).toLocaleString()} accounts`;
+                }
             }
-            analyticsServiceImpactInstance.update('none');
+            analyticsServiceImpactInstance.update();
         }
         window.updateServiceImpactChart = updateServiceImpactChart;
-
-        let analyticsServiceImpactInstance = null;
 
         function renderAnalyticsCharts() {
             const ctxService = document.getElementById('analyticsServiceImpactChart');
@@ -2649,7 +2715,7 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        animation: { duration: 1200 },
+                        animation: { duration: 600 },
                         plugins: {
                             legend: { position: 'bottom', labels: { color: '#64748b', font: { size: 10, weight: 'bold' } } },
                             tooltip: {
@@ -2660,7 +2726,7 @@
                         },
                         scales: {
                             x: { grid: { display: false }, ticks: { font: { size: 10, weight: '600' } } },
-                            y: { grid: { color: '#f1f5f9' }, ticks: { callback: v => v + '%' } }
+                            y: { min: 0, max: 100, grid: { color: '#f1f5f9' }, ticks: { callback: v => v + '%' } }
                         }
                     }
                 });
@@ -2694,17 +2760,19 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        animation: { duration: 1400 },
+                        animation: { duration: 600 },
                         plugins: {
                             legend: { labels: { color: '#64748b' } }
                         },
                         scales: {
-                            y: { min: 40, max: 100, grid: { color: '#f1f5f9' }, ticks: { color: '#64748b' } },
+                            y: { min: 30, max: 100, grid: { color: '#f1f5f9' }, ticks: { color: '#64748b' } },
                             x: { grid: { color: '#f1f5f9' }, ticks: { color: '#64748b' } }
                         }
                     }
                 });
             }
+
+            calculateROI();
         }
 
         // 10. Three.js 3D Interactive WebGL Particle Network

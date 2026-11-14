@@ -524,11 +524,13 @@ def predict_bulk_csv(file: UploadFile = File(...)):
             "status": "success",
             "filename": file.filename,
             "total_records_processed": len(df),
+            "total_customers": len(df),
             "high_risk_count": high_risk_count,
             "medium_risk_count": medium_risk_count,
             "low_risk_count": low_risk_count,
             "total_annual_revenue_at_risk": round(total_revenue_risk, 2),
-            "sample_results": results
+            "sample_results": results,
+            "scored_records": results
         }
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Bulk processing error: {str(exc)}")
