@@ -79,12 +79,12 @@ def get_explainer():
     if len(feature_names) != X_transformed.shape[1]:
         feature_names = [f"Feature_{i}" for i in range(X_transformed.shape[1])]
 
-    # Build TreeExplainer
+    # Build TreeExplainer (pure tree path traversal runs in <10ms)
     try:
-        explainer = shap.TreeExplainer(classifier, data=X_transformed[:30])
+        explainer = shap.TreeExplainer(classifier)
     except Exception:
         # Fallback to general Explainer
-        explainer = shap.Explainer(classifier.predict_proba, X_transformed[:30])
+        explainer = shap.Explainer(classifier.predict_proba, X_transformed[:10])
 
     _explainer_cache = explainer
     _feature_names_cache = feature_names
