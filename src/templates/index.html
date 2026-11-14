@@ -2264,6 +2264,10 @@
                     method: 'POST',
                     body: formData
                 });
+                if (!res.ok) {
+                    const errData = await res.json().catch(() => ({}));
+                    throw new Error(errData.detail || `Server error (${res.status})`);
+                }
                 const data = await res.json();
                 currentBulkData = data;
 
@@ -2304,6 +2308,10 @@
                 const tbody = document.getElementById('bulk-preview-body');
                 tbody.innerHTML = '';
                 const records = data.scored_records || data.sample_results || [];
+                if (records.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400 font-sans">No data rows found in this file. Please ensure file contains customer data rows.</td></tr>`;
+                    return;
+                }
                 records.slice(0, 50).forEach((r, idx) => {
                     const tr = document.createElement('tr');
                     const prob = r.Churn_Probability !== undefined ? r.Churn_Probability : (r.probability || 0);
@@ -2349,15 +2357,17 @@
                 if (window.lucide) lucide.createIcons();
             } catch (err) {
                 console.error("Bulk upload failed:", err);
+                const resultsSec = document.getElementById('bulk-results-section');
+                if (resultsSec) resultsSec.classList.add('hidden');
                 if (dropzone) {
                     dropzone.innerHTML = `
                         <input type="file" id="bulk-file-input" accept=".csv, .xlsx, .xls" class="hidden" onchange="uploadBulkFile(this.files[0])">
                         <div class="w-12 h-12 rounded-full bg-rose-50 text-rose-600 mx-auto flex items-center justify-center shadow-xs">
                             <i data-lucide="alert-circle" class="w-6 h-6"></i>
                         </div>
-                        <div>
-                            <span class="text-xs font-bold text-rose-600 block">Upload failed: ${err.message || 'Check dataset format'}</span>
-                            <span class="text-[11px] text-slate-400">Click to retry with valid Telco CSV or Excel file</span>
+                        <div class="space-y-1">
+                            <span class="text-xs font-bold text-rose-600 block">Upload Error: ${err.message || 'Check dataset format'}</span>
+                            <span class="text-[11px] text-amber-700 font-semibold cursor-pointer underline" onclick="document.getElementById('bulk-file-input').click()">Click here to retry with another file</span>
                         </div>
                     `;
                     if (window.lucide) lucide.createIcons();

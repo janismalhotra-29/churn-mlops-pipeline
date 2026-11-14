@@ -439,26 +439,70 @@ def predict_bulk_csv(file: UploadFile = File(...)):
         if filename.endswith(".xlsx") or filename.endswith(".xls"):
             df = pd.read_excel(io.BytesIO(contents))
         else:
-            df = pd.read_csv(io.BytesIO(contents))
+            try:
+                df = pd.read_csv(io.BytesIO(contents), sep=None, engine='python')
+            except Exception:
+                try:
+                    df = pd.read_csv(io.BytesIO(contents), encoding="latin1")
+                except Exception:
+                    df = pd.read_csv(io.BytesIO(contents))
 
-        # Flexible Column Normalization (handles Tenure, Monthly Charges, Monthly_Charges, etc.)
+        if df is None or len(df) == 0:
+            raise HTTPException(status_code=400, detail="Uploaded file is empty. Please provide a CSV or Excel file with data rows.")
+
+        # Clean column names
+        df.columns = [str(c).strip() for c in df.columns]
         norm_map = {str(c).strip().lower().replace("_", "").replace(" ", ""): c for c in df.columns}
 
-        tenure_orig = norm_map.get("tenure")
-        monthly_orig = norm_map.get("monthlycharges") or norm_map.get("monthlycharge") or norm_map.get("monthly")
-        total_orig = norm_map.get("totalcharges") or norm_map.get("totalcharge") or norm_map.get("total")
-        contract_orig = norm_map.get("contract")
-        internet_orig = norm_map.get("internetservice") or norm_map.get("internet")
-        customerid_orig = norm_map.get("customerid") or norm_map.get("customer_id") or norm_map.get("id")
+        tenure_orig = (
+            norm_map.get("tenure") or norm_map.get("tenuremonths") or 
+            norm_map.get("months") or norm_map.get("month") or 
+            norm_map.get("duration") or norm_map.get("period") or norm_map.get("time")
+        )
+        monthly_orig = (
+            norm_map.get("monthlycharges") or norm_map.get("monthlycharge") or 
+            norm_map.get("monthly") or norm_map.get("charges") or norm_map.get("charge") or
+            norm_map.get("bill") or norm_map.get("monthlybill") or norm_map.get("amount") or
+            norm_map.get("cost") or norm_map.get("price") or norm_map.get("spend") or norm_map.get("fee")
+        )
+        total_orig = (
+            norm_map.get("totalcharges") or norm_map.get("totalcharge") or 
+            norm_map.get("total") or norm_map.get("totalamount") or norm_map.get("balance")
+        )
+        contract_orig = (
+            norm_map.get("contract") or norm_map.get("contracttype") or 
+            norm_map.get("plan") or norm_map.get("subscription")
+        )
+        internet_orig = (
+            norm_map.get("internetservice") or norm_map.get("internet") or 
+            norm_map.get("service") or norm_map.get("connection")
+        )
+        customerid_orig = (
+            norm_map.get("customerid") or norm_map.get("customer_id") or 
+            norm_map.get("id") or norm_map.get("custid") or norm_map.get("accountid") or 
+            norm_map.get("account") or norm_map.get("name")
+        )
 
-        if not tenure_orig or not monthly_orig:
-            raise HTTPException(
-                status_code=422,
-                detail=f"CSV/Excel missing required columns. Found columns: {list(df.columns)}. Expected 'tenure' and 'MonthlyCharges'."
-            )
+        # Fallback to numeric columns if not identified by name
+        numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+        if not tenure_orig:
+            if len(numeric_cols) > 0:
+                tenure_orig = numeric_cols[0]
+        if not monthly_orig:
+            if len(numeric_cols) > 1:
+                monthly_orig = numeric_cols[1]
+            elif len(numeric_cols) == 1 and numeric_cols[0] != tenure_orig:
+                monthly_orig = numeric_cols[0]
 
-        df["tenure"] = pd.to_numeric(df[tenure_orig], errors="coerce").fillna(1).astype(int)
-        df["MonthlyCharges"] = pd.to_numeric(df[monthly_orig], errors="coerce").fillna(50.0).astype(float)
+        if tenure_orig and tenure_orig in df.columns:
+            df["tenure"] = pd.to_numeric(df[tenure_orig], errors="coerce").fillna(12).astype(int)
+        else:
+            df["tenure"] = 12
+
+        if monthly_orig and monthly_orig in df.columns:
+            df["MonthlyCharges"] = pd.to_numeric(df[monthly_orig], errors="coerce").fillna(65.0).astype(float)
+        else:
+            df["MonthlyCharges"] = 65.0
 
         if total_orig and total_orig in df.columns:
             df["TotalCharges"] = pd.to_numeric(df[total_orig], errors="coerce").fillna(df["tenure"] * df["MonthlyCharges"])
@@ -484,7 +528,7 @@ def predict_bulk_csv(file: UploadFile = File(...)):
         if customerid_orig and customerid_orig in df.columns:
             df["customerID"] = df[customerid_orig].astype(str)
         else:
-            df["customerID"] = ["TELCO-" + str(i+1001).zfill(5) for i in range(len(df))]
+            df["customerID"] = ["CUST-" + str(i+1001).zfill(5) for i in range(len(df))]
 
         feature_names = getattr(clf, "feature_names_in_", None)
         if feature_names is not None:
