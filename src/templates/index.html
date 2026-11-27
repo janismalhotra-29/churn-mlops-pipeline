@@ -21,6 +21,16 @@
         tailwind.config = {
             theme: {
                 extend: {
+                    borderRadius: {
+                        'none': '0',
+                        'sm': '4px',
+                        'DEFAULT': '6px',
+                        'md': '6px',
+                        'lg': '8px',
+                        'xl': '10px',
+                        '2xl': '10px',
+                        '3xl': '12px',
+                    },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
@@ -33,7 +43,7 @@
                             300: '#5eead4',
                             400: '#2dd4bf',
                             500: '#fbbf24',
-                            600: '#f59e0b',
+                            600: '#49111c',
                             700: '#d97706',
                             800: '#115e59',
                             900: '#134e4a',
@@ -47,25 +57,37 @@
 
     <style>
         body {
-            background-color: #f4f5f8;
+            background-color: #f2f4f3;
             color: #1e293b;
             overflow-x: hidden;
         }
 
-        /* Clean Modern SaaS Cards with Flat Stable Elevation (Zero Tilt Distortion on Scroll) */
+        /* Global Unified Enterprise Geometry System */
+        :root {
+            --radius-card: 10px;
+            --radius-subcard: 8px;
+            --radius-btn: 7px;
+            --radius-input: 7px;
+            --radius-badge: 4px;
+            --border-subtle: 1px solid #e2e8f0;
+            --border-subtle-hover: #cbd5e1;
+            --shadow-subtle: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+            --shadow-subtle-hover: 0 4px 12px -2px rgba(15, 23, 42, 0.06);
+        }
+
+        /* Clean Modern SaaS Cards with Exact 10px Geometry & Thin Subtle Borders */
         .saas-card, .tilt-card-3d {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(226, 232, 240, 0.9);
-            border-radius: 1.25rem;
-            box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04), 0 1px 3px 0 rgba(15, 23, 42, 0.02);
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            background: #ffffff;
+            border: var(--border-subtle);
+            border-radius: var(--radius-card) !important;
+            box-shadow: var(--shadow-subtle);
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
             position: relative;
         }
         .saas-card:hover, .tilt-card-3d:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px -6px rgba(245, 158, 11, 0.12), 0 4px 8px -2px rgba(245, 158, 11, 0.04);
-            border-color: #fde68a;
+            transform: none;
+            box-shadow: var(--shadow-subtle-hover);
+            border-color: var(--border-subtle-hover);
         }
 
         /* Ambient Glowing Pulse Ring */
@@ -152,14 +174,14 @@
             height: 18px;
             width: 18px;
             border-radius: 50%;
-            background: #f59e0b;
+            background: #49111c;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+            box-shadow: 0 0 10px rgba(73, 17, 28, 0.4);
             transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
         input[type="range"]::-webkit-slider-thumb:hover {
             transform: scale(1.2);
-            box-shadow: 0 0 14px rgba(245, 158, 11, 0.8);
+            box-shadow: 0 0 14px rgba(73, 17, 28, 0.6);
         }
 
         /* Radial Speedometer Gauge Arc */
@@ -187,47 +209,74 @@
             transform: translateX(2px);
         }
         .sidebar-dark-link.active {
-            background-color: #1e2026;
-            color: #ffffff;
+            background-color: #49111c !important;
+            color: #ffffff !important;
             font-weight: 700;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-            border-left: 3px solid #f59e0b;
+            box-shadow: 0 4px 12px -2px rgba(73, 17, 28, 0.5);
+            border-left: 3px solid #a9927d !important;
         }
         .sidebar-dark-link.active i {
-            color: #f59e0b;
+            color: #a9927d !important;
         }
 
-        /* Quantro Clean Modern Cards */
+        /* Quantro Enterprise Cards - Clean 10px Geometry & Thin Subtle Borders */
         .quantro-card {
             background: #ffffff;
-            border: 1px solid rgba(226, 232, 240, 0.85);
-            border-radius: 1.25rem;
-            box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.02), 0 4px 14px -2px rgba(15, 23, 42, 0.04);
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-card) !important;
+            box-shadow: var(--shadow-subtle);
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
         .quantro-card:hover {
-            box-shadow: 0 10px 25px -4px rgba(245, 158, 11, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
-            border-color: #fde68a;
+            box-shadow: var(--shadow-subtle-hover);
+            border-color: #cbd5e1;
         }
         .quantro-hero-card {
-            background: #18191f;
-            border: 1px solid #282a33;
-            border-radius: 1.25rem;
-            box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.25);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background: #0a0908;
+            border: 1px solid #2d2621;
+            border-radius: var(--radius-card) !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
         .quantro-hero-card:hover {
-            box-shadow: 0 12px 32px -4px rgba(245, 158, 11, 0.15);
-            border-color: #f59e0b;
+            box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.4);
+            border-color: #3d342d;
+        }
+
+        /* 3. Table Containers: Refined outer container with 10px radius, clean square internal rows */
+        .overflow-x-auto.rounded-xl, .overflow-x-auto.rounded-xl {
+            border-radius: 10px !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+        table tr {
+            border-radius: 0 !important;
+        }
+
+        /* 4. Controls: Consistent 6-8px radius across buttons and inputs */
+        button, .btn {
+            border-radius: 7px;
+        }
+        input:not([type="range"]), select, textarea {
+            border-radius: 7px !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+        input:not([type="range"]):focus, select:focus, textarea:focus {
+            border-color: #49111c !important;
+            box-shadow: 0 0 0 2px rgba(73, 17, 28, 0.12) !important;
+        }
+
+        /* Modals & Dialogs: Consistent 10px rectangular structure */
+        .modal-card {
+            border-radius: 10px !important;
         }
 
     </style>
 </head>
-<body class="h-full flex antialiased relative selection:bg-amber-500 selection:text-white">
+<body class="h-full flex antialiased relative selection:bg-[#49111c] selection:text-white">
 
     <!-- Ambient Glowing Colorful Mesh Blobs -->
-    <div class="fixed top-20 left-1/3 w-96 h-96 bg-amber-300/15 rounded-full blur-[110px] pointer-events-none z-0 animate-pulse"></div>
-    <div class="fixed bottom-20 right-1/4 w-96 h-96 bg-orange-300/15 rounded-full blur-[110px] pointer-events-none z-0 animate-pulse delay-1000"></div>
+    <div class="fixed top-20 left-1/3 w-96 h-96 bg-[#a9927d]/20 rounded-full blur-[110px] pointer-events-none z-0 animate-pulse"></div>
+    <div class="fixed bottom-20 right-1/4 w-96 h-96 bg-[#49111c]/10 rounded-full blur-[110px] pointer-events-none z-0 animate-pulse delay-1000"></div>
 
     <!-- Mobile Backdrop -->
     <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/30 backdrop-blur-xs z-40 hidden md:hidden"></div>
@@ -235,18 +284,18 @@
     <!-- ========================================================================= -->
     <!-- FIXED SIDEBAR (Aegean White with 3D Accents) -->
     <!-- ========================================================================= -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#121316] border-r border-[#22242a] flex flex-col transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0 shadow-2xl">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#0a0908] border-r border-[#231f20] flex flex-col transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0 shadow-2xl">
         
         <!-- Brand Header: Quantro Amber Logo -->
-        <div class="h-18 px-5 border-b border-[#22242a] flex items-center justify-between">
+        <div class="h-18 px-5 border-b border-[#231f20] flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-500 to-amber-400 flex items-center justify-center shadow-lg shadow-orange-500/20">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#49111c] via-[#5e503f] to-[#a9927d] flex items-center justify-center shadow-lg shadow-[#5e503f]/20">
                     <i data-lucide="bar-chart-3" class="w-5 h-5 text-slate-950 stroke-[2.5]"></i>
                 </div>
                 <div>
                     <span class="text-base font-black text-white tracking-tight block leading-tight">TelcoPulse AI</span>
-                    <span class="text-[10px] font-bold text-amber-500 tracking-wider uppercase flex items-center">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1 animate-pulse"></span>
+                    <span class="text-[10px] font-bold text-[#a9927d] tracking-wider uppercase flex items-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#49111c] mr-1 animate-pulse"></span>
                         Enterprise Retention Hub
                     </span>
                 </div>
@@ -287,7 +336,7 @@
             </nav>
 
             <!-- External Developer Shortcuts -->
-            <div class="pt-4 border-t border-[#22242a]">
+            <div class="pt-4 border-t border-[#231f20]">
                 <span class="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-500 block mb-2">Developer Tools</span>
                 <nav class="space-y-1">
                     <a href="/docs" target="_blank" class="w-full flex items-center px-3.5 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
@@ -298,29 +347,29 @@
                     <button type="button" onclick="openMlflowRunsModal()" class="w-full flex items-center px-3.5 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer text-left">
                         <i data-lucide="git-branch" class="w-4 h-4 mr-3 text-slate-400"></i>
                         <span>MLflow Telemetry</span>
-                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 font-mono font-bold">20 Runs</span>
+                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded bg-[#49111c]/20 text-[#a9927d] font-mono font-bold">20 Runs</span>
                     </button>
                 </nav>
             </div>
         </div>
 
         <!-- Bottom: Upgrade to Pro / Model Champion Card (Quantro Style) -->
-        <div class="p-3 border-t border-[#22242a] bg-[#0e0f12]">
-            <div class="p-3.5 rounded-2xl bg-[#18191f] border border-[#272932] space-y-2 text-xs">
+        <div class="p-3 border-t border-[#231f20] bg-[#0e0f12]">
+            <div class="p-3.5 rounded-xl bg-[#18191f] border border-[#272932] space-y-2 text-xs">
                 <div class="flex items-center space-x-2">
-                    <div class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                    <div class="w-7 h-7 rounded-lg bg-[#49111c]/20 text-[#a9927d] flex items-center justify-center">
                         <i data-lucide="crown" class="w-4 h-4"></i>
                     </div>
                     <div>
                         <span class="text-[11px] font-black text-white block leading-tight">Production Champion</span>
-                        <span class="text-[9px] text-amber-400 font-mono font-bold">RandomForest v2.1</span>
+                        <span class="text-[9px] text-[#a9927d] font-mono font-bold">RandomForest v2.1</span>
                     </div>
                 </div>
                 <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-[#272932]">
                     <span>ROC-AUC: <strong class="text-white font-mono">84.6%</strong></span>
-                    <span>Cutoff: <strong class="text-amber-400 font-mono">0.23</strong></span>
+                    <span>Cutoff: <strong class="text-[#a9927d] font-mono">0.23</strong></span>
                 </div>
-                <button onclick="navigateToPage('model-performance')" class="w-full py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-[10px] transition-all cursor-pointer">
+                <button onclick="navigateToPage('model-performance')" class="w-full py-1.5 rounded-xl bg-[#49111c] hover:bg-[#49111c] text-slate-950 font-black text-[10px] transition-all cursor-pointer">
                     Inspect Leaderboard →
                 </button>
             </div>
@@ -345,18 +394,18 @@
             <div class="flex items-center space-x-3">
                 
                 <!-- Currency Switcher ($ USD / ₹ INR) -->
-                <div class="flex p-0.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-bold shadow-inner">
-                    <button onclick="setCurrency('USD')" id="curr-usd" class="px-2.5 py-1 rounded-full bg-white text-slate-900 shadow-xs transition-all cursor-pointer">
+                <div class="flex p-0.5 rounded-lg bg-slate-100 border border-slate-200 text-xs font-bold">
+                    <button onclick="setCurrency('USD')" id="curr-usd" class="px-2.5 py-1 rounded-md bg-white text-slate-900 shadow-2xs transition-all cursor-pointer">
                         $ USD
                     </button>
-                    <button onclick="setCurrency('INR')" id="curr-inr" class="px-2.5 py-1 rounded-full text-slate-500 hover:text-slate-800 transition-all cursor-pointer">
+                    <button onclick="setCurrency('INR')" id="curr-inr" class="px-2.5 py-1 rounded-md text-slate-500 hover:text-slate-800 transition-all cursor-pointer">
                         ₹ INR
                     </button>
                 </div>
 
                 <!-- Cohort Timeframe Range Selector (Days Only, No Specific Calendar Dates) -->
-                <div class="hidden sm:flex items-center px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-2xs space-x-1.5 hover:border-amber-400 transition-all">
-                    <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-500"></i>
+                <div class="hidden sm:flex items-center px-3 py-1 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-2xs space-x-1.5 hover:border-slate-300 transition-all">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 text-[#a9927d]"></i>
                     <select id="date-range-filter" onchange="applyDateRangeFilter(this.value)" class="bg-transparent border-none text-xs font-semibold text-slate-700 focus:outline-none cursor-pointer pr-1">
                         <option value="7">Last 7 Days</option>
                         <option value="15">Last 15 Days</option>
@@ -369,7 +418,7 @@
 
                 <!-- User Profile: Admin -->
                 <div class="flex items-center space-x-2 pl-1 border-l border-slate-200 cursor-pointer">
-                    <div class="w-8 h-8 rounded-full bg-slate-900 text-amber-400 font-bold text-xs flex items-center justify-center shadow-xs border border-slate-800">
+                    <div class="w-8 h-8 rounded-full bg-slate-900 text-[#a9927d] font-bold text-xs flex items-center justify-center shadow-xs border border-slate-800">
                         <i data-lucide="user" class="w-4 h-4"></i>
                     </div>
                     <div class="hidden md:block text-left leading-tight">
@@ -385,7 +434,7 @@
             <!-- ========================================================================= -->
             <!-- PAGE 1: OVERVIEW DASHBOARD (Aegean Layout + 3D Tilt + Animated Counters) -->
             <!-- ========================================================================= -->
-            <div id="page-overview" class="page-view active-page space-y-6">
+            <div id="page-overview" class="page-view active-page space-y-5">
                 
                 <!-- Dashboard Header (Real Project Data + Quantro Aesthetics) -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -403,87 +452,91 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     
                     <!-- KPI Card 1: Annual Revenue at Risk (Hero Dark Card with Sparkline) -->
-                    <div class="quantro-hero-card p-5 space-y-3 relative overflow-hidden">
+                    <div class="quantro-hero-card p-4 space-y-2 relative overflow-hidden">
                         <div class="flex items-center justify-between">
-                            <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
-                                <i data-lucide="alert-triangle" class="w-4 h-4 stroke-[2.5]"></i>
+                            <div class="w-7 h-7 rounded-md bg-[#49111c]/40 text-[#a9927d] flex items-center justify-center">
+                                <i data-lucide="alert-triangle" class="w-3.5 h-3.5 stroke-[2.5]"></i>
                             </div>
+                            <span class="text-[10px] font-mono text-slate-400">ARR</span>
                         </div>
                         <div>
-                            <span class="text-[11px] font-semibold text-slate-400 block">Annual Revenue at Risk</span>
-                            <span id="kpi-at-risk-rev" class="text-2xl sm:text-3xl font-black text-white font-mono tracking-tight">$1,452,180</span>
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-400 block">Annual Revenue at Risk</span>
+                            <span id="kpi-at-risk-rev" class="text-xl sm:text-2xl font-black text-white font-mono tracking-tight">$1,452,180</span>
                         </div>
-                        <div class="flex items-center justify-between pt-1">
-                            <div class="flex items-center text-xs font-bold text-amber-400">
-                                <i data-lucide="alert-circle" class="w-3.5 h-3.5 mr-0.5"></i>
-                                <span>High loss exposure</span>
+                        <div class="flex items-center justify-between pt-0.5 border-t border-slate-800/80">
+                            <div class="flex items-center text-[11px] font-bold text-[#a9927d]">
+                                <i data-lucide="alert-circle" class="w-3 h-3 mr-1"></i>
+                                <span>High exposure</span>
                             </div>
-                            <div class="w-20 h-7">
+                            <div class="w-16 h-5">
                                 <canvas id="sparklineHero"></canvas>
                             </div>
                         </div>
                     </div>
 
                     <!-- KPI Card 2: Monitored Subscribers (White Card with Sparkline) -->
-                    <div class="quantro-card p-5 space-y-3 relative overflow-hidden">
+                    <div class="quantro-card p-4 space-y-2 relative overflow-hidden">
                         <div class="flex items-center justify-between">
-                            <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-                                <i data-lucide="users" class="w-4 h-4 stroke-[2.5]"></i>
+                            <div class="w-7 h-7 rounded-md bg-[#f7f4f0] text-[#49111c] flex items-center justify-center">
+                                <i data-lucide="users" class="w-3.5 h-3.5 stroke-[2.5]"></i>
                             </div>
+                            <span class="text-[10px] font-mono text-slate-400">Accounts</span>
                         </div>
                         <div>
-                            <span class="text-[11px] font-semibold text-slate-400 block">Monitored Subscribers</span>
-                            <span id="counter-subscribers" class="text-2xl sm:text-3xl font-black text-slate-900 font-mono tracking-tight">7,043</span>
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-400 block">Monitored Subscribers</span>
+                            <span id="counter-subscribers" class="text-xl sm:text-2xl font-black text-slate-900 font-mono tracking-tight">7,043</span>
                         </div>
-                        <div class="flex items-center justify-between pt-1">
-                            <div class="flex items-center text-xs font-bold text-emerald-600">
-                                <i data-lucide="check-circle" class="w-3.5 h-3.5 mr-0.5"></i>
-                                <span>Active Telco Portfolio</span>
+                        <div class="flex items-center justify-between pt-0.5 border-t border-slate-100">
+                            <div class="flex items-center text-[11px] font-bold text-emerald-600">
+                                <i data-lucide="check-circle" class="w-3 h-3 mr-1"></i>
+                                <span>Active Portfolio</span>
                             </div>
-                            <div class="w-20 h-7">
+                            <div class="w-16 h-5">
                                 <canvas id="sparklineCard2"></canvas>
                             </div>
                         </div>
                     </div>
 
                     <!-- KPI Card 3: Preserved Revenue / ROI (White Card with Sparkline) -->
-                    <div class="quantro-card p-5 space-y-3 relative overflow-hidden">
+                    <div class="quantro-card p-4 space-y-2 relative overflow-hidden">
                         <div class="flex items-center justify-between">
-                            <div class="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center">
-                                <i data-lucide="dollar-sign" class="w-4 h-4 stroke-[2.5]"></i>
+                            <div class="w-7 h-7 rounded-md bg-[#f7f4f0] text-[#49111c] flex items-center justify-center">
+                                <i data-lucide="dollar-sign" class="w-3.5 h-3.5 stroke-[2.5]"></i>
                             </div>
+                            <span class="text-[10px] font-mono text-slate-400">ROI</span>
                         </div>
                         <div>
-                            <span class="text-[11px] font-semibold text-slate-400 block">Preserved Revenue (ROI)</span>
-                            <span id="kpi-roi-rev" class="text-2xl sm:text-3xl font-black text-emerald-600 font-mono tracking-tight">+$38,740</span>
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-400 block">Preserved Revenue (ROI)</span>
+                            <span id="kpi-roi-rev" class="text-xl sm:text-2xl font-black text-emerald-600 font-mono tracking-tight">+$38,740</span>
                         </div>
-                        <div class="flex items-center justify-between pt-1">
-                            <div class="flex items-center text-xs font-bold text-emerald-600">
-                                <i data-lucide="trending-up" class="w-3.5 h-3.5 mr-0.5"></i>
-                                <span>+44.2% ROI (0.23 Cutoff)</span>
+                        <div class="flex items-center justify-between pt-0.5 border-t border-slate-100">
+                            <div class="flex items-center text-[11px] font-bold text-emerald-600">
+                                <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i>
+                                <span>+44.2% Saved</span>
                             </div>
-                            <div class="w-20 h-7">
+                            <div class="w-16 h-5">
                                 <canvas id="sparklineCard3"></canvas>
                             </div>
                         </div>
                     </div>
 
                     <!-- KPI Card 4: Baseline Churn Rate (White Card with Sparkline) -->
-                    <div class="quantro-card p-5 space-y-3 relative overflow-hidden">
+                    <div class="quantro-card p-4 space-y-2 relative overflow-hidden">
                         <div class="flex items-center justify-between">
-                            <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-                                <i data-lucide="activity" class="w-4 h-4 stroke-[2.5]"></i>
+                            <div class="w-7 h-7 rounded-md bg-[#f7f4f0] text-[#49111c] flex items-center justify-center">
+                                <i data-lucide="activity" class="w-3.5 h-3.5 stroke-[2.5]"></i>
                             </div>
+                            <span class="text-[10px] font-mono text-slate-400">Baseline</span>
                         </div>
                         <div>
-                            <span class="text-[11px] font-semibold text-slate-400 block">Baseline Churn Rate</span>
-                            <span id="counter-churnrate" class="text-2xl sm:text-3xl font-black text-slate-900 font-mono tracking-tight">26.54%</span>
+                            <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-400 block">Baseline Churn Rate</span>
+                            <span id="counter-churnrate" class="text-xl sm:text-2xl font-black text-rose-600 font-mono tracking-tight">26.54%</span>
                         </div>
-                        <div class="flex items-center justify-between pt-1">
-                            <div class="flex items-center text-xs font-bold text-slate-500">
-                                <span>Industry benchmark: ~25%</span>
+                        <div class="flex items-center justify-between pt-0.5 border-t border-slate-100">
+                            <div class="flex items-center text-[11px] font-bold text-slate-500">
+                                <span>Benchmark ~25%</span>
                             </div>
-                            <div class="w-20 h-7">
+                            <div class="w-16 h-5">
                                 <canvas id="sparklineCard4"></canvas>
                             </div>
                         </div>
@@ -491,13 +544,13 @@
                 </div>
 
                 <!-- Middle Visuals Row: Churn & Revenue Dynamics Spline (Left 8 cols) + Risk Segments Donut (Right 4 cols) -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
                     
                     <!-- Left: Churn & Revenue Dynamics Spline Area Chart -->
-                    <div class="lg:col-span-8 quantro-card p-6 space-y-4">
+                    <div class="lg:col-span-8 quantro-card p-5 space-y-3">
                         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2.5">
-                                <div class="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                                <div class="w-7 h-7 rounded-lg bg-[#f7f4f0] text-[#49111c] flex items-center justify-center">
                                     <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
                                 </div>
                                 <div>
@@ -519,16 +572,16 @@
                         </div>
 
                         <!-- Spline Area Chart Container -->
-                        <div class="h-64 relative">
+                        <div class="h-60 relative">
                             <canvas id="overviewTrendChart"></canvas>
                         </div>
                     </div>
 
                     <!-- Right: Customer Risk Segments Donut Chart (Real Data + Quantro Colors) -->
-                    <div class="lg:col-span-4 quantro-card p-6 space-y-4 flex flex-col justify-between">
+                    <div class="lg:col-span-4 quantro-card p-5 space-y-3 flex flex-col justify-between">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="pie-chart" class="w-4 h-4 text-amber-600"></i>
+                                <i data-lucide="pie-chart" class="w-4 h-4 text-[#49111c]"></i>
                                 <h3 class="text-sm font-black text-slate-900">Customer Risk Segments</h3>
                             </div>
                             <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">7,043 Records</span>
@@ -547,7 +600,7 @@
                         <div class="space-y-2 text-xs pt-1 border-t border-slate-100">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-1.5 min-w-0">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#49111c] shrink-0"></span>
                                     <span class="text-slate-700 font-medium truncate">High Risk (At-Risk)</span>
                                 </div>
                                 <span class="font-bold text-slate-900 font-mono text-[11px]">26.5% <span class="text-slate-400 font-normal">(1,869)</span></span>
@@ -571,16 +624,16 @@
                 </div>
 
                 <!-- Bottom Row: 3 Project Columns (High-Risk Subscribers, Recent CRM Dispatches, Value-Added Service Shield) -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
                     
                     <!-- Col 1: High-Risk Subscriber Targets (Real Telco Accounts) -->
                     <div class="lg:col-span-5 quantro-card p-5 space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="alert-octagon" class="w-4 h-4 text-amber-600"></i>
+                                <i data-lucide="alert-octagon" class="w-4 h-4 text-[#49111c]"></i>
                                 <h3 class="text-sm font-black text-slate-900">High-Risk Subscriber Targets</h3>
                             </div>
-                            <button onclick="navigateToPage('dataset')" class="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center cursor-pointer">
+                            <button onclick="navigateToPage('dataset')" class="text-xs font-bold text-[#49111c] hover:text-[#49111c] flex items-center cursor-pointer">
                                 <span>Directory</span>
                                 <i data-lucide="arrow-right" class="w-3.5 h-3.5 ml-1"></i>
                             </button>
@@ -598,7 +651,7 @@
                                 <tbody class="divide-y divide-slate-50 font-medium">
                                     <tr class="hover:bg-slate-50/70 transition-colors">
                                         <td class="py-2.5 flex items-center space-x-2">
-                                            <div class="w-6 h-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-mono text-[10px] font-bold">
+                                            <div class="w-6 h-6 rounded-lg bg-[#f7f4f0] text-[#49111c] flex items-center justify-center font-mono text-[10px] font-bold">
                                                 ID
                                             </div>
                                             <span class="font-mono font-bold text-slate-800">7590-VHVEG</span>
@@ -611,7 +664,7 @@
                                     </tr>
                                     <tr class="hover:bg-slate-50/70 transition-colors">
                                         <td class="py-2.5 flex items-center space-x-2">
-                                            <div class="w-6 h-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-mono text-[10px] font-bold">
+                                            <div class="w-6 h-6 rounded-lg bg-[#f7f4f0] text-[#49111c] flex items-center justify-center font-mono text-[10px] font-bold">
                                                 ID
                                             </div>
                                             <span class="font-mono font-bold text-slate-800">3668-QPYBK</span>
@@ -624,7 +677,7 @@
                                     </tr>
                                     <tr class="hover:bg-slate-50/70 transition-colors">
                                         <td class="py-2.5 flex items-center space-x-2">
-                                            <div class="w-6 h-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-mono text-[10px] font-bold">
+                                            <div class="w-6 h-6 rounded-lg bg-[#f7f4f0] text-[#49111c] flex items-center justify-center font-mono text-[10px] font-bold">
                                                 ID
                                             </div>
                                             <span class="font-mono font-bold text-slate-800">5575-GNVDE</span>
@@ -632,12 +685,12 @@
                                         <td class="py-2.5 text-slate-600">One year</td>
                                         <td class="py-2.5 text-right font-mono font-bold text-slate-900">$56.95/mo</td>
                                         <td class="py-2.5 text-right">
-                                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-600 border border-amber-200">62.5% Risk</span>
+                                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#f7f4f0] text-[#49111c] border border-[#d8cfc4]">62.5% Risk</span>
                                         </td>
                                     </tr>
                                     <tr class="hover:bg-slate-50/70 transition-colors">
                                         <td class="py-2.5 flex items-center space-x-2">
-                                            <div class="w-6 h-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-mono text-[10px] font-bold">
+                                            <div class="w-6 h-6 rounded-lg bg-[#f7f4f0] text-[#49111c] flex items-center justify-center font-mono text-[10px] font-bold">
                                                 ID
                                             </div>
                                             <span class="font-mono font-bold text-slate-800">7795-CFOCW</span>
@@ -657,10 +710,10 @@
                     <div class="lg:col-span-4 quantro-card p-5 space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="send" class="w-4 h-4 text-amber-600"></i>
+                                <i data-lucide="send" class="w-4 h-4 text-[#49111c]"></i>
                                 <h3 class="text-sm font-black text-slate-900">Recent CRM Outreach</h3>
                             </div>
-                            <button onclick="navigateToPage('prediction')" class="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center cursor-pointer">
+                            <button onclick="navigateToPage('prediction')" class="text-xs font-bold text-[#49111c] hover:text-[#49111c] flex items-center cursor-pointer">
                                 <span>Dispatch</span>
                                 <i data-lucide="arrow-right" class="w-3.5 h-3.5 ml-1"></i>
                             </button>
@@ -668,7 +721,7 @@
                         <div class="space-y-3">
                             <div class="flex items-center justify-between text-xs hover:bg-slate-50/80 p-1.5 rounded-xl transition-colors">
                                 <div class="flex items-center space-x-2.5">
-                                    <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-700 font-bold text-[10px] flex items-center justify-center">75</div>
+                                    <div class="w-7 h-7 rounded-full bg-[#ede7df] text-[#49111c] font-bold text-[10px] flex items-center justify-center">75</div>
                                     <div>
                                         <span class="font-bold text-slate-800 block">7590-VHVEG</span>
                                         <span class="text-[10px] text-slate-400 font-mono">TELCO-SAVE15-1YR</span>
@@ -701,14 +754,14 @@
                             </div>
                             <div class="flex items-center justify-between text-xs hover:bg-slate-50/80 p-1.5 rounded-xl transition-colors">
                                 <div class="flex items-center space-x-2.5">
-                                    <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-700 font-bold text-[10px] flex items-center justify-center">93</div>
+                                    <div class="w-7 h-7 rounded-full bg-[#ede7df] text-[#49111c] font-bold text-[10px] flex items-center justify-center">93</div>
                                     <div>
                                         <span class="font-bold text-slate-800 block">9305-CDSKC</span>
                                         <span class="text-[10px] text-slate-400 font-mono">TELCO-DEV-PROT</span>
                                     </div>
                                 </div>
                                 <span class="font-bold text-slate-900 font-mono">Device Prot</span>
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-600 border border-amber-200">Pending</span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#f7f4f0] text-[#49111c] border border-[#d8cfc4]">Pending</span>
                             </div>
                         </div>
                     </div>
@@ -717,7 +770,7 @@
                     <div class="lg:col-span-3 quantro-card p-5 space-y-4 flex flex-col justify-between">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="shield-check" class="w-4 h-4 text-amber-600"></i>
+                                <i data-lucide="shield-check" class="w-4 h-4 text-[#49111c]"></i>
                                 <h3 class="text-sm font-black text-slate-900">Retention Shield Lift</h3>
                             </div>
                             <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">XAI Impact</span>
@@ -733,7 +786,7 @@
                                     <span class="font-bold font-mono text-emerald-600">+43.1% Lift</span>
                                 </div>
                                 <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                    <div class="bg-amber-500 h-full rounded-full" style="width: 84.8%;"></div>
+                                    <div class="bg-[#49111c] h-full rounded-full" style="width: 84.8%;"></div>
                                 </div>
                             </div>
                             <div>
@@ -742,7 +795,7 @@
                                     <span class="font-bold font-mono text-emerald-600">+43.6% Lift</span>
                                 </div>
                                 <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                    <div class="bg-amber-500 h-full rounded-full" style="width: 85.4%;"></div>
+                                    <div class="bg-[#49111c] h-full rounded-full" style="width: 85.4%;"></div>
                                 </div>
                             </div>
                             <div>
@@ -751,7 +804,7 @@
                                     <span class="font-bold font-mono text-emerald-600">+38.4% Lift</span>
                                 </div>
                                 <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                    <div class="bg-amber-400 h-full rounded-full" style="width: 77.5%;"></div>
+                                    <div class="bg-[#49111c] h-full rounded-full" style="width: 77.5%;"></div>
                                 </div>
                             </div>
                             <div>
@@ -760,7 +813,7 @@
                                     <span class="font-bold font-mono text-emerald-600">+36.5% Lift</span>
                                 </div>
                                 <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                    <div class="bg-amber-400 h-full rounded-full" style="width: 70.0%;"></div>
+                                    <div class="bg-[#49111c] h-full rounded-full" style="width: 70.0%;"></div>
                                 </div>
                             </div>
                         </div>
@@ -770,7 +823,7 @@
             </div><div id="page-prediction" class="page-view space-y-6">
                 
                 <div class="space-y-1">
-                    <span class="text-xs font-bold text-amber-700 uppercase tracking-widest block">Inference Engine</span>
+                    <span class="text-xs font-bold text-[#49111c] uppercase tracking-widest block">Inference Engine</span>
                     <h2 class="text-2xl font-extrabold text-slate-900">Single & Batch Churn Scoring</h2>
                     <p class="text-xs text-slate-500">Run instant AI predictions with animated radial probability gauge, SHAP drivers, and prescriptive retention action plans.</p>
                 </div>
@@ -781,7 +834,7 @@
                     <div class="lg:col-span-7 saas-card tilt-card-3d p-6 space-y-5">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="user-check" class="w-5 h-5 text-amber-600"></i>
+                                <i data-lucide="user-check" class="w-5 h-5 text-[#49111c]"></i>
                                 <h3 class="text-sm font-bold text-slate-900">Customer Profile Diagnostic</h3>
                             </div>
                             <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Endpoint: /predict</span>
@@ -791,7 +844,7 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-xs font-semibold text-slate-700 mb-1">Contract Type</label>
-                                    <select id="contract" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium focus:outline-none focus:border-amber-500 focus:bg-white transition-all shadow-2xs">
+                                    <select id="contract" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium focus:outline-none focus:border-[#49111c] focus:bg-white transition-all shadow-2xs">
                                         <option value="Month-to-month">Month-to-month</option>
                                         <option value="One year">One year</option>
                                         <option value="Two year">Two year</option>
@@ -799,7 +852,7 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-semibold text-slate-700 mb-1">Internet Service</label>
-                                    <select id="internet" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium focus:outline-none focus:border-amber-500 focus:bg-white transition-all shadow-2xs">
+                                    <select id="internet" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium focus:outline-none focus:border-[#49111c] focus:bg-white transition-all shadow-2xs">
                                         <option value="Fiber optic">Fiber optic</option>
                                         <option value="DSL">DSL</option>
                                         <option value="No">No Internet Service</option>
@@ -810,20 +863,20 @@
                             <div class="space-y-2">
                                 <div class="flex justify-between text-xs">
                                     <label class="font-semibold text-slate-700">Customer Tenure</label>
-                                    <span id="tenure-val" class="font-bold text-amber-700 font-mono">12 Months</span>
+                                    <span id="tenure-val" class="font-bold text-[#49111c] font-mono">12 Months</span>
                                 </div>
-                                <input type="range" id="tenure" min="0" max="72" value="12" oninput="updateCalculations()" class="w-full accent-amber-500 h-1.5 bg-slate-200 rounded-lg">
+                                <input type="range" id="tenure" min="0" max="72" value="12" oninput="updateCalculations()" class="w-full accent-[#49111c] h-1.5 bg-slate-200 rounded-lg">
                             </div>
 
                             <div class="space-y-2">
                                 <div class="flex justify-between text-xs">
                                     <label class="font-semibold text-slate-700">Monthly Bill Amount</label>
-                                    <span id="charges-val" class="font-bold text-amber-700 font-mono">$65.50</span>
+                                    <span id="charges-val" class="font-bold text-[#49111c] font-mono">$65.50</span>
                                 </div>
-                                <input type="range" id="charges" min="15" max="130" step="0.5" value="65.5" oninput="updateCalculations()" class="w-full accent-amber-500 h-1.5 bg-slate-200 rounded-lg">
+                                <input type="range" id="charges" min="15" max="130" step="0.5" value="65.5" oninput="updateCalculations()" class="w-full accent-[#49111c] h-1.5 bg-slate-200 rounded-lg">
                             </div>
 
-                            <button type="submit" id="single-predict-btn" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold text-xs shadow-md shadow-amber-500/20 hover:scale-[1.01] transition-all flex items-center justify-center space-x-2">
+                            <button type="submit" id="single-predict-btn" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#49111c] to-[#5e503f] hover:from-[#49111c] hover:to-[#49111c] text-white font-bold text-xs shadow-md shadow-[#49111c]/20 hover:scale-[1.01] transition-all flex items-center justify-center space-x-2">
                                 <i data-lucide="zap" class="w-4 h-4 fill-current"></i>
                                 <span>Calculate Churn Probability & Strategy</span>
                             </button>
@@ -834,7 +887,7 @@
                     <div class="lg:col-span-5 saas-card tilt-card-3d p-6 space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Diagnostic Results</span>
-                            <span id="diagnostic-status-pill" class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">Ready</span>
+                            <span id="diagnostic-status-pill" class="text-[10px] font-bold text-[#49111c] bg-[#f7f4f0] px-2 py-0.5 rounded-full border border-[#d8cfc4]">Ready</span>
                         </div>
 
                         <!-- Animated SVG Radial Speedometer Gauge -->
@@ -844,7 +897,7 @@
                                     <defs>
                                         <linearGradient id="gauge-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                             <stop offset="0%" stop-color="#10b981" />
-                                            <stop offset="50%" stop-color="#f59e0b" />
+                                            <stop offset="50%" stop-color="#8b1e3f" />
                                             <stop offset="100%" stop-color="#f43f5e" />
                                         </linearGradient>
                                     </defs>
@@ -854,7 +907,7 @@
                                 <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                     <span id="risk-prob" class="text-3xl font-extrabold text-slate-900 font-mono tracking-tight leading-none">48.2%</span>
                                     <span class="text-[10px] text-slate-400 font-semibold mt-1">Churn Risk</span>
-                                    <span id="risk-badge" class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-50 text-amber-700 border border-amber-200 mt-1">
+                                    <span id="risk-badge" class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-[#f7f4f0] text-[#49111c] border border-[#d8cfc4] mt-1">
                                         MEDIUM RISK
                                     </span>
                                 </div>
@@ -869,7 +922,7 @@
                             </div>
                             <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs">
                                 <span class="text-[10px] text-slate-400 block font-medium">Customer Lifetime Value</span>
-                                <span id="risk-clv" class="text-base font-extrabold text-amber-700 font-mono mt-0.5 block">$1,452.00</span>
+                                <span id="risk-clv" class="text-base font-extrabold text-[#49111c] font-mono mt-0.5 block">$1,452.00</span>
                             </div>
                         </div>
 
@@ -877,7 +930,7 @@
                         <div class="space-y-2 pt-2 border-t border-slate-100">
                             <div class="flex items-center justify-between text-xs">
                                 <span class="font-bold text-slate-800 flex items-center">
-                                    <i data-lucide="cpu" class="w-3.5 h-3.5 mr-1.5 text-amber-600"></i>SHAP Explainable Drivers
+                                    <i data-lucide="cpu" class="w-3.5 h-3.5 mr-1.5 text-[#49111c]"></i>SHAP Explainable Drivers
                                 </span>
                                 <span id="decision-threshold-badge" class="text-[10px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">Cutoff: 0.23</span>
                             </div>
@@ -896,25 +949,25 @@
                                 </div>
                                 <div class="flex items-center justify-between p-1.5 rounded bg-slate-50 border border-slate-100">
                                     <span class="text-slate-700 font-medium flex items-center">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-2"></span>12-Month Tenure
+                                        <span class="w-1.5 h-1.5 rounded-full bg-[#49111c] mr-2"></span>12-Month Tenure
                                     </span>
-                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-50 text-amber-700 border border-amber-100">-9.5% Loyalty Lift</span>
+                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#f7f4f0] text-[#49111c] border border-[#d8cfc4]">-9.5% Loyalty Lift</span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Prescriptive Retention Strategy -->
-                        <div class="p-3.5 rounded-xl bg-amber-50/70 border border-amber-200/80 space-y-2 text-xs">
+                        <div class="p-3.5 rounded-xl bg-[#f7f4f0]/70 border border-[#d8cfc4]/80 space-y-2 text-xs">
                             <div class="flex items-center justify-between">
-                                <span class="font-bold text-amber-800 flex items-center">
-                                    <i data-lucide="shield-check" class="w-3.5 h-3.5 mr-1.5 text-amber-600"></i>Prescriptive Retention Action
+                                <span class="font-bold text-[#380d15] flex items-center">
+                                    <i data-lucide="shield-check" class="w-3.5 h-3.5 mr-1.5 text-[#49111c]"></i>Prescriptive Retention Action
                                 </span>
-                                <span id="prescriptive-urgency" class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-200 text-amber-800">HIGH URGENCY</span>
+                                <span id="prescriptive-urgency" class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-[#ede7df] text-[#380d15]">HIGH URGENCY</span>
                             </div>
                             <p id="risk-strategy" class="text-slate-700 text-[11px] leading-relaxed">
                                 Offer 15% discount for 6 months on a 1-year contract lock-in with complimentary speed boost.
                             </p>
-                            <div class="flex items-center justify-between text-[10px] text-amber-800 pt-1 font-medium">
+                            <div class="flex items-center justify-between text-[10px] text-[#380d15] pt-1 font-medium">
                                 <span id="prescriptive-channel">Channel: Dedicated Retention Outreach</span>
                                 <span id="prescriptive-roi" class="font-bold">Expected Net ROI: +$284</span>
                             </div>
@@ -924,16 +977,16 @@
 
                 
                 <!-- Live What-If Counterfactual Simulator Card -->
-                <div class="saas-card tilt-card-3d p-6 space-y-5 border border-amber-200/70 bg-gradient-to-br from-white via-teal-50/20 to-slate-50/80 shadow-sm rounded-2xl relative overflow-hidden">
+                <div class="saas-card tilt-card-3d p-6 space-y-5 border border-[#d8cfc4]/70 bg-gradient-to-br from-white via-teal-50/20 to-slate-50/80 shadow-sm rounded-xl relative overflow-hidden">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 pb-3">
                         <div class="flex items-center space-x-2.5">
-                            <div class="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center shadow-xs">
+                            <div class="w-8 h-8 rounded-lg bg-[#49111c] text-white flex items-center justify-center shadow-xs">
                                 <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
                             </div>
                             <div>
                                 <h3 class="text-sm font-bold text-slate-900 flex items-center">
                                     Live What-If Counterfactual Simulator & Retention Dispatcher
-                                    <span class="ml-2 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-100 text-amber-800 border border-amber-200">Decision Science XAI</span>
+                                    <span class="ml-2 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-[#ede7df] text-[#380d15] border border-[#d8cfc4]">Decision Science XAI</span>
                                 </h3>
                                 <p class="text-[11px] text-slate-500">Test simulated incentives & contract concessions to see real-time churn risk drop and net ARR preserved.</p>
                             </div>
@@ -947,9 +1000,9 @@
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1 flex items-center justify-between">
                                 <span>Proposed Contract Plan</span>
-                                <span class="text-[10px] text-amber-600 font-bold">Incentive Option</span>
+                                <span class="text-[10px] text-[#49111c] font-bold">Incentive Option</span>
                             </label>
-                            <select id="whatif-contract" onchange="runWhatIfSimulation()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium focus:outline-none focus:border-amber-500 shadow-2xs">
+                            <select id="whatif-contract" onchange="runWhatIfSimulation()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium focus:outline-none focus:border-[#49111c] shadow-2xs">
                                 <option value="One year" selected>One year (Recommended - Balance)</option>
                                 <option value="Two year">Two year (Maximum Retention Lock)</option>
                                 <option value="Month-to-month">Month-to-month (No Term Commitment)</option>
@@ -960,9 +1013,9 @@
                         <div>
                             <div class="flex justify-between items-center mb-1">
                                 <label class="font-semibold text-slate-700">Monthly Bill Discount</label>
-                                <span id="whatif-discount-val" class="font-bold text-amber-700 font-mono text-xs bg-amber-100/60 px-1.5 py-0.5 rounded">$15/mo</span>
+                                <span id="whatif-discount-val" class="font-bold text-[#49111c] font-mono text-xs bg-[#ede7df]/60 px-1.5 py-0.5 rounded">$15/mo</span>
                             </div>
-                            <input type="range" id="whatif-discount" min="0" max="30" step="5" value="15" oninput="document.getElementById('whatif-discount-val').innerText = '$' + this.value + '/mo'; runWhatIfSimulation()" class="w-full accent-amber-500 h-1.5 bg-slate-200 rounded-lg cursor-pointer">
+                            <input type="range" id="whatif-discount" min="0" max="30" step="5" value="15" oninput="document.getElementById('whatif-discount-val').innerText = '$' + this.value + '/mo'; runWhatIfSimulation()" class="w-full accent-[#49111c] h-1.5 bg-slate-200 rounded-lg cursor-pointer">
                             <div class="flex justify-between text-[10px] text-slate-400 font-mono mt-1">
                                 <span>$0 (No Discount)</span>
                                 <span>$15/mo</span>
@@ -973,8 +1026,8 @@
                         <!-- Control 3: Free Tech Support Bundle -->
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">Loyalty Value-Add Service</label>
-                            <label class="flex items-center space-x-2.5 p-2 rounded-xl bg-white border border-slate-200 cursor-pointer hover:border-amber-400 transition-all shadow-2xs">
-                                <input type="checkbox" id="whatif-techsupport" checked onchange="runWhatIfSimulation()" class="w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-teal-500">
+                            <label class="flex items-center space-x-2.5 p-2 rounded-xl bg-white border border-slate-200 cursor-pointer hover:border-[#a9927d] transition-all shadow-2xs">
+                                <input type="checkbox" id="whatif-techsupport" checked onchange="runWhatIfSimulation()" class="w-4 h-4 text-[#49111c] rounded border-slate-300 focus:ring-teal-500">
                                 <span class="text-xs text-slate-800 font-medium">Free 24/7 Priority Tech Support</span>
                             </label>
                         </div>
@@ -1000,7 +1053,7 @@
 
                         <!-- Center: Arrow / Delta Pill -->
                         <div class="md:col-span-1 flex md:flex-col items-center justify-center text-center py-1">
-                            <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs shadow-xs mb-1">
+                            <div class="w-8 h-8 rounded-full bg-[#ede7df] text-[#49111c] flex items-center justify-center font-bold text-xs shadow-xs mb-1">
                                 <i data-lucide="arrow-right" class="w-4 h-4 hidden md:block"></i>
                                 <i data-lucide="arrow-down" class="w-4 h-4 block md:hidden"></i>
                             </div>
@@ -1034,26 +1087,26 @@
                             <span class="text-[10px] text-slate-400 block font-medium">Annual Promotional Cost</span>
                             <span id="whatif-ann-cost" class="text-sm font-extrabold text-slate-600 font-mono mt-0.5 block">$180.00</span>
                         </div>
-                        <div class="p-3 rounded-xl bg-amber-50/90 border border-amber-200 shadow-2xs">
-                            <span class="text-[10px] text-amber-700 block font-bold">Net Economic Bottom-Line Benefit</span>
-                            <span id="whatif-net-benefit" class="text-sm font-black text-amber-800 font-mono mt-0.5 block">+$449.16 / yr</span>
+                        <div class="p-3 rounded-xl bg-[#f7f4f0]/90 border border-[#d8cfc4] shadow-2xs">
+                            <span class="text-[10px] text-[#49111c] block font-bold">Net Economic Bottom-Line Benefit</span>
+                            <span id="whatif-net-benefit" class="text-sm font-black text-[#380d15] font-mono mt-0.5 block">+$449.16 / yr</span>
                         </div>
                     </div>
 
                     <!-- Recommended Action Callout & 1-Click Dispatch Button -->
-                    <div class="p-4 rounded-xl bg-white border border-amber-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+                    <div class="p-4 rounded-xl bg-white border border-[#d8cfc4]/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
                         <div class="space-y-1">
                             <div class="flex items-center space-x-2">
                                 <span class="text-xs font-bold text-slate-900 flex items-center">
-                                    <i data-lucide="sparkles" class="w-3.5 h-3.5 mr-1 text-amber-600"></i>AI Prescribed Retention Offer
+                                    <i data-lucide="sparkles" class="w-3.5 h-3.5 mr-1 text-[#49111c]"></i>AI Prescribed Retention Offer
                                 </span>
-                                <span id="whatif-voucher-code" class="text-[10px] font-mono font-extrabold px-2 py-0.5 bg-amber-100 text-amber-800 rounded border border-amber-300">TELCO-SAVE15-1YR</span>
+                                <span id="whatif-voucher-code" class="text-[10px] font-mono font-extrabold px-2 py-0.5 bg-[#ede7df] text-[#380d15] rounded border border-[#a9927d]">TELCO-SAVE15-1YR</span>
                             </div>
                             <p id="whatif-action-text" class="text-[11px] text-slate-600 leading-relaxed">
                                 Proactively transition subscriber to One year with guaranteed $15/mo savings and complimentary 24/7 Priority Tech Support.
                             </p>
                         </div>
-                        <button type="button" id="dispatch-retention-btn" onclick="openRetentionDispatchModal()" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-700 active:scale-95 text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center whitespace-nowrap cursor-pointer">
+                        <button type="button" id="dispatch-retention-btn" onclick="openRetentionDispatchModal()" class="px-4 py-2.5 rounded-xl bg-[#49111c] hover:bg-[#2b0a10] active:scale-95 text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center whitespace-nowrap cursor-pointer">
                             <i data-lucide="send" class="w-3.5 h-3.5 mr-1.5"></i>Dispatch Retention Offer
                         </button>
                     </div>
@@ -1062,12 +1115,12 @@
                     <div id="crm-audit-container" class="mt-4 pt-3 border-t border-slate-100 space-y-2">
                         <div class="flex items-center justify-between text-xs">
                             <span class="font-bold text-slate-800 flex items-center">
-                                <i data-lucide="database" class="w-3.5 h-3.5 mr-1.5 text-amber-600"></i>Enterprise CRM Outreach Audit Trail
-                                <span class="ml-2 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-amber-50 text-amber-700 border border-amber-200">Webhook Pipeline</span>
+                                <i data-lucide="database" class="w-3.5 h-3.5 mr-1.5 text-[#49111c]"></i>Enterprise CRM Outreach Audit Trail
+                                <span class="ml-2 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-[#f7f4f0] text-[#49111c] border border-[#d8cfc4]">Webhook Pipeline</span>
                             </span>
                             <div class="flex items-center space-x-2 text-[10px] text-slate-500 font-mono">
                                 <span>Audit File: <strong>data/crm_dispatch_audit.json</strong></span>
-                                <a href="/api/crm/audit-log/download" download="crm_dispatch_audit.json" class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 font-bold transition-all" title="Download real JSON file saved on server disk">
+                                <a href="/api/crm/audit-log/download" download="crm_dispatch_audit.json" class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-[#f7f4f0] hover:bg-[#ede7df] text-[#49111c] border border-[#d8cfc4] font-bold transition-all" title="Download real JSON file saved on server disk">
                                     <i data-lucide="download" class="w-3 h-3"></i>
                                     <span>Download .json</span>
                                 </a>
@@ -1099,7 +1152,7 @@
                 <div class="saas-card tilt-card-3d p-6 space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div class="flex items-center space-x-2">
-                            <i data-lucide="layers" class="w-5 h-5 text-amber-600"></i>
+                            <i data-lucide="layers" class="w-5 h-5 text-[#49111c]"></i>
                             <h3 class="text-sm font-bold text-slate-900">Bulk CSV / Excel Batch Classification</h3>
                         </div>
                         <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Endpoint: /predict/bulk</span>
@@ -1107,12 +1160,12 @@
 
                     <div id="bulk-dropzone" 
                          onclick="document.getElementById('bulk-file-input').click()" 
-                         ondragover="event.preventDefault(); this.classList.add('border-amber-500', 'bg-amber-50/50');"
-                         ondragleave="this.classList.remove('border-amber-500', 'bg-amber-50/50');"
-                         ondrop="event.preventDefault(); this.classList.remove('border-amber-500', 'bg-amber-50/50'); if (event.dataTransfer.files.length) uploadBulkFile(event.dataTransfer.files[0]);"
-                         class="border-2 border-dashed border-slate-200 hover:border-amber-400 hover:bg-amber-50/30 rounded-2xl p-8 text-center cursor-pointer transition-all space-y-2">
+                         ondragover="event.preventDefault(); this.classList.add('border-[#49111c]', 'bg-[#f7f4f0]/50');"
+                         ondragleave="this.classList.remove('border-[#49111c]', 'bg-[#f7f4f0]/50');"
+                         ondrop="event.preventDefault(); this.classList.remove('border-[#49111c]', 'bg-[#f7f4f0]/50'); if (event.dataTransfer.files.length) uploadBulkFile(event.dataTransfer.files[0]);"
+                         class="border-2 border-dashed border-slate-200 hover:border-[#a9927d] hover:bg-[#f7f4f0]/30 rounded-xl p-8 text-center cursor-pointer transition-all space-y-2">
                         <input type="file" id="bulk-file-input" accept=".csv, .xlsx, .xls" class="hidden" onchange="uploadBulkFile(this.files[0])">
-                        <div class="w-12 h-12 rounded-full bg-amber-50 text-amber-600 mx-auto flex items-center justify-center shadow-xs">
+                        <div class="w-12 h-12 rounded-full bg-[#f7f4f0] text-[#49111c] mx-auto flex items-center justify-center shadow-xs">
                             <i data-lucide="upload-cloud" class="w-6 h-6"></i>
                         </div>
                         <div>
@@ -1124,7 +1177,7 @@
                     <!-- Bulk Results Preview Section -->
                     <div id="bulk-results-section" class="hidden space-y-4 pt-4 border-t border-slate-100">
                         <!-- Automated CRM Dispatch Alert Banner -->
-                        <div id="bulk-auto-dispatch-banner" class="hidden p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold flex items-center justify-between animate-in fade-in duration-200">
+                        <div id="bulk-auto-dispatch-banner" class="hidden p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold flex items-center justify-between animate-in fade-in duration-200">
                             <div class="flex items-center space-x-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                                 <span id="bulk-auto-dispatch-msg">Automated CRM Outreach: Dispatched to Webhook Queue</span>
@@ -1135,13 +1188,13 @@
                         <div class="flex flex-wrap items-center justify-between gap-2">
                             <div class="flex items-center space-x-2 text-xs">
                                 <span class="font-bold text-slate-800">Scored Cohort:</span>
-                                <span id="bulk-total-count" class="font-mono font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">0 Accounts</span>
+                                <span id="bulk-total-count" class="font-mono font-bold text-[#49111c] bg-[#f7f4f0] px-2 py-0.5 rounded border border-[#d8cfc4]">0 Accounts</span>
                                 <span id="bulk-high-count" class="font-mono font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-100">0 High</span>
-                                <span id="bulk-med-count" class="font-mono font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">0 Medium</span>
+                                <span id="bulk-med-count" class="font-mono font-bold text-[#49111c] bg-[#f7f4f0] px-2 py-0.5 rounded border border-[#d8cfc4]">0 Medium</span>
                                 <span id="bulk-low-count" class="font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">0 Low</span>
                             </div>
                             <div class="flex space-x-2">
-                                <button onclick="exportBulkResultsCSV()" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-700 text-white text-xs font-bold transition-all flex items-center space-x-1 shadow-xs">
+                                <button onclick="exportBulkResultsCSV()" class="px-3 py-1.5 rounded-lg bg-[#49111c] hover:bg-[#2b0a10] text-white text-xs font-bold transition-all flex items-center space-x-1 shadow-xs">
                                     <i data-lucide="download" class="w-3.5 h-3.5"></i>
                                     <span>Export Enriched CSV</span>
                                 </button>
@@ -1174,7 +1227,7 @@
                         <!-- Performance & Sample Note -->
                         <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1">
                             <span class="flex items-center space-x-1.5 text-slate-500">
-                                <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-500"></i>
+                                <i data-lucide="zap" class="w-3.5 h-3.5 text-[#a9927d]"></i>
                                 <span>Showing top 50 records preview to keep browser ultra-fast without lag. Full cohort ready via <strong>Export Enriched CSV</strong>.</span>
                             </span>
                             <span class="font-mono text-slate-400 text-[10px]">Optimized DOM</span>
@@ -1189,7 +1242,7 @@
             <div id="page-analytics" class="page-view space-y-6">
                 
                 <div class="space-y-1">
-                    <span class="text-xs font-bold text-amber-700 uppercase tracking-widest block">Exploratory Insights</span>
+                    <span class="text-xs font-bold text-[#49111c] uppercase tracking-widest block">Exploratory Insights</span>
                     <h2 class="text-2xl font-extrabold text-slate-900">Cohort Retention & Financial ROI Simulator</h2>
                     <p class="text-xs text-slate-500">Simulate customer retention campaigns and examine churn survival curves across customer cohorts.</p>
                 </div>
@@ -1200,7 +1253,7 @@
                     <div class="lg:col-span-6 saas-card tilt-card-3d p-6 space-y-5">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="calculator" class="w-5 h-5 text-amber-600"></i>
+                                <i data-lucide="calculator" class="w-5 h-5 text-[#49111c]"></i>
                                 <h3 class="text-sm font-bold text-slate-900">Financial ROI Simulator</h3>
                             </div>
                             <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Decision Threshold: 0.23</span>
@@ -1210,33 +1263,33 @@
                             <div class="space-y-1.5">
                                 <div class="flex justify-between text-xs">
                                     <label class="font-semibold text-slate-700">Target Cohort Size</label>
-                                    <span id="roi-cust-val" class="font-bold text-amber-700 font-mono">10,000 Accounts</span>
+                                    <span id="roi-cust-val" class="font-bold text-[#49111c] font-mono">10,000 Accounts</span>
                                 </div>
-                                <input type="range" id="roi-cust" min="1000" max="50000" step="1000" value="10000" oninput="calculateROI()" class="w-full accent-amber-500 h-1.5 bg-slate-200 rounded-lg">
+                                <input type="range" id="roi-cust" min="1000" max="50000" step="1000" value="10000" oninput="calculateROI()" class="w-full accent-[#49111c] h-1.5 bg-slate-200 rounded-lg">
                             </div>
 
                             <div class="space-y-1.5">
                                 <div class="flex justify-between text-xs">
                                     <label class="font-semibold text-slate-700">Average Monthly Spend</label>
-                                    <span id="roi-spend-val" class="font-bold text-amber-700 font-mono">$65.00 / mo</span>
+                                    <span id="roi-spend-val" class="font-bold text-[#49111c] font-mono">$65.00 / mo</span>
                                 </div>
-                                <input type="range" id="roi-spend" min="20" max="120" step="5" value="65" oninput="calculateROI()" class="w-full accent-amber-500 h-1.5 bg-slate-200 rounded-lg">
+                                <input type="range" id="roi-spend" min="20" max="120" step="5" value="65" oninput="calculateROI()" class="w-full accent-[#49111c] h-1.5 bg-slate-200 rounded-lg">
                             </div>
 
                             <div class="space-y-1.5">
                                 <div class="flex justify-between text-xs">
                                     <label class="font-semibold text-slate-700">Retention Incentive Cost</label>
-                                    <span id="roi-cost-val" class="font-bold text-amber-700 font-mono">$25.00 / customer</span>
+                                    <span id="roi-cost-val" class="font-bold text-[#49111c] font-mono">$25.00 / customer</span>
                                 </div>
-                                <input type="range" id="roi-cost" min="5" max="80" step="5" value="25" oninput="calculateROI()" class="w-full accent-amber-500 h-1.5 bg-slate-200 rounded-lg">
+                                <input type="range" id="roi-cost" min="5" max="80" step="5" value="25" oninput="calculateROI()" class="w-full accent-[#49111c] h-1.5 bg-slate-200 rounded-lg">
                             </div>
 
                             <div class="space-y-1.5">
                                 <div class="flex justify-between text-xs">
                                     <label class="font-semibold text-slate-700">Offer Acceptance Rate</label>
-                                    <span id="roi-succ-val" class="font-bold text-amber-700 font-mono">35%</span>
+                                    <span id="roi-succ-val" class="font-bold text-[#49111c] font-mono">35%</span>
                                 </div>
-                                <input type="range" id="roi-succ" min="10" max="80" step="5" value="35" oninput="calculateROI()" class="w-full accent-amber-500 h-1.5 bg-slate-200 rounded-lg">
+                                <input type="range" id="roi-succ" min="10" max="80" step="5" value="35" oninput="calculateROI()" class="w-full accent-[#49111c] h-1.5 bg-slate-200 rounded-lg">
                             </div>
                         </div>
 
@@ -1254,9 +1307,9 @@
                                 <span class="text-[10px] text-slate-400 block font-medium">Campaign Investment</span>
                                 <span id="roi-campaign-cost" class="text-base font-extrabold text-rose-600 font-mono mt-0.5 block">$66,350</span>
                             </div>
-                            <div class="p-3 rounded-xl bg-amber-50 border border-amber-200/80 shadow-xs">
-                                <span class="text-[10px] text-amber-700 block font-bold">Net Profit Saved (ROI)</span>
-                                <span id="roi-net-profit" class="text-base font-extrabold text-amber-800 font-mono mt-0.5 block">+$125,530</span>
+                            <div class="p-3 rounded-xl bg-[#f7f4f0] border border-[#d8cfc4]/80 shadow-xs">
+                                <span class="text-[10px] text-[#49111c] block font-bold">Net Profit Saved (ROI)</span>
+                                <span id="roi-net-profit" class="text-base font-extrabold text-[#380d15] font-mono mt-0.5 block">+$125,530</span>
                             </div>
                         </div>
                     </div>
@@ -1268,7 +1321,7 @@
                         <div class="saas-card tilt-card-3d p-6 space-y-4">
                             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                                 <div class="flex items-center space-x-2">
-                                    <i data-lucide="line-chart" class="w-5 h-5 text-amber-600"></i>
+                                    <i data-lucide="line-chart" class="w-5 h-5 text-[#49111c]"></i>
                                     <h3 class="text-sm font-bold text-slate-900">Subscriber Survival Curve (Kaplan-Meier Style)</h3>
                                 </div>
                                 <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">72 Months</span>
@@ -1282,7 +1335,7 @@
                         <div class="saas-card tilt-card-3d p-6 space-y-4">
                             <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                                 <div class="flex items-center space-x-2">
-                                    <i data-lucide="shield-check" class="w-5 h-5 text-amber-600"></i>
+                                    <i data-lucide="shield-check" class="w-5 h-5 text-[#49111c]"></i>
                                     <h3 class="text-sm font-bold text-slate-900 flex items-center">
                                         Value-Added Service Retention Shield
                                         <span class="ml-2 w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Dynamic Interactive Model"></span>
@@ -1291,10 +1344,10 @@
                                 <!-- Interactive Mode Switcher: Rate % vs Headcount -->
                                 <div class="flex items-center space-x-2">
                                     <div class="flex items-center space-x-1 p-0.5 rounded-lg bg-slate-100 border border-slate-200">
-                                        <button type="button" onclick="setServiceChartMode('percent')" id="svc-mode-pct" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white text-amber-700 shadow-2xs transition-all cursor-pointer">Rate %</button>
+                                        <button type="button" onclick="setServiceChartMode('percent')" id="svc-mode-pct" class="px-2 py-0.5 rounded text-[10px] font-bold bg-white text-[#49111c] shadow-2xs transition-all cursor-pointer">Rate %</button>
                                         <button type="button" onclick="setServiceChartMode('accounts')" id="svc-mode-acc" class="px-2 py-0.5 rounded text-[10px] font-semibold text-slate-500 hover:text-slate-800 transition-all cursor-pointer">Accounts Count</button>
                                     </div>
-                                    <span class="text-[10px] font-mono text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Live Reactive</span>
+                                    <span class="text-[10px] font-mono text-[#49111c] bg-[#f7f4f0] px-2 py-0.5 rounded border border-[#d8cfc4]">Live Reactive</span>
                                 </div>
                             </div>
                             <p class="text-[11px] text-slate-500">Dynamically reacts live to all 4 Financial ROI sliders (Cohort Size, Monthly Spend, Incentive Cost & Acceptance Rate).</p>
@@ -1312,7 +1365,7 @@
             <div id="page-model-performance" class="page-view space-y-6">
                 
                 <div class="space-y-1">
-                    <span class="text-xs font-bold text-amber-700 uppercase tracking-widest block">Benchmarking & XAI</span>
+                    <span class="text-xs font-bold text-[#49111c] uppercase tracking-widest block">Benchmarking & XAI</span>
                     <h2 class="text-2xl font-extrabold text-slate-900">Multi-Model Championship & Explainability</h2>
                     <p class="text-xs text-slate-500">Cross-validation benchmark of Random Forest against XGBoost, LightGBM, and Logistic Regression with Global SHAP attribution.</p>
                 </div>
@@ -1321,7 +1374,7 @@
                 <div class="saas-card tilt-card-3d p-6 space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div class="flex items-center space-x-2">
-                            <i data-lucide="trophy" class="w-5 h-5 text-amber-500"></i>
+                            <i data-lucide="trophy" class="w-5 h-5 text-[#a9927d]"></i>
                             <h3 class="text-sm font-bold text-slate-900">Algorithm Tournament Leaderboard</h3>
                         </div>
                         <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">5-Fold Stratified CV</span>
@@ -1343,19 +1396,19 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 bg-white text-slate-700 text-[11px]">
-                                <tr class="bg-amber-50/60 font-bold">
-                                    <td class="p-3 text-amber-500">#1</td>
+                                <tr class="bg-[#f7f4f0]/60 font-bold">
+                                    <td class="p-3 text-[#a9927d]">#1</td>
                                     <td class="p-3 text-slate-900 flex items-center">
-                                        <span class="w-2 h-2 rounded-full bg-amber-500 mr-2 animate-ping"></span>Random Forest
+                                        <span class="w-2 h-2 rounded-full bg-[#49111c] mr-2 animate-ping"></span>Random Forest
                                     </td>
                                     <td class="p-3 text-slate-500">Ensemble Bagging</td>
                                     <td class="p-3">80.2%</td>
                                     <td class="p-3">67.8%</td>
-                                    <td class="p-3 text-amber-700">80.4%</td>
+                                    <td class="p-3 text-[#49111c]">80.4%</td>
                                     <td class="p-3">73.6%</td>
-                                    <td class="p-3 text-amber-700 font-extrabold">84.6%</td>
+                                    <td class="p-3 text-[#49111c] font-extrabold">84.6%</td>
                                     <td class="p-3 text-right">
-                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-amber-100 text-amber-800 border border-amber-200">CHAMPION</span>
+                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-[#ede7df] text-[#380d15] border border-[#d8cfc4]">CHAMPION</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1400,7 +1453,7 @@
                 <div class="saas-card tilt-card-3d p-6 space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div class="flex items-center space-x-2">
-                            <i data-lucide="bar-chart" class="w-5 h-5 text-amber-600"></i>
+                            <i data-lucide="bar-chart" class="w-5 h-5 text-[#49111c]"></i>
                             <h3 class="text-sm font-bold text-slate-900">Global SHAP Feature Attribution (TreeExplainer)</h3>
                         </div>
                         <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Mean |SHAP Value|</span>
@@ -1410,17 +1463,17 @@
                         <div class="space-y-1">
                             <div class="flex justify-between font-semibold text-slate-700">
                                 <span>Customer Tenure (Months)</span>
-                                <span class="font-mono text-amber-700 font-bold">0.384 (Highest Impact)</span>
+                                <span class="font-mono text-[#49111c] font-bold">0.384 (Highest Impact)</span>
                             </div>
                             <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                                <div class="bg-gradient-to-r from-teal-500 to-amber-500 h-2.5 rounded-full" style="width: 95%"></div>
+                                <div class="bg-gradient-to-r from-teal-500 to-[#5e503f] h-2.5 rounded-full" style="width: 95%"></div>
                             </div>
                         </div>
 
                         <div class="space-y-1">
                             <div class="flex justify-between font-semibold text-slate-700">
                                 <span>Contract Type (Month-to-month vs 1/2 Year)</span>
-                                <span class="font-mono text-amber-700 font-bold">0.312</span>
+                                <span class="font-mono text-[#49111c] font-bold">0.312</span>
                             </div>
                             <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
                                 <div class="bg-gradient-to-r from-teal-400 to-teal-500 h-2.5 rounded-full" style="width: 78%"></div>
@@ -1430,7 +1483,7 @@
                         <div class="space-y-1">
                             <div class="flex justify-between font-semibold text-slate-700">
                                 <span>Monthly Bill Charges ($)</span>
-                                <span class="font-mono text-amber-700 font-bold">0.246</span>
+                                <span class="font-mono text-[#49111c] font-bold">0.246</span>
                             </div>
                             <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
                                 <div class="bg-gradient-to-r from-cyan-400 to-teal-400 h-2.5 rounded-full" style="width: 61%"></div>
@@ -1440,7 +1493,7 @@
                         <div class="space-y-1">
                             <div class="flex justify-between font-semibold text-slate-700">
                                 <span>Internet Service (Fiber Optic vs DSL)</span>
-                                <span class="font-mono text-amber-700 font-bold">0.182</span>
+                                <span class="font-mono text-[#49111c] font-bold">0.182</span>
                             </div>
                             <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
                                 <div class="bg-gradient-to-r from-cyan-300 to-cyan-400 h-2.5 rounded-full" style="width: 45%"></div>
@@ -1450,7 +1503,7 @@
                         <div class="space-y-1">
                             <div class="flex justify-between font-semibold text-slate-700">
                                 <span>Total Accumulated Charges ($)</span>
-                                <span class="font-mono text-amber-700 font-bold">0.128</span>
+                                <span class="font-mono text-[#49111c] font-bold">0.128</span>
                             </div>
                             <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
                                 <div class="bg-gradient-to-r from-slate-300 to-teal-300 h-2.5 rounded-full" style="width: 32%"></div>
@@ -1466,7 +1519,7 @@
             <div id="page-dataset" class="page-view space-y-6">
                 
                 <div class="space-y-1">
-                    <span class="text-xs font-bold text-amber-700 uppercase tracking-widest block">Data Repository</span>
+                    <span class="text-xs font-bold text-[#49111c] uppercase tracking-widest block">Data Repository</span>
                     <h2 class="text-2xl font-extrabold text-slate-900">Customer Records Explorer</h2>
                     <p class="text-xs text-slate-500">Search customer records, filter by churn status or risk profile, and load any customer into the diagnostic scorer.</p>
                 </div>
@@ -1474,12 +1527,12 @@
                 <div class="saas-card tilt-card-3d p-6 space-y-4">
                     <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
                         <div class="flex items-center space-x-2">
-                            <i data-lucide="database" class="w-5 h-5 text-amber-600"></i>
+                            <i data-lucide="database" class="w-5 h-5 text-[#49111c]"></i>
                             <h3 class="text-sm font-bold text-slate-900">Customer Directory</h3>
-                            <span class="text-[10px] font-mono text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Interactive Sample Explorer &bull; 7,043 Total Portfolio</span>
+                            <span class="text-[10px] font-mono text-[#49111c] bg-[#f7f4f0] px-2 py-0.5 rounded border border-[#d8cfc4]">Interactive Sample Explorer &bull; 7,043 Total Portfolio</span>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <input type="text" id="dir-search" placeholder="Search by Customer ID..." oninput="filterDirectory()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-amber-500 focus:bg-white w-48 sm:w-64 font-mono">
+                            <input type="text" id="dir-search" placeholder="Search by Customer ID..." oninput="filterDirectory()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-[#49111c] focus:bg-white w-48 sm:w-64 font-mono">
                             <div class="flex p-0.5 rounded-lg bg-slate-100 border border-slate-200 text-[10px] font-bold">
                                 <button onclick="setDirFilter('all')" id="dir-filter-all" class="px-2 py-1 rounded bg-white text-slate-900 font-bold shadow-2xs">All</button>
                                 <button onclick="setDirFilter('churned')" id="dir-filter-churned" class="px-2 py-1 rounded text-slate-500 hover:text-slate-800">Churned</button>
@@ -1515,7 +1568,7 @@
             <div id="page-monitoring" class="page-view space-y-6">
                 
                 <div class="space-y-1">
-                    <span class="text-xs font-bold text-amber-700 uppercase tracking-widest block">Governance & Observability</span>
+                    <span class="text-xs font-bold text-[#49111c] uppercase tracking-widest block">Governance & Observability</span>
                     <h2 class="text-2xl font-extrabold text-slate-900">Continuous Drift Governance & Retraining Lifecycle</h2>
                     <p class="text-xs text-slate-500">Statistical data drift detection (KS-test & PSI), automated retrain benchmark verification, and live API telemetry.</p>
                 </div>
@@ -1526,7 +1579,7 @@
                     <div class="lg:col-span-6 saas-card tilt-card-3d p-6 space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="activity" class="w-5 h-5 text-amber-600"></i>
+                                <i data-lucide="activity" class="w-5 h-5 text-[#49111c]"></i>
                                 <h3 class="text-sm font-bold text-slate-900">Statistical Drift Telemetry</h3>
                             </div>
                             <span id="drift-status-badge" class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center">
@@ -1564,7 +1617,7 @@
                                     <span class="text-[10px] text-slate-500 block">Candidate benchmarking & promotion</span>
                                 </div>
                                 <div class="text-right">
-                                    <span class="text-xs font-bold text-amber-700 font-mono">MLflow 3.x Active</span>
+                                    <span class="text-xs font-bold text-[#49111c] font-mono">MLflow 3.x Active</span>
                                     <span class="text-[9px] text-slate-400 block">Version Tag: v2.1</span>
                                 </div>
                             </div>
@@ -1575,7 +1628,7 @@
                     <div class="lg:col-span-6 saas-card tilt-card-3d p-6 space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
-                                <i data-lucide="gauge" class="w-5 h-5 text-amber-600"></i>
+                                <i data-lucide="gauge" class="w-5 h-5 text-[#49111c]"></i>
                                 <h3 class="text-sm font-bold text-slate-900">Real-Time API Telemetry</h3>
                             </div>
                             <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Endpoint: /api/metrics</span>
@@ -1592,17 +1645,17 @@
                             </div>
                             <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
                                 <span class="text-[10px] text-slate-400 block font-medium">Uptime Status</span>
-                                <span class="text-xl font-extrabold text-amber-700 font-mono mt-0.5 block">100.0%</span>
+                                <span class="text-xl font-extrabold text-[#49111c] font-mono mt-0.5 block">100.0%</span>
                             </div>
                             <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
                                 <span class="text-[10px] text-slate-400 block font-medium">Active Cutoff</span>
-                                <span class="text-xl font-extrabold text-amber-600 font-mono mt-0.5 block">0.23</span>
+                                <span class="text-xl font-extrabold text-[#49111c] font-mono mt-0.5 block">0.23</span>
                             </div>
                         </div>
 
                         <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 flex items-center justify-between">
                             <span>Backend Service: <strong class="text-slate-800">FastAPI + Uvicorn ASGI</strong></span>
-                            <a href="/docs" target="_blank" class="text-amber-700 font-bold hover:underline flex items-center">
+                            <a href="/docs" target="_blank" class="text-[#49111c] font-bold hover:underline flex items-center">
                                 Inspect OpenAPI <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 ml-1"></i>
                             </a>
                         </div>
@@ -1613,10 +1666,10 @@
                 <div class="saas-card tilt-card-3d p-6 space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div class="flex items-center space-x-2">
-                            <i data-lucide="git-pull-request" class="w-5 h-5 text-amber-600"></i>
+                            <i data-lucide="git-pull-request" class="w-5 h-5 text-[#49111c]"></i>
                             <h3 class="text-sm font-bold text-slate-900">MLflow Experiment Registry & Artifact Store</h3>
                         </div>
-                        <button type="button" onclick="openMlflowRunsModal()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-bold flex items-center space-x-1.5 transition-all shadow-md shadow-amber-500/20 cursor-pointer">
+                        <button type="button" onclick="openMlflowRunsModal()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#49111c] to-[#5e503f] hover:from-[#49111c] hover:to-[#49111c] text-white text-xs font-bold flex items-center space-x-1.5 transition-all shadow-md shadow-[#49111c]/20 cursor-pointer">
                             <i data-lucide="layers" class="w-3.5 h-3.5"></i>
                             <span>Inspect 20 MLflow Runs</span>
                         </button>
@@ -1634,7 +1687,7 @@
                         </div>
                         <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
                             <span class="text-[10px] text-slate-400 uppercase font-bold block">Terminal Launch Command</span>
-                            <code class="text-[10px] font-mono text-amber-800 bg-amber-50/70 border border-amber-100 px-2 py-1 rounded block mt-1 overflow-x-auto select-all">python -m mlflow ui --backend-store-uri sqlite:///mlflow.db --port 5000</code>
+                            <code class="text-[10px] font-mono text-[#380d15] bg-[#f7f4f0]/70 border border-[#d8cfc4] px-2 py-1 rounded block mt-1 overflow-x-auto select-all">python -m mlflow ui --backend-store-uri sqlite:///mlflow.db --port 5000</code>
                         </div>
                     </div>
                 </div>
@@ -1675,7 +1728,7 @@
             // Toast feedback
             const toast = document.createElement('div');
             toast.className = "fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-xl border border-slate-700 flex items-center space-x-2 text-xs font-semibold";
-            toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span><span>Cohort Window Filtered: Last ${days === 'all' ? 'All Time' : days + ' Days'}</span>`;
+            toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-[#49111c]"></span><span>Cohort Window Filtered: Last ${days === 'all' ? 'All Time' : days + ' Days'}</span>`;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 2500);
         }
@@ -1687,11 +1740,11 @@
             const btnInr = document.getElementById('curr-inr');
 
             if (curr === 'USD') {
-                btnUsd.className = "px-2.5 py-1 rounded-full bg-white text-slate-900 shadow-xs transition-all";
-                btnInr.className = "px-2.5 py-1 rounded-full text-slate-500 hover:text-slate-800 transition-all";
+                btnUsd.className = "px-2.5 py-1 rounded-md bg-white text-slate-900 shadow-2xs transition-all";
+                btnInr.className = "px-2.5 py-1 rounded-md text-slate-500 hover:text-slate-800 transition-all";
             } else {
-                btnInr.className = "px-2.5 py-1 rounded-full bg-white text-slate-900 shadow-xs transition-all";
-                btnUsd.className = "px-2.5 py-1 rounded-full text-slate-500 hover:text-slate-800 transition-all";
+                btnInr.className = "px-2.5 py-1 rounded-md bg-white text-slate-900 shadow-2xs transition-all";
+                btnUsd.className = "px-2.5 py-1 rounded-md text-slate-500 hover:text-slate-800 transition-all";
             }
 
             updateCalculations();
@@ -1758,7 +1811,7 @@
                 const baseBadgeEl = document.getElementById('whatif-base-badge');
                 if (baseBadgeEl) {
                     baseBadgeEl.innerText = `${data.baseline_risk} RISK`;
-                    baseBadgeEl.className = data.baseline_risk === 'HIGH' ? "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-rose-100 text-rose-800 border border-rose-300" : "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-100 text-amber-800 border border-amber-300";
+                    baseBadgeEl.className = data.baseline_risk === 'HIGH' ? "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-rose-100 text-rose-800 border border-rose-300" : "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-[#ede7df] text-[#380d15] border border-[#a9927d]";
                 }
                 const baseContractEl = document.getElementById('whatif-base-contract');
                 if (baseContractEl) baseContractEl.innerText = payload.Contract;
@@ -1774,7 +1827,7 @@
                 const cfBadgeEl = document.getElementById('whatif-cf-badge');
                 if (cfBadgeEl) {
                     cfBadgeEl.innerText = `${data.counterfactual_risk} RISK`;
-                    cfBadgeEl.className = data.counterfactual_risk === 'LOW' ? "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-emerald-100 text-emerald-800 border border-emerald-300" : "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-100 text-amber-800 border border-amber-300";
+                    cfBadgeEl.className = data.counterfactual_risk === 'LOW' ? "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-emerald-100 text-emerald-800 border border-emerald-300" : "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-[#ede7df] text-[#380d15] border border-[#a9927d]";
                 }
                 const cfContractEl = document.getElementById('whatif-cf-contract');
                 if (cfContractEl) cfContractEl.innerText = data.proposed_contract || proposedContract;
@@ -1858,7 +1911,7 @@
 
             const tbody = document.getElementById('mlflow-runs-table-body');
             if (tbody) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-500 font-sans"><i data-lucide="loader" class="w-5 h-5 animate-spin inline-block mr-2 text-amber-500"></i>Loading experiment runs from MLflow tracking store...</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-500 font-sans"><i data-lucide="loader" class="w-5 h-5 animate-spin inline-block mr-2 text-[#a9927d]"></i>Loading experiment runs from MLflow tracking store...</td></tr>`;
                 if (window.lucide) lucide.createIcons();
             }
 
@@ -1867,8 +1920,8 @@
                 const data = await res.json();
                 if (tbody && data.runs && data.runs.length > 0) {
                     tbody.innerHTML = data.runs.map((r, i) => `
-                        <tr class="hover:bg-amber-50/30 transition-colors">
-                            <td class="p-3 text-amber-600 font-bold font-mono text-[11px]">${r.run_id}</td>
+                        <tr class="hover:bg-[#f7f4f0]/30 transition-colors">
+                            <td class="p-3 text-[#49111c] font-bold font-mono text-[11px]">${r.run_id}</td>
                             <td class="p-3 text-slate-800 font-semibold font-sans">
                                 <div class="flex items-center space-x-1.5">
                                     <span class="w-2 h-2 rounded-full ${i === 0 ? 'bg-emerald-500 ring-2 ring-emerald-200' : 'bg-slate-300'}"></span>
@@ -1940,13 +1993,13 @@
             if (btn) {
                 const origHtml = btn.innerHTML;
                 btn.innerHTML = `<i data-lucide="check-circle" class="w-3.5 h-3.5 mr-1.5"></i>Dispatched to CRM!`;
-                btn.classList.remove('bg-amber-500', 'hover:bg-amber-700');
+                btn.classList.remove('bg-[#49111c]', 'hover:bg-[#2b0a10]');
                 btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
                 if (window.lucide) lucide.createIcons();
                 setTimeout(() => {
                     btn.innerHTML = origHtml;
                     btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
-                    btn.classList.add('bg-amber-500', 'hover:bg-amber-700');
+                    btn.classList.add('bg-[#49111c]', 'hover:bg-[#2b0a10]');
                     if (window.lucide) lucide.createIcons();
                 }, 4000);
             }
@@ -1954,7 +2007,7 @@
             // Floating Toast notification
             const toast = document.createElement('div');
             toast.style.cssText = "position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999999;";
-            toast.className = "bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-amber-500/50 flex items-center space-x-3 text-xs font-semibold animate-bounce";
+            toast.className = "bg-slate-900 text-white px-5 py-3.5 rounded-xl shadow-2xl border border-[#49111c]/50 flex items-center space-x-3 text-xs font-semibold animate-bounce";
             toast.innerHTML = `
                 <span class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
                 <div>
@@ -1978,13 +2031,13 @@
                     return;
                 }
                 tbody.innerHTML = records.map(r => `
-                    <tr class="hover:bg-amber-50/40 transition-colors">
-                        <td class="p-2 font-bold text-amber-700">${r.dispatch_id}</td>
+                    <tr class="hover:bg-[#f7f4f0]/40 transition-colors">
+                        <td class="p-2 font-bold text-[#49111c]">${r.dispatch_id}</td>
                         <td class="p-2 text-slate-500">${r.timestamp}</td>
                         <td class="p-2 text-slate-700">${r.recipient}</td>
-                        <td class="p-2"><span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-extrabold border border-amber-200">${r.voucher_code}</span></td>
+                        <td class="p-2"><span class="px-1.5 py-0.5 rounded bg-[#ede7df] text-[#380d15] font-extrabold border border-[#d8cfc4]">${r.voucher_code}</span></td>
                         <td class="p-2 text-emerald-600 font-bold">+${formatCurrency(r.annual_revenue_saved || 629.16)}</td>
-                        <td class="p-2 text-amber-800 font-extrabold">+${formatCurrency(r.net_economic_benefit || 449.16)}</td>
+                        <td class="p-2 text-[#380d15] font-extrabold">+${formatCurrency(r.net_economic_benefit || 449.16)}</td>
                         <td class="p-2 text-right">
                             <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span>DELIVERED
@@ -2150,7 +2203,7 @@
                 if (data.risk_level === 'HIGH') {
                     badge.className = "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-rose-50 text-rose-700 border border-rose-200 mt-1";
                 } else if (data.risk_level === 'MEDIUM') {
-                    badge.className = "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-50 text-amber-700 border border-amber-200 mt-1";
+                    badge.className = "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-[#f7f4f0] text-[#49111c] border border-[#d8cfc4] mt-1";
                 } else {
                     badge.className = "px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 mt-1";
                 }
@@ -2193,12 +2246,12 @@
                     if (data.shap_explanations.top_retention_drivers) {
                         data.shap_explanations.top_retention_drivers.slice(0, 2).forEach(d => {
                             const item = document.createElement('div');
-                            item.className = "flex items-center justify-between p-1.5 rounded bg-slate-50 border border-slate-100 transition-all hover:border-amber-200";
+                            item.className = "flex items-center justify-between p-1.5 rounded bg-slate-50 border border-slate-100 transition-all hover:border-[#d8cfc4]";
                             item.innerHTML = `
                                 <span class="text-slate-700 font-medium flex items-center">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-2"></span>${d.feature}
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#49111c] mr-2"></span>${d.feature}
                                 </span>
-                                <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-50 text-amber-700 border border-amber-100">${d.impact_pct} Loyalty Lift</span>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#f7f4f0] text-[#49111c] border border-[#d8cfc4]">${d.impact_pct} Loyalty Lift</span>
                             `;
                             shapList.appendChild(item);
                         });
@@ -2238,7 +2291,7 @@
             if (dropzone) {
                 dropzone.innerHTML = `
                     <div class="py-4 space-y-2">
-                        <i data-lucide="loader" class="w-8 h-8 animate-spin mx-auto text-amber-500"></i>
+                        <i data-lucide="loader" class="w-8 h-8 animate-spin mx-auto text-[#a9927d]"></i>
                         <p class="text-xs font-bold text-slate-800">Scoring dataset with Random Forest Champion Model...</p>
                         <p class="text-[11px] text-slate-400">Processing ${file.name} through MLOps inference pipeline</p>
                     </div>
@@ -2266,7 +2319,7 @@
                         </div>
                         <div>
                             <span class="text-xs font-bold text-slate-800 block">${file.name} Scored Successfully!</span>
-                            <span class="text-[11px] text-amber-600 font-semibold cursor-pointer underline" onclick="document.getElementById('bulk-file-input').click()">Click to upload another batch</span>
+                            <span class="text-[11px] text-[#49111c] font-semibold cursor-pointer underline" onclick="document.getElementById('bulk-file-input').click()">Click to upload another batch</span>
                         </div>
                     `;
                     if (window.lucide) lucide.createIcons();
@@ -2304,7 +2357,7 @@
                     const prob = r.Churn_Probability !== undefined ? r.Churn_Probability : (r.probability || 0);
                     const risk = (r.Risk_Level || r.risk_level || 'LOW').toUpperCase();
                     const annualImpact = r.Annual_Revenue_Risk !== undefined ? r.Annual_Revenue_Risk : (r.financial_impact_annual || 0);
-                    const riskColor = risk === 'HIGH' ? 'text-rose-600 bg-rose-50 border border-rose-200' : (risk === 'MEDIUM' ? 'text-amber-600 bg-amber-50 border border-amber-200' : 'text-emerald-600 bg-emerald-50 border border-emerald-200');
+                    const riskColor = risk === 'HIGH' ? 'text-rose-600 bg-rose-50 border border-rose-200' : (risk === 'MEDIUM' ? 'text-[#49111c] bg-[#f7f4f0] border border-[#d8cfc4]' : 'text-emerald-600 bg-emerald-50 border border-emerald-200');
                     
                     let actionHtml = '';
                     if (risk === 'HIGH') {
@@ -2315,7 +2368,7 @@
                         `;
                     } else if (risk === 'MEDIUM') {
                         actionHtml = `
-                            <button onclick="dispatchBulkCustomer('${r.Contract || 'Month-to-month'}', ${r.tenure || 1}, ${r.MonthlyCharges || 50}, '${r.customerID || ('CUST-' + (idx+1))}')" class="px-2 py-0.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 text-[10px] font-bold transition-all shadow-2xs hover:scale-105 cursor-pointer">
+                            <button onclick="dispatchBulkCustomer('${r.Contract || 'Month-to-month'}', ${r.tenure || 1}, ${r.MonthlyCharges || 50}, '${r.customerID || ('CUST-' + (idx+1))}')" class="px-2 py-0.5 rounded-lg bg-[#f7f4f0] hover:bg-[#ede7df] text-[#49111c] border border-[#d8cfc4] text-[10px] font-bold transition-all shadow-2xs hover:scale-105 cursor-pointer">
                                 Dispatch
                             </button>
                         `;
@@ -2323,7 +2376,7 @@
                         actionHtml = `<span class="text-[10px] font-medium text-slate-400">Safe (Retained)</span>`;
                     }
 
-                    tr.className = "hover:bg-amber-50/30 transition-colors";
+                    tr.className = "hover:bg-[#f7f4f0]/30 transition-colors";
                     tr.innerHTML = `
                         <td class="p-2.5 font-bold font-mono text-slate-500">#${idx + 1}</td>
                         <td class="p-2.5 font-sans font-medium text-slate-800">${r.Contract || 'Month-to-month'}</td>
@@ -2331,7 +2384,7 @@
                         <td class="p-2.5 font-mono font-semibold">${formatCurrency(r.MonthlyCharges || 0)}</td>
                         <td class="p-2.5 font-bold font-mono text-slate-900">${(prob * 100).toFixed(1)}%</td>
                         <td class="p-2.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${riskColor}">${risk}</span></td>
-                        <td class="p-2.5 font-bold font-mono text-amber-700">${formatCurrency(annualImpact)}</td>
+                        <td class="p-2.5 font-bold font-mono text-[#49111c]">${formatCurrency(annualImpact)}</td>
                         <td class="p-2.5 text-right">${actionHtml}</td>
                     `;
                     tbody.appendChild(tr);
@@ -2354,7 +2407,7 @@
                         </div>
                         <div class="space-y-1">
                             <span class="text-xs font-bold text-rose-600 block">Upload Error: ${err.message || 'Check dataset format'}</span>
-                            <span class="text-[11px] text-amber-700 font-semibold cursor-pointer underline" onclick="document.getElementById('bulk-file-input').click()">Click here to retry with another file</span>
+                            <span class="text-[11px] text-[#49111c] font-semibold cursor-pointer underline" onclick="document.getElementById('bulk-file-input').click()">Click here to retry with another file</span>
                         </div>
                     `;
                     if (window.lucide) lucide.createIcons();
@@ -2556,7 +2609,7 @@
                         </span>
                     </td>
                     <td class="p-3 text-right">
-                        <button onclick="loadDirectoryCustomer('${c.contract}', ${c.tenure}, ${c.monthly})" class="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 text-[10px] font-bold transition-all shadow-2xs hover:scale-105 cursor-pointer">
+                        <button onclick="loadDirectoryCustomer('${c.contract}', ${c.tenure}, ${c.monthly})" class="px-2.5 py-1 rounded-lg bg-[#f7f4f0] hover:bg-[#ede7df] text-[#49111c] border border-[#d8cfc4] text-[10px] font-bold transition-all shadow-2xs hover:scale-105 cursor-pointer">
                             Score
                         </button>
                     </td>
@@ -2577,8 +2630,8 @@
                 if (row) {
                     row.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     if (row.classList) {
-                        row.classList.add('bg-amber-100/70');
-                        setTimeout(() => row.classList.remove('bg-amber-100/70'), 2500);
+                        row.classList.add('bg-[#ede7df]/70');
+                        setTimeout(() => row.classList.remove('bg-[#ede7df]/70'), 2500);
                     }
                 }
             }, 200);
@@ -2675,7 +2728,7 @@
                         labels: ['High Risk', 'Medium Risk', 'Low Risk'],
                         datasets: [{
                             data: [1869, 1318, 3856],
-                            backgroundColor: ['#f59e0b', '#fbbf24', '#1e293b'],
+                            backgroundColor: ['#49111c', '#a9927d', '#1e293b'],
                             borderWidth: 3,
                             borderColor: '#ffffff',
                             hoverOffset: 4,
@@ -2696,9 +2749,9 @@
             if (ctxTrend && !overviewTrendChartInstance) {
                 const tCtx = ctxTrend.getContext('2d');
                 const grad = tCtx.createLinearGradient(0, 0, 0, 240);
-                grad.addColorStop(0, 'rgba(245, 158, 11, 0.40)');
+                grad.addColorStop(0, 'rgba(73, 17, 28, 0.35)');
                 grad.addColorStop(0.5, 'rgba(251, 191, 36, 0.15)');
-                grad.addColorStop(1, 'rgba(245, 158, 11, 0.0)');
+                grad.addColorStop(1, 'rgba(73, 17, 28, 0.0)');
 
                 overviewTrendChartInstance = new Chart(ctxTrend, {
                     type: 'line',
@@ -2707,13 +2760,13 @@
                         datasets: [{
                             label: 'Churn Rate %',
                             data: [31.2, 28.4, 27.9, 26.8, 28.1, 26.54],
-                            borderColor: '#f59e0b',
+                            borderColor: '#49111c',
                             borderWidth: 3,
                             backgroundColor: grad,
                             fill: true,
                             tension: 0.45,
                             pointBackgroundColor: '#ffffff',
-                            pointBorderColor: '#ea580c',
+                            pointBorderColor: '#5e503f',
                             pointBorderWidth: 2.5,
                             pointRadius: [3, 3, 3, 3, 3, 6],
                             pointHoverRadius: 8
@@ -2758,9 +2811,9 @@
             }
 
             // 3. Render 4 Mini Sparklines for Top KPI Cards
-            renderSparkline('sparklineHero', [12, 14, 18, 16, 22, 28, 35], '#f59e0b');
-            renderSparkline('sparklineCard2', [10, 15, 12, 19, 18, 24, 28], '#f59e0b');
-            renderSparkline('sparklineCard3', [8, 11, 15, 14, 20, 22, 29], '#ea580c');
+            renderSparkline('sparklineHero', [12, 14, 18, 16, 22, 28, 35], '#49111c');
+            renderSparkline('sparklineCard2', [10, 15, 12, 19, 18, 24, 28], '#49111c');
+            renderSparkline('sparklineCard3', [8, 11, 15, 14, 20, 22, 29], '#5e503f');
             renderSparkline('sparklineCard4', [25, 22, 20, 18, 16, 14, 12], '#f97316');
         }
 
@@ -2772,10 +2825,10 @@
             const btnPct = document.getElementById('svc-mode-pct');
             const btnAcc = document.getElementById('svc-mode-acc');
             if (mode === 'percent') {
-                if (btnPct) btnPct.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-white text-amber-700 shadow-2xs transition-all cursor-pointer";
+                if (btnPct) btnPct.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-white text-[#49111c] shadow-2xs transition-all cursor-pointer";
                 if (btnAcc) btnAcc.className = "px-2 py-0.5 rounded text-[10px] font-semibold text-slate-500 hover:text-slate-800 transition-all cursor-pointer";
             } else {
-                if (btnAcc) btnAcc.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-white text-amber-700 shadow-2xs transition-all cursor-pointer";
+                if (btnAcc) btnAcc.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-white text-[#49111c] shadow-2xs transition-all cursor-pointer";
                 if (btnPct) btnPct.className = "px-2 py-0.5 rounded text-[10px] font-semibold text-slate-500 hover:text-slate-800 transition-all cursor-pointer";
             }
             calculateROI();
@@ -2860,7 +2913,7 @@
                             {
                                 label: 'With Service (Retained %)',
                                 data: [84.8, 85.4, 77.5, 70.0],
-                                backgroundColor: '#f59e0b',
+                                backgroundColor: '#49111c',
                                 borderRadius: 6
                             },
                             {
@@ -2895,7 +2948,7 @@
             if (ctxCohorts && !analyticsCohortsChartInstance) {
                 const aCtx = ctxCohorts.getContext('2d');
                 const cohortGrad = aCtx.createLinearGradient(0, 0, 0, 160);
-                cohortGrad.addColorStop(0, 'rgba(245, 158, 11, 0.3)');
+                cohortGrad.addColorStop(0, 'rgba(73, 17, 28, 0.25)');
                 cohortGrad.addColorStop(1, 'rgba(245, 158, 11, 0.02)');
 
                 analyticsCohortsChartInstance = new Chart(ctxCohorts, {
@@ -2905,12 +2958,12 @@
                         datasets: [{
                             label: 'Subscriber Survival Rate %',
                             data: [100, 82, 74, 68, 64, 61, 58],
-                            borderColor: '#f59e0b',
+                            borderColor: '#49111c',
                             borderWidth: 3,
                             backgroundColor: cohortGrad,
                             fill: true,
                             tension: 0.35,
-                            pointBackgroundColor: '#f59e0b',
+                            pointBackgroundColor: '#49111c',
                             pointBorderColor: '#ffffff',
                             pointBorderWidth: 2,
                             pointRadius: 4
@@ -3015,31 +3068,31 @@
             if (!q) {
                 html += `
                     <div class="p-3 bg-slate-50/80 border-b border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-semibold">
-                        <span class="flex items-center space-x-1.5"><i data-lucide="compass" class="w-3.5 h-3.5 text-amber-600"></i><span>Quick Jump</span></span>
+                        <span class="flex items-center space-x-1.5"><i data-lucide="compass" class="w-3.5 h-3.5 text-[#49111c]"></i><span>Quick Jump</span></span>
                         <span class="text-[10px] text-slate-400">Press <strong>ESC</strong> to close</span>
                     </div>
                     <div class="p-2 space-y-1">
                 `;
                 searchPages.slice(0, 5).forEach(p => {
                     html += `
-                        <div onclick="handleSearchPageClick('${p.page}', '${p.action || ''}')" class="px-3 py-2 rounded-xl hover:bg-amber-50/70 flex items-center justify-between cursor-pointer transition-colors group">
+                        <div onclick="handleSearchPageClick('${p.page}', '${p.action || ''}')" class="px-3 py-2 rounded-xl hover:bg-[#f7f4f0]/70 flex items-center justify-between cursor-pointer transition-colors group">
                             <div class="flex items-center space-x-2.5">
-                                <div class="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-amber-500 group-hover:text-white flex items-center justify-center text-slate-600 transition-colors">
+                                <div class="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-[#49111c] group-hover:text-white flex items-center justify-center text-slate-600 transition-colors">
                                     <i data-lucide="${p.icon}" class="w-3.5 h-3.5"></i>
                                 </div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-800 group-hover:text-amber-700">${p.name}</div>
+                                    <div class="text-xs font-bold text-slate-800 group-hover:text-[#49111c]">${p.name}</div>
                                     <div class="text-[10px] text-slate-400">${p.desc}</div>
                                 </div>
                             </div>
-                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-300 group-hover:text-amber-600 transition-colors"></i>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-300 group-hover:text-[#49111c] transition-colors"></i>
                         </div>
                     `;
                 });
                 html += `
                     </div>
-                    <div class="p-2.5 bg-amber-50/50 border-t border-amber-100/60 text-[11px] text-amber-800 flex items-center justify-between">
-                        <span>Try typing: <code class="bg-white px-1 py-0.5 rounded border border-amber-200 text-amber-700 font-mono text-[10px]">7590</code>, <code class="bg-white px-1 py-0.5 rounded border border-amber-200 text-amber-700 font-mono text-[10px]">Month</code>, or <code class="bg-white px-1 py-0.5 rounded border border-amber-200 text-amber-700 font-mono text-[10px]">Churned</code></span>
+                    <div class="p-2.5 bg-[#f7f4f0]/50 border-t border-[#d8cfc4]/60 text-[11px] text-[#380d15] flex items-center justify-between">
+                        <span>Try typing: <code class="bg-white px-1 py-0.5 rounded border border-[#d8cfc4] text-[#49111c] font-mono text-[10px]">7590</code>, <code class="bg-white px-1 py-0.5 rounded border border-[#d8cfc4] text-[#49111c] font-mono text-[10px]">Month</code>, or <code class="bg-white px-1 py-0.5 rounded border border-[#d8cfc4] text-[#49111c] font-mono text-[10px]">Churned</code></span>
                     </div>
                 `;
             } else {
@@ -3056,7 +3109,7 @@
                             <i data-lucide="search-x" class="w-8 h-8 text-slate-300 mx-auto"></i>
                             <p class="text-xs font-bold text-slate-700">No instant results for "${query}"</p>
                             <p class="text-[11px] text-slate-400">Press <strong>Enter</strong> to search the entire customer dataset in Directory.</p>
-                            <button onclick="viewCustomerInDirectory('${query.replace(/'/g, "\\'")}')" class="mt-2 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all shadow-xs cursor-pointer">
+                            <button onclick="viewCustomerInDirectory('${query.replace(/'/g, "\\'")}')" class="mt-2 px-3 py-1.5 rounded-xl bg-[#49111c] hover:bg-[#380d15] text-white text-xs font-bold transition-all shadow-xs cursor-pointer">
                                 Filter Customer Directory &rarr;
                             </button>
                         </div>
@@ -3071,10 +3124,10 @@
                         `;
                         matchedPages.forEach(p => {
                             html += `
-                                <div onclick="handleSearchPageClick('${p.page}', '${p.action || ''}')" class="px-3 py-1.5 rounded-lg hover:bg-amber-50 flex items-center justify-between cursor-pointer group">
+                                <div onclick="handleSearchPageClick('${p.page}', '${p.action || ''}')" class="px-3 py-1.5 rounded-lg hover:bg-[#f7f4f0] flex items-center justify-between cursor-pointer group">
                                     <div class="flex items-center space-x-2">
-                                        <i data-lucide="${p.icon}" class="w-3.5 h-3.5 text-amber-600"></i>
-                                        <span class="text-xs font-bold text-slate-800 group-hover:text-amber-700">${p.name}</span>
+                                        <i data-lucide="${p.icon}" class="w-3.5 h-3.5 text-[#49111c]"></i>
+                                        <span class="text-xs font-bold text-slate-800 group-hover:text-[#49111c]">${p.name}</span>
                                     </div>
                                     <span class="text-[10px] text-slate-400">Jump &rarr;</span>
                                 </div>
@@ -3107,7 +3160,7 @@
                                         </div>
                                     </div>
                                     <div class="flex items-center space-x-1.5">
-                                        <button onclick="loadDirectoryCustomer('${c.contract}', ${c.tenure}, ${c.monthly}); closeGlobalSearch();" class="px-2 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 text-[10px] font-bold transition-all shadow-2xs hover:scale-105 cursor-pointer">
+                                        <button onclick="loadDirectoryCustomer('${c.contract}', ${c.tenure}, ${c.monthly}); closeGlobalSearch();" class="px-2 py-1 rounded-lg bg-[#f7f4f0] hover:bg-[#ede7df] text-[#49111c] border border-[#d8cfc4] text-[10px] font-bold transition-all shadow-2xs hover:scale-105 cursor-pointer">
                                             Score
                                         </button>
                                         <button onclick="viewCustomerInDirectory('${c.id}'); closeGlobalSearch();" class="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer">
@@ -3190,9 +3243,9 @@
 
     <!-- Retention Dispatch Modal -->
     <div id="retention-dispatch-modal" class="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 hidden" style="display: none;">
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full overflow-hidden animate-scale-up space-y-0">
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xl max-w-lg w-full overflow-hidden animate-scale-up space-y-0">
             <!-- Modal Header -->
-            <div class="px-6 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white flex items-center justify-between">
+            <div class="px-6 py-4 bg-gradient-to-r from-[#49111c] to-[#380d15] text-white flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <i data-lucide="mail-check" class="w-5 h-5"></i>
                     <h3 class="text-sm font-bold">Personalized Customer Retention Dispatch</h3>
@@ -3204,7 +3257,7 @@
                 <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
                     <div class="flex justify-between text-slate-500 text-[11px]">
                         <span>To: <strong id="modal-recipient" class="text-slate-800">customer@telecom.com</strong></span>
-                        <span id="modal-dispatch-status" class="text-amber-700 font-bold bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">CRM Webhook Ready</span>
+                        <span id="modal-dispatch-status" class="text-[#49111c] font-bold bg-[#f7f4f0] px-1.5 py-0.5 rounded border border-[#d8cfc4]">CRM Webhook Ready</span>
                     </div>
                     <div class="text-slate-800 font-bold text-xs pt-1 border-t border-slate-200" id="modal-subject">
                         Exclusive VIP Upgrade: Save $15/mo on your Telecom Plan!
@@ -3217,19 +3270,19 @@
                     </p>
                     <div class="flex items-center space-x-2 pt-2">
                         <span class="text-slate-500 font-medium">Claim Code:</span>
-                        <span id="modal-voucher" class="font-mono font-black text-xs px-2.5 py-1 bg-white text-amber-800 border border-amber-300 rounded shadow-2xs">TELCO-SAVE15-1YR</span>
+                        <span id="modal-voucher" class="font-mono font-black text-xs px-2.5 py-1 bg-white text-[#380d15] border border-[#a9927d] rounded shadow-2xs">TELCO-SAVE15-1YR</span>
                     </div>
                 </div>
 
-                <div class="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-[11px] flex items-center space-x-2">
-                    <i data-lucide="check-circle-2" class="w-4 h-4 text-amber-600 shrink-0"></i>
+                <div class="p-2.5 rounded-lg bg-[#f7f4f0] border border-[#d8cfc4] text-[#380d15] text-[11px] flex items-center space-x-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-[#49111c] shrink-0"></i>
                     <span>Dispatched offers are logged to CRM retention audit table with 48h SLA callback trigger.</span>
                 </div>
             </div>
             <!-- Modal Footer -->
             <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-end space-x-3">
                 <button type="button" onclick="closeRetentionDispatchModal()" class="px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition-all cursor-pointer">Cancel</button>
-                <button type="button" onclick="confirmRetentionDispatch()" class="px-4 py-1.5 rounded-xl bg-amber-500 text-white text-xs font-bold hover:bg-amber-700 active:scale-95 transition-all shadow-xs flex items-center cursor-pointer">
+                <button type="button" onclick="confirmRetentionDispatch()" class="px-4 py-1.5 rounded-xl bg-[#49111c] text-white text-xs font-bold hover:bg-[#2b0a10] active:scale-95 transition-all shadow-xs flex items-center cursor-pointer">
                     <i data-lucide="send" class="w-3.5 h-3.5 mr-1.5"></i>Confirm & Send to CRM
                 </button>
             </div>
@@ -3239,16 +3292,16 @@
 
     <!-- MLflow Experiment Runs & Registry Telemetry Modal (In-App Cloud Compatible) -->
     <div id="mlflow-runs-modal" class="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 hidden" style="display: none;" onclick="if(event.target === this) closeMlflowRunsModal()">
-        <div class="bg-white rounded-3xl max-w-3xl w-full border border-slate-200/90 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        <div class="bg-white rounded-xl max-w-3xl w-full border border-slate-200/90 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
             <!-- Header -->
-            <div class="px-6 py-4 bg-gradient-to-r from-amber-50 via-slate-50 to-white border-b border-slate-100 flex items-center justify-between">
+            <div class="px-6 py-4 bg-gradient-to-r from-[#f7f4f0] via-slate-50 to-white border-b border-slate-100 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <div class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shadow-md shadow-amber-500/25">
+                    <div class="w-9 h-9 rounded-xl bg-[#49111c] text-white flex items-center justify-center shadow-md shadow-[#49111c]/25">
                         <i data-lucide="git-pull-request" class="w-4 h-4"></i>
                     </div>
                     <div>
                         <h3 class="text-sm font-extrabold text-slate-900">MLflow Experiment Registry Telemetry</h3>
-                        <p class="text-[11px] text-slate-500">Live SQLite backend store (<code class="font-mono text-amber-700">mlflow.db</code>) with logged hyperparameters, runs & model artifacts.</p>
+                        <p class="text-[11px] text-slate-500">Live SQLite backend store (<code class="font-mono text-[#49111c]">mlflow.db</code>) with logged hyperparameters, runs & model artifacts.</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeMlflowRunsModal()" class="w-8 h-8 rounded-full hover:bg-slate-200 text-slate-400 hover:text-slate-700 flex items-center justify-center transition-colors cursor-pointer">
@@ -3258,14 +3311,14 @@
 
             <!-- Content: Telemetry Table -->
             <div class="p-6 space-y-4 max-h-[65vh] overflow-y-auto">
-                <div class="flex flex-wrap items-center justify-between gap-2 p-3 rounded-2xl bg-amber-50/60 border border-amber-100 text-xs text-amber-900">
+                <div class="flex flex-wrap items-center justify-between gap-2 p-3 rounded-xl bg-[#f7f4f0]/60 border border-[#d8cfc4] text-xs text-[#380d15]">
                     <div class="flex items-center space-x-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span>Cloud Production Sync: <strong>Connected</strong></span>
                         <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold border border-emerald-200">All 20 Runs Logged</span>
                     </div>
-                    <div class="text-[11px] text-amber-800">
-                        Tracking Store: <code class="font-mono bg-white px-1.5 py-0.5 rounded border border-amber-200 text-amber-700 font-bold">mlflow.db (SQLite)</code>
+                    <div class="text-[11px] text-[#380d15]">
+                        Tracking Store: <code class="font-mono bg-white px-1.5 py-0.5 rounded border border-[#d8cfc4] text-[#49111c] font-bold">mlflow.db (SQLite)</code>
                     </div>
                 </div>
 
@@ -3292,7 +3345,7 @@
 
             <!-- Footer -->
             <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs">
-                <button type="button" onclick="closeMlflowRunsModal(); showPage('monitoring');" class="text-xs font-semibold text-amber-600 hover:text-amber-700 flex items-center space-x-1 cursor-pointer">
+                <button type="button" onclick="closeMlflowRunsModal(); showPage('monitoring');" class="text-xs font-semibold text-[#49111c] hover:text-[#49111c] flex items-center space-x-1 cursor-pointer">
                     <span>Go to Data Drift Monitoring & Auto-Retraining Page &rarr;</span>
                 </button>
                 <button type="button" onclick="closeMlflowRunsModal()" class="px-4 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold transition-colors cursor-pointer">
