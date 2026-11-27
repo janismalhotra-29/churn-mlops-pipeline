@@ -247,3 +247,21 @@ When external examiners and professors question your project, use these research
 | **"How do you justify selecting your ML algorithm?"** | *"Random Forest gave good accuracy."* | *"We implemented a multi-model tournament benchmarking 4 algorithmic families (Linear, Bagging, Histogram Boosting, Gradient Boosting). Random Forest and XGBoost achieved identical 0.833 ROC-AUC, with Random Forest achieving higher recall on holdout validation. All benchmark runs are logged in MLflow for reproducibility."* |
 | **"How do stakeholders trust this AI in production?"** | *"We show them accuracy."* | *"We integrated Explainable AI (SHAP TreeExplainer). For every inference, the system generates local Shapley feature attributions, explaining the exact contract, tenure, and financial factors driving churn, followed by an automated prescriptive retention plan."* |
 | **"What happens when customer behavior changes over time?"** | *"We retrain manually."* | *"We implemented continuous data drift monitoring: two-sample Kolmogorov-Smirnov tests for numerical drift and Population Stability Index (PSI) for categorical shifts. When drift exceeds tolerances, automated retraining benchmarks the candidate model and promotes it to the MLflow registry."* |
+
+---
+
+## 👥 Project & Academic Information
+
+- **Project Title:** TelcoPulse: Production MLOps Customer Churn Prediction and Retention Platform
+- **Institution:** SRM UNIVERSITY, DELHI-NCR, SONEPAT, HARYANA (Plot No. 39, Rajiv Gandhi Education City, Sonepat, Haryana 131029)
+- **Department:** Department of Computer Science & Engineering
+- **Program:** Bachelor of Technology in Computer Science and Engineering [Data Science and Artificial Intelligence]
+- **Course Code:** 21CS4114 | Live Project Report | 5th Semester (Dec 2026)
+- **Student Authors:**
+  - **Sakshi** (Registration No: `11024210003`)
+  - **Janis** (Registration No: `11024210060`)
+- **Faculty Mentors & Leadership:**
+  - **Supervisor & Project Coordinator:** Dr. Yogesh Bansal (Assistant Professor, Dept. of CSE)
+  - **Program Coordinator:** Dr. Dilshad Ansari
+  - **Head of Department:** Dr. Rama Kant
+
