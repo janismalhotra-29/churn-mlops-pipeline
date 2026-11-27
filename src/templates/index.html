@@ -317,10 +317,6 @@
                     <i data-lucide="scan" class="w-4 h-4 mr-3"></i>
                     <span>Churn Prediction</span>
                 </button>
-                <button onclick="navigateToPage('dataset')" id="nav-dataset" class="sidebar-dark-link w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
-                    <i data-lucide="users" class="w-4 h-4 mr-3"></i>
-                    <span>Customer Insights</span>
-                </button>
                 <button onclick="navigateToPage('analytics')" id="nav-analytics" class="sidebar-dark-link w-full flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold cursor-pointer">
                     <i data-lucide="pie-chart" class="w-4 h-4 mr-3"></i>
                     <span>Analytics & ROI</span>
@@ -627,7 +623,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
                     
                     <!-- Col 1: High-Risk Subscriber Targets (Real Telco Accounts) -->
-                    <div class="lg:col-span-5 quantro-card p-5 space-y-4">
+                    <div class="lg:col-span-7 quantro-card p-5 space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
                                 <i data-lucide="alert-octagon" class="w-4 h-4 text-[#49111c]"></i>
@@ -707,7 +703,7 @@
                     </div>
 
                     <!-- Col 2: Recent CRM Outreach Dispatches (Real Retention Webhook Activity) -->
-                    <div class="lg:col-span-4 quantro-card p-5 space-y-4">
+                    <div class="lg:col-span-5 quantro-card p-5 space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                             <div class="flex items-center space-x-2">
                                 <i data-lucide="send" class="w-4 h-4 text-[#49111c]"></i>
@@ -765,62 +761,11 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Col 3: Retention Shield Lift (Value-Added Services) -->
-                    <div class="lg:col-span-3 quantro-card p-5 space-y-4 flex flex-col justify-between">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <div class="flex items-center space-x-2">
-                                <i data-lucide="shield-check" class="w-4 h-4 text-[#49111c]"></i>
-                                <h3 class="text-sm font-black text-slate-900">Retention Shield Lift</h3>
-                            </div>
-                            <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">XAI Impact</span>
-                        </div>
-                        
-                        <p class="text-[11px] text-slate-500">Churn reduction observed when bundling key value-added services:</p>
-
-                        <!-- Retention Lift Progress Bars with Amber Styling -->
-                        <div class="space-y-3 text-xs pt-1">
-                            <div>
-                                <div class="flex items-center justify-between mb-1">
-                                    <span class="text-slate-700 font-medium">Priority Tech Support</span>
-                                    <span class="font-bold font-mono text-emerald-600">+43.1% Lift</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                    <div class="bg-[#49111c] h-full rounded-full" style="width: 84.8%;"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex items-center justify-between mb-1">
-                                    <span class="text-slate-700 font-medium">Online Security Shield</span>
-                                    <span class="font-bold font-mono text-emerald-600">+43.6% Lift</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                    <div class="bg-[#49111c] h-full rounded-full" style="width: 85.4%;"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex items-center justify-between mb-1">
-                                    <span class="text-slate-700 font-medium">Device Protection Plan</span>
-                                    <span class="font-bold font-mono text-emerald-600">+38.4% Lift</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                    <div class="bg-[#49111c] h-full rounded-full" style="width: 77.5%;"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex items-center justify-between mb-1">
-                                    <span class="text-slate-700 font-medium">Streaming Bundle</span>
-                                    <span class="font-bold font-mono text-emerald-600">+36.5% Lift</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                    <div class="bg-[#49111c] h-full rounded-full" style="width: 70.0%;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-            </div><div id="page-prediction" class="page-view space-y-6">
+            </div>
+
+            <div id="page-prediction" class="page-view space-y-6">
                 
                 <div class="space-y-1">
                     <span class="text-xs font-bold text-[#49111c] uppercase tracking-widest block">Inference Engine</span>
