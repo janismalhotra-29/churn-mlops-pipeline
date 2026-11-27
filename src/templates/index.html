@@ -837,7 +837,6 @@
                                 <i data-lucide="user-check" class="w-5 h-5 text-[#49111c]"></i>
                                 <h3 class="text-sm font-bold text-slate-900">Customer Profile Diagnostic</h3>
                             </div>
-                            <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Endpoint: /predict</span>
                         </div>
 
                         <form id="single-predict-form" onsubmit="predictSingleCustomer(event)" class="space-y-4">
@@ -991,7 +990,6 @@
                                 <p class="text-[11px] text-slate-500">Test simulated incentives & contract concessions to see real-time churn risk drop and net ARR preserved.</p>
                             </div>
                         </div>
-                        <span class="text-[10px] font-mono text-slate-400 bg-white px-2 py-0.5 rounded border border-slate-200 self-start sm:self-auto">Endpoint: /api/what-if</span>
                     </div>
 
                     <!-- Interactive Control Sliders Strip -->
@@ -1155,7 +1153,6 @@
                             <i data-lucide="layers" class="w-5 h-5 text-[#49111c]"></i>
                             <h3 class="text-sm font-bold text-slate-900">Bulk CSV / Excel Batch Classification</h3>
                         </div>
-                        <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Endpoint: /predict/bulk</span>
                     </div>
 
                     <div id="bulk-dropzone" 
@@ -1631,7 +1628,6 @@
                                 <i data-lucide="gauge" class="w-5 h-5 text-[#49111c]"></i>
                                 <h3 class="text-sm font-bold text-slate-900">Real-Time API Telemetry</h3>
                             </div>
-                            <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Endpoint: /api/metrics</span>
                         </div>
 
                         <div class="grid grid-cols-2 gap-3 text-center text-xs">
@@ -1674,7 +1670,7 @@
                             <span>Inspect 20 MLflow Runs</span>
                         </button>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                         <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
                             <span class="text-[10px] text-slate-400 uppercase font-bold block">Tracking Backend</span>
                             <span class="text-sm font-bold text-slate-900 font-mono mt-1 block">SQLite (mlflow.db)</span>
@@ -1684,10 +1680,6 @@
                             <span class="text-[10px] text-slate-400 uppercase font-bold block">Experiments Tracked</span>
                             <span class="text-sm font-bold text-emerald-600 font-mono mt-1 block">3 Active Experiments</span>
                             <span class="text-[10px] text-slate-500 mt-1 block">Tournament, Retraining, Baseline</span>
-                        </div>
-                        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-                            <span class="text-[10px] text-slate-400 uppercase font-bold block">Terminal Launch Command</span>
-                            <code class="text-[10px] font-mono text-[#380d15] bg-[#f7f4f0]/70 border border-[#d8cfc4] px-2 py-1 rounded block mt-1 overflow-x-auto select-all">python -m mlflow ui --backend-store-uri sqlite:///mlflow.db --port 5000</code>
                         </div>
                     </div>
                 </div>
